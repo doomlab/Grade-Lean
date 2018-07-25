@@ -19,7 +19,7 @@ affiliation:
     institution   : "Missouri State University"
   - id            : "2"
     institution   : "US Air Force Academy"
-      - id        : "3"
+  - id            : "3"
     institution   : "University of Missouri - Kansas City"
 
 author_note: |
