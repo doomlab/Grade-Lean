@@ -23,7 +23,7 @@ affiliation:
     institution   : "University of Missouri - Kansas City"
 
 author_note: |
-  A portion of this research was presented at the meeting of the Southwestern Psychological Association, April, 2009, San Antonio, TX. The authors would like to thank Melissa Fallone for comments on earlier drafts.
+  A portion of this research was presented at the meeting of the Southwestern Psychological Association, April, 2009, San Antonio, TX. The authors would like to thank Melissa Fallone for comments on earlier drafts and Stephen Martin for his help with restructuring the data.
 
 abstract: |
   We analyzed student evaluations for 3,585 classes collected over 20 years to determine stability and evaluate the relationship of perceived grading to global evaluations, perceived fairness, and appropriateness of assignments. Using class as the unit of analysis, we found small evaluation reliability when professors taught the same course in the same semester, with much weaker correlations for differing courses. Expected grade and grading related questions correlated with overall evaluations of courses. Differences in course evaluations on expected grades, grading questions, and overall grades were found between full-time faculty and other types of instructors. These findings are expanded to a model of grading type questions mediating the relationship between expected grade and overall course evaluations with a moderating effect of type of instructor. 
@@ -48,6 +48,8 @@ replace_ampersands: yes
 
 ```{r load_packages, include = FALSE}
 library("papaja")
+library(nlme)
+knitr::opts_chunk$set(cache = TRUE)
 ```
 
 The controversy over perceived grading and student evaluations continues, with arguments that professors can [@Greenwald1997; @Isely2005; @Krautmann1999] or cannot [@Centra2003; @Marsh1987; @Marsh2000] improve evaluations by giving higher grades. Social psychology theory would support that students with low grades can reduce cognitive dissonance and engage in ego defense by giving low evaluations to teachers who give them low grades [@Maurer2006]. We argue that both social psychology theory and the evidence from student evaluations supports that higher grades can lead to better student evaluations of teaching.
@@ -76,37 +78,296 @@ In the current study, we used data collected over a 20-year period to allow for 
 
 # Method
 
-The archival study was conducted using data from the psychology department at a large Midwestern public university. We used data from 2,846 undergraduate, 244 mixed graduate and undergraduate, and 429 graduate psychology classes taught from 1987 to 2007 that were evaluated by students using the same 15-item instrument. Data was collected for course evaluation rather than for this study. Faculty followed set procedures in distributing scan forms no more than two weeks before the conclusion of the semester. A student was assigned to collect the forms and deliver them to the departmental secretary. The instructor was required to leave the room while students completed the forms. Classes with fewer than five student responses were not retained in the data pool. 
-We focused upon the five items, which seemed most pertinent to the issues of perceived grading and evaluation. We were most interested in how grades related to global course evaluation and grading/assignment evaluations. These items were presented with a five-point strongly agree/disagree scale:  
-1. The overall quality of this course was among the top 20% of those I have taken. 
-2. The examinations were representative of the material covered in the assigned readings and 
-class lectures. 
-3. The instructor used fair and appropriate methods in the determination of grades. 
-4. The assignments and required activities in this class were appropriate. 
-5. What grade do you expect to receive in this course? (A = 5, B, C, D, F = 1).
+```{r load-data, include = FALSE}
+master = read.csv("all_evals.csv")
+
+#remove Gs that were only used for online rendering
+master$Course = as.numeric(gsub("G", "", master$Course))
+
+#drop things below 100 don't know what those are
+#drop things above 500 as those are graduate courses
+##q1, q3, q4, q9, q15
+reduced = master[master$Course >= 100 & master$Course < 600 , -c(5, 10, 13:16, 18:22) ]
+```
+
+The archival study was conducted using data from the psychology department at a large Midwestern public university. We used data from `r nrow(master[ master$Course < 500 , ])` undergraduate, `r nrow(master[ master$Course >= 500 & master$Course < 600 , ])` mixed-level undergraduate, and `r nrow(master[ master$Course >=600 , ])` graduate psychology classes taught from 1987 to 2016 that were evaluated by students using the same 15-item instrument. The graduate courses were excluded from analyses due to the ceiling effects on expected grades. Faculty followed set procedures in distributing scan forms no more than two weeks before the conclusion of the semester. A student was assigned to collect the forms and deliver them to the departmental secretary. The instructor was required to leave the room while students completed the forms. 
+
+We focused upon the five items, which seemed most pertinent to the issues of perceived grading and evaluation. We were most interested in how grades related to global course evaluation and grading/assignment evaluations. These items were presented with a five-point scale from 1 (*strongly disagree*) to 5 (*strongly agree*):  
+
+    1. The overall quality of this course was among the top 20% of those I have taken. 
+    2. The examinations were representative of the material covered in the assigned readings and class lectures. 
+    3. The instructor used fair and appropriate methods in the determination of grades. 
+    4. The assignments and required activities in this class were appropriate. 
+    5. What grade do you expect to receive in this course? (A = 5, B, C, D, F = 1).
 
 # Results
 
-All data were checked for course coding errors, and type of instructor was coded. This data was considered structured by instructor; therefore, all analyses below were coded in R using the nlme() package [@Pinheiro2017] to control for instructor as a random intercept in a multilevel model. Each dataset was screened separately normality, linearity, homogeneity, and homoscedasticity using procedures from @Tabachnick2012. This data was not screened for outliers because it was assumed that each score was a correct representation of instructor rating. 
+```{r datascreening, include = FALSE}
+random = rchisq(nrow(reduced), 7)
+output = lm(random ~ ., data = reduced[ , 8:12])
+standardized = rstudent(output)
+fitvalues = scale(output$fitted.values)
+
+#linear
+{qqnorm(standardized)
+abline(0,1)}
+
+#multivariate normality
+hist(standardized, breaks=15)
+
+#homogeneity and homoscedaticity
+{plot(fitvalues, standardized) 
+abline(0,0)
+abline(v = 0)}
+```
+
+
+All data were checked for course coding errors, and type of instructor was coded as graduate assistant, per-course faculty, instructors, and tenure-track faculty. This data was considered structured by instructor; therefore, all analyses below were coded in *R* using the *nlme* package [@Pinheiro2017] to control for correlated error of instructor as a random intercept in a multilevel model. The overall dataset was screened for normality, linearity, homogeneity, and homoscedasticity using procedures from @Tabachnick2012. Data generally met assumptions with a slight skew and some heterogeneity. This data was not screened for outliers because it was assumed that each score was entered correctly from student evaluations. 
 
 ## Reliability of instructor scores across courses
+
+```{r reliability, include=FALSE}
+##let's see if twitter can help here - yes! @smartin2018 for the win!
+
+#create every pairwise combination 
+combns <- t(combn(reduced$evalid,2))
+
+#create a dataframe to hold that information, remove other frame for the love of space
+longrel <- data.frame(evalid=combns[,1],evalid2=combns[,2]); rm(combns)
+
+#add person 1 information back to dataframe
+templong = merge(longrel, reduced, by = "evalid")
+colnames(templong)[1:2] = c("evalid1", "evalid")
+
+#add person 2 information back to the dataframe, remove other frame for the love of space
+longrel = merge(templong, reduced, by = "evalid")
+rm(templong)
+
+#create factors
+longrel$instructormatch = as.numeric(longrel$instructcode.x == longrel$instructcode.y)
+longrel$semestermatch = as.numeric(longrel$Semester.x == longrel$Semester.y &
+                                     longrel$Year.x == longrel$Year.y)
+longrel$coursematch = as.numeric(longrel$Course.x == longrel$Course.y)
+
+#look at the contingency table
+#table(longrel$instructormatch, longrel$semestermatch, longrel$coursematch)
+
+
+```
 
 Reliability of ratings of instructors can be inferred by the consistency of ratings across courses and semester, assuming that we infer there is a stable good/poor instructor attribute and that these multiple administrations of the same question are multiple assessments of that attribute. A file was created with all possible course pairings for each instructor, such as each pairwise combination could only be represented once. For example, professor A’s course pairings might include the following pairs: Fall 2000 Statistics - Fall 2000 Statistics (complete match), Fall 2001 Statistics - Fall 2000 Statistics (course match), Fall 2000 Statistics - Fall 2000 Research Methods (semester match) and Fall 2000 Statistics - Fall 2001 Research Methods (no match). The minimum number of combinations for an instructor was one (especially for our teaching assistants) and the maximum number of pairings was 8301 (for long term faculty). The average number of pairings was M = 1013.34 (SD = 1992.58). 
 Multilevel models were used to calculate correlations on each combination of same and different courses and same and different semesters after controlling for nested instructor data. Data appeared linear and normal with problems indicated on homoscedasticity, as residuals were not evenly spread. Correlations are presented in Table 1 split by semester and course, and a table of all t, p, and df values for these correlations can be found at http://osf.io/jdpfs.  Reliability was found with medium significant correlations for same semester and course pairing across questions. Interestingly, the same course across different semesters did not correlate for scores, which may indicate that student demand characteristics or course changes impact instructor ratings. Different course ratings for same and different semesters were significantly correlated across questions but these correlations were small. Interestingly, grading was significantly negatively correlated for different semesters for both same and different course pairings.  
 
-## Correlations between relevant evaluation items 
+## Correlations of Evaluation Questions DONE
 
-### Undergraduate courses
+```{r correlations, include = FALSE}
 
-Table 2 presents the inter-correlations of the five relevant items in two forms, again controlling for instructor as a random intercept in a multilevel model. Using class average on each item as the unit of analysis, we found class expected grade was related to class overall rating, exams reflecting the material, grading fairness, and appropriateness of assignments. We found high correlations with grade expectancy, overall quality, exams reflecting material, grading fairness, and appropriateness of assignments when correlations were computed within the same course (Table 2, upper right-hand side). 
+#q1 to everything
+q1.3 = lme(q1 ~ q3 + People, 
+           data = reduced, 
+           method = "ML", 
+           na.action = "na.omit",
+           random = ~1|instructcode)
 
-### Graduate courses
+q1.4 = lme(q1 ~ q4 + People, 
+           data = reduced, 
+           method = "ML", 
+           na.action = "na.omit",
+           random = ~1|instructcode)
 
-Of concern here was that the students in the Psychology graduate classes had a grade average exceeding 3.9 on a 4.0 scale, yielding little variation. We saw substantial correlations between grade expectancy and overall quality, exams reflecting material, grading fairness, and appropriateness of assignments (Table 2, lower left-hand side). However, these correlations are lower than the comparison undergraduate correlations.
+q1.9 = lme(q1 ~ q9 + People, 
+           data = reduced, 
+           method = "ML", 
+           na.action = "na.omit",
+           random = ~1|instructcode)
 
-## Instructor Status and student ratings
+q1.15 = lme(q1 ~ q15 + People, 
+           data = reduced, 
+           method = "ML", 
+           na.action = "na.omit",
+           random = ~1|instructcode)
 
-We compared teaching assistants, per-course faculty, instructors, and ranked faculty in undergraduate general education classes, since these courses have the largest proportion of TAs and per-course faculty. This analysis included 68 teachers: 18 teaching assistants, 14 per-course faculty, 10 instructors, and 26 full-time faculty, who taught 535 courses: 69 teaching assistants, 94 per-course faculty, 85 instructors, and 287 full-time faculty. All comparisons were made against full-time faculty to control for Type 1 error using a multilevel model with a dummy coded instructor variable, and dummy coded t values were used to determine which comparison groups were different from full-time faculty. Overall means and standard deviations are presented in Table 3, and the complete set of t value comparisons for these analyses can be found online. As shown in the Table 3, the ratings of all groups were fairly high, hovering around 4.00 on a 5.00 point scale, and the expected grade for courses was approximately a B. 
+#3 to rest
+q3.4 = lme(q3 ~ q4 + People, 
+           data = reduced, 
+           method = "ML", 
+           na.action = "na.omit",
+           random = ~1|instructcode)
+
+q3.9 = lme(q3 ~ q9 + People, 
+           data = reduced, 
+           method = "ML", 
+           na.action = "na.omit",
+           random = ~1|instructcode)
+
+q3.15 = lme(q3 ~ q15 + People, 
+           data = reduced, 
+           method = "ML", 
+           na.action = "na.omit",
+           random = ~1|instructcode)
+
+#q 4 to rest
+q4.9 = lme(q4 ~ q9 + People, 
+           data = reduced, 
+           method = "ML", 
+           na.action = "na.omit",
+           random = ~1|instructcode)
+
+q4.15 = lme(q4 ~ q15 + People, 
+           data = reduced, 
+           method = "ML", 
+           na.action = "na.omit",
+           random = ~1|instructcode)
+
+#q9 to rest
+q9.15 = lme(q9 ~ q15 + People, 
+           data = reduced, 
+           method = "ML", 
+           na.action = "na.omit",
+           random = ~1|instructcode)
+```
+
+```{r correlation-table, echo=FALSE, results='asis'}
+tableprint = matrix(NA, nrow = 10, ncol = 7)
+colnames(tableprint) = c("Coefficient", "*pr*",
+                         "*b*", "*SE*", "*df*", "*t*", "*p*")
+
+tableprint[1, ] = c("Overall to Exams", 
+                    beta(q1.3)$tTable[2,1], unname(summary(q1.3)$tTable[2, ], 3))
+tableprint[2, ] = c("Overall to Fair",
+                    beta(q1.4)$tTable[2,1], unname(summary(q1.4)$tTable[2, ], 3))
+tableprint[3, ] = c("Overall to Assignments",
+                    beta(q1.9)$tTable[2,1], unname(summary(q1.9)$tTable[2, ], 3))
+tableprint[4, ] = c("Overall to Grade",
+                    beta(q1.15)$tTable[2,1], unname(summary(q1.15)$tTable[2, ], 3))
+tableprint[5, ] = c("Exams to Fair", 
+                    beta(q3.4)$tTable[2,1], unname(summary(q3.4)$tTable[2, ], 3))
+tableprint[6, ] = c("Exams to Assignments", 
+                    beta(q3.9)$tTable[2,1], unname(summary(q3.9)$tTable[2, ], 3))
+tableprint[7, ] = c("Exams to Grade", 
+                    beta(q3.15)$tTable[2,1], unname(summary(q3.15)$tTable[2, ], 3))
+tableprint[8, ] = c("Fair to Assignments", 
+                    beta(q4.9)$tTable[2,1], unname(summary(q4.9)$tTable[2, ], 3))
+tableprint[9, ] = c("Fair to Grade", 
+                    beta(q4.15)$tTable[2,1], unname(summary(q4.15)$tTable[2, ], 3))
+tableprint[10, ] = c("Assignments to Grade", 
+                     beta(q9.15)$tTable[2,1], unname(summary(q9.15)$tTable[2, ], 3))
+
+tableprint[ , c(2,3,4)] = printnum(as.numeric(tableprint[ , c(2,3,4)]), digits = 3, gt1 = F)
+tableprint[ , c(6)] = printnum(as.numeric(tableprint[ , c(6)]), digits = 3, gt1 = T)
+tableprint[ , c(7)] = printp(as.numeric(tableprint[ , c(7)]))
+
+apa_table(tableprint,
+          align = c("l", rep("c", 5)), 
+          caption = "t Statistics for Undergraduate Correlations"
+ )
+```
+
+Table \@ref(tab:correlation-table) presents the inter-correlations for the five relevant evaluation questions using instructor as a random intercept in a multilevel model with evaluation sample size as an adjustor variable. The partial correlation (*pr*) is the standardized coefficient from the multilevel model analysis between items while adjusting for sample size and random effects of instructor. The raw coefficient *b*, standard error, and significance statistics are also provided. We found class expected grade was related to class overall rating, exams reflecting the material, grading fairness, and appropriateness of assignments; however, these partial correlations were approximately half of all other pairwise correlations. The correlations between grading related items were high, representing some consistency in evaluation, as well as the overall course evaluation to grading questions. 
+
+## Instructor Status and Ratings
+
+```{r ratings-by-status, include = FALSE}
+#put in labels
+reduced$type = factor(reduced$type,
+                      levels = 1:4,
+                      labels = c("TA", "Per Course", "Instructor", "Faculty"))
+
+#figure out which courses have all four types
+typesbycourse = as.data.frame(table(reduced$type, reduced$Course))
+typesbycourse = subset(typesbycourse, Freq > 0)
+coursestouse = as.data.frame(table(typesbycourse$Var2))
+coursestouse = subset(coursestouse, Freq == 4)
+
+correctedcourse = reduced[reduced$Course %in% coursestouse$Var1, ]
+correctedcourse = subset(correctedcourse, type != is.na(type))
+numevals = table(correctedcourse$type)
+#sum(table(correctedcourse$type))
+temp = unique(correctedcourse[ , c("instructcode", "type")])
+numteachers = table(temp$type)
+#sum(table(temp$type))
+
+library(nlme)
+
+#overallscore
+overallscore = lme(Q11 ~ type, 
+             data = correctedcourse, 
+             method = "ML", 
+             na.action = "na.omit",
+             random = ~1|instructcode)
+summary(overallscore)
+
+#exams match assignments
+examsmatch = lme(Q31 ~ type, 
+                   data = correctedcourse, 
+                   method = "ML", 
+                   na.action = "na.omit",
+                   random = ~1|instructcode)
+summary(examsmatch)
+
+#grading is fair
+fairgrading = lme(Q41 ~ type, 
+                 data = correctedcourse, 
+                 method = "ML", 
+                 na.action = "na.omit",
+                 random = ~1|instructcode)
+summary(fairgrading)
+
+#assignments are appropriate
+assignappropriate = lme(Q91 ~ type, 
+                  data = correctedcourse, 
+                  method = "ML", 
+                  na.action = "na.omit",
+                  random = ~1|instructcode)
+summary(assignappropriate)
+
+#grade student will make
+expectedgrade = lme(Q151 ~ type, 
+                        data = correctedcourse, 
+                        method = "ML", 
+                        na.action = "na.omit",
+                        random = ~1|instructcode)
+summary(expectedgrade)
+
+
+####Means & SDs for Corrected Course####
+names(correctedcourse)
+##Q11 = overall score
+##Q31 = exams match assignments
+##Q41 = grading is fair
+##Q91 = assignments are appropriate
+##Q151 = expected grade
+##Type 1 = Graduate Student
+##Type 2 = Per course Instructor
+##Type 3 = Instructor
+##Type 4 = Ranked Faculty
+
+#overall score
+tapply(correctedcourse$Q11, correctedcourse$type, mean)
+tapply(correctedcourse$Q11, correctedcourse$type, sd)
+
+#exams match assignments
+tapply(correctedcourse$Q31, correctedcourse$type, mean)
+tapply(correctedcourse$Q31, correctedcourse$type, sd)
+
+#grading is fair
+tapply(correctedcourse$Q41, correctedcourse$type, mean)
+tapply(correctedcourse$Q41, correctedcourse$type, sd)
+
+#assignments are appropriate
+tapply(correctedcourse$Q91, correctedcourse$type, mean)
+tapply(correctedcourse$Q91, correctedcourse$type, sd)
+
+#expected grade
+tapply(correctedcourse$Q151, correctedcourse$type, mean)
+tapply(correctedcourse$Q151, correctedcourse$type, sd)
+
+```
+
+We compared teaching assistants, per-course faculty, instructors, and ranked faculty in undergraduate courses that included evaluations for all four types of teacher, usually general education classes (i.e., Introductory Psychology), required major courses (i.e., Statistics, Research Methods), and popular electives (i.e., Abnormal Psychology). This anlaysis included `r sum(table(temp$type))` teachers: `r numteachers["TA"]` teaching assistants, `r numteachers["Per Course"]` per-course instructors, `r numteachers["Instructor"]` instructors, and `r numteachers["Faculty"]` full-time faculty who taught `r sum(table(correctedcourse$type))` courses: `r numevals["TA"]` teaching assistants, `r numevals["Per Course"]` per-course instructors, `r numevals["Instructor"]` instructors, and `r numevals["Faculty"]` full-time faculty.
+
+
+. All comparisons were made against full-time faculty to control for Type 1 error using a multilevel model with a dummy coded instructor variable, and dummy coded t values were used to determine which comparison groups were different from full-time faculty. Overall means and standard deviations are presented in Table 3, and the complete set of t value comparisons for these analyses can be found online. As shown in the Table 3, the ratings of all groups were fairly high, hovering around 4.00 on a 5.00 point scale, and the expected grade for courses was approximately a B. 
 
 For overall ratings, faculty were found to be rated less highly than teaching assistants, p = .027, but not significantly different than per-course faculty (p = .181) or instructors (p = .814). When rating if exams were representative of course material, full-time faculty were rated lower than both teaching assistants (p < .001) and per-course faculty (p = .047), but were not significantly different than instructors (p = .740). Full-time faculty were rated as less fair and appropriate in their grades than teaching assistants (p = .003), while per-course faculty (p = .128) and instructors (p = .657) had similar scores to faculty. Teaching assistants were designated to have more appropriate assignments than faculty (p < .001), while per-course (p = .060) and instructors (p = .073) had the same ratings as faculty on assignments. Finally, faculty showed significantly lower expected grades than teaching assistants (p < .001) and per-course faculty (p = .044), while having similar grades to instructors (p = .705). 
 
