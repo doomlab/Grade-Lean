@@ -632,21 +632,14 @@ betarel$Semester = factor(betarel$Semester, levels = 0:1, labels = c("Different 
 betarel$Instructor = factor(betarel$Instructor, levels = 0:1, labels = c("Different Instructor", "Same Instructor"))
 betarel$group.graph = with(betarel, interaction(Question, Semester))
 
-ggplot(betarel, aes(Course, b, color = Question, group = group.graph)) +
-  geom_point() +
-  xlab("Course Match") + 
-  ylab("Partial Correlation") + 
-  #labs("Semester Match") + 
-  facet_grid(~Instructor) 
+# ggplot(betarel, aes(Course, b, shape = Question, group = group.graph)) +
+#   geom_point(aes(size = Semester)) +
+#   xlab("Course Match") + 
+#   ylab("Partial Correlation") + 
+#   facet_grid(~Instructor) 
 
-# ggplot(betarel, aes(x=time, y=save.acc, color=benefit.f, group=group.f)) + 
-#   stat_summary(fun.y=mean,  geom="point")  + 
-#   stat_summary(fun.y=mean, geom="line", aes(linetype=order.f))+
-#   xlab("Time") + ylab("Proportion Correct") + labs(linetype = "Order Condition")+facet_grid(~ gender.f)+ ylim(0,1)+ labs(color = "Benefit Condition")
-# 
-# time was my baseline v. final time, benefit.f=benefit condition, order.f=order condition, group.f= a variable I made that combines benefit condition and order condition
+
 ```
-
 
 Reliability of ratings of instructors can be inferred by the consistency of ratings across courses and semester, assuming that we infer there is a stable good/poor instructor attribute and that these multiple administrations of the same question are multiple assessments of that attribute. A file was created with all possible course pairings for each instructor, such as each pairwise combination could only be represented once. For example, professor A’s course pairings might include the following pairs: Fall 2000 Statistics - Fall 2000 Statistics (complete match), Fall 2001 Statistics - Fall 2000 Statistics (course match), Fall 2000 Statistics - Fall 2000 Research Methods (semester match) and Fall 2000 Statistics - Fall 2001 Research Methods (no match). The minimum number of combinations for an instructor was one (especially for our teaching assistants) and the maximum number of pairings was 8301 (for long term faculty). The average number of pairings was M = 1013.34 (SD = 1992.58). 
 Multilevel models were used to calculate correlations on each combination of same and different courses and same and different semesters after controlling for nested instructor data. Data appeared linear and normal with problems indicated on homoscedasticity, as residuals were not evenly spread. Correlations are presented in Table 1 split by semester and course, and a table of all t, p, and df values for these correlations can be found at http://osf.io/jdpfs.  Reliability was found with medium significant correlations for same semester and course pairing across questions. Interestingly, the same course across different semesters did not correlate for scores, which may indicate that student demand characteristics or course changes impact instructor ratings. Different course ratings for same and different semesters were significantly correlated across questions but these correlations were small. Interestingly, grading was significantly negatively correlated for different semesters for both same and different course pairings.  
