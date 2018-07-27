@@ -442,13 +442,15 @@ betarel[25 , ] = c(0,0,1,"Grade", summary(relq15)$tTable[2, ])
 rm(relq15)
 
 ####different same different####
+####checkthisone####
 relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 0, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(opt = "optim"))
 
 betarel[26 , ] = c(0,1,1,"Overall", summary(relq1)$tTable[2, ])
 rm(relq1)
@@ -459,7 +461,8 @@ relq3 = lme(q3.x ~ q3.y + People.x + People.y,
                              longrel$instructormatch == 0, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(opt = "optim"))
 
 betarel[27 , ] = c(0,1,1,"Exams", summary(relq3)$tTable[2, ])
 rm(relq3)
@@ -470,7 +473,8 @@ relq4 = lme(q4.x ~ q4.y + People.x + People.y,
                              longrel$instructormatch == 0, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(opt = "optim"))
 
 betarel[28 , ] = c(0,1,1,"Fair", summary(relq4)$tTable[2, ])
 rm(relq4)
@@ -481,7 +485,8 @@ relq9 = lme(q9.x ~ q9.y + People.x + People.y,
                              longrel$instructormatch == 0, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(opt = "optim"))
 
 betarel[29 , ] = c(0,1,1,"Assignments", summary(relq9)$tTable[2, ])
 rm(relq9)
@@ -492,7 +497,8 @@ relq15 = lme(q15.x ~ q15.y + People.x + People.y,
                              longrel$instructormatch == 0, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(opt = "optim"))
 
 betarel[30 , ] = c(0,1,1,"Grade", summary(relq15)$tTable[2, ])
 rm(relq15)
@@ -613,7 +619,7 @@ rm(relq15)
 #convert betarel
 betarel = as.data.frame(betarel)
 colnames(betarel) = c("Semester", "Course", "Instructor", "Question",
-                      "Beta", "b", "se", "df", "t", "p")
+                      "b", "se", "df", "t", "p")
 write.csv(betarel, "betarel.csv", row.names = F)
 ```
 
