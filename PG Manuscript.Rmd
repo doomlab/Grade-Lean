@@ -5,7 +5,7 @@ shorttitle        : "Perceived Grading and Student Evaluation"
 author: 
   - name          : "Erin M. Buchanan"
     affiliation   : "1"
-  - name          : "Becca N. Johnson"
+  - name          : "Becca N. Huber"
     affiliation   : "1"
   - name          : "Arden Miller"
     affiliation   : "1"
