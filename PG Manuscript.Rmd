@@ -49,6 +49,8 @@ replace_ampersands: yes
 ```{r load_packages, include = FALSE}
 library("papaja")
 library(nlme)
+library(ggplot2)
+library(reghelper)
 knitr::opts_chunk$set(cache = TRUE)
 ```
 
@@ -153,6 +155,488 @@ longrel$coursematch = as.numeric(longrel$Course.x == longrel$Course.y)
 
 #look at the contingency table
 #table(longrel$instructormatch, longrel$semestermatch, longrel$coursematch)
+
+####make a dataframe of the beta values####
+betarel = matrix(NA, nrow = 2*2*2*5, ncol = 4+5)
+
+#going to let these overwrite each other so memory isn't bonkers
+#semester, course, instructor
+####same same same####
+relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[1 , ] = c(1,1,1,"Overall", summary(relq1)$tTable[2, ])
+rm(relq1)
+
+relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[2 , ] = c(1,1,1,"Exams", summary(relq3)$tTable[2, ])
+rm(relq3)
+
+relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[3 , ] = c(1,1,1,"Fair", summary(relq4)$tTable[2, ])
+rm(relq4)
+
+relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[4 , ] = c(1,1,1,"Assignments", summary(relq9)$tTable[2, ])
+rm(relq9)
+
+relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[5 , ] = c(1,1,1,"Grade", summary(relq15)$tTable[2, ])
+rm(relq15)
+
+####same same different####
+relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[6 , ] = c(1,1,0,"Overall", summary(relq1)$tTable[2, ])
+rm(relq1)
+
+relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[7 , ] = c(1,1,0,"Exams", summary(relq3)$tTable[2, ])
+rm(relq3)
+
+relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[8 , ] = c(1,1,0,"Fair", summary(relq4)$tTable[2, ])
+rm(relq4)
+
+relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[9 , ] = c(1,1,0,"Assignments", summary(relq9)$tTable[2, ])
+rm(relq9)
+
+relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[10 , ] = c(1,1,0,"Grade", summary(relq15)$tTable[2, ])
+rm(relq15)
+
+####same different same####
+relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[11 , ] = c(1,0,1,"Overall", summary(relq1)$tTable[2, ])
+rm(relq1)
+
+relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[12 , ] = c(1,0,1,"Exams", summary(relq3)$tTable[2, ])
+rm(relq3)
+
+relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[13 , ] = c(1,0,1,"Fair", summary(relq4)$tTable[2, ])
+rm(relq4)
+
+relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[14 , ] = c(1,0,1,"Assignments", summary(relq9)$tTable[2, ])
+rm(relq9)
+
+relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[15 , ] = c(1,0,1,"Grade", summary(relq15)$tTable[2, ])
+rm(relq15)
+
+####same different different####
+relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[16 , ] = c(1,0,0,"Overall", summary(relq1)$tTable[2, ])
+rm(relq1)
+
+relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[17 , ] = c(1,0,0,"Exams", summary(relq3)$tTable[2, ])
+rm(relq3)
+
+relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[18 , ] = c(1,0,0,"Fair", summary(relq4)$tTable[2, ])
+rm(relq4)
+
+relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[19 , ] = c(1,0,0,"Assignments", summary(relq9)$tTable[2, ])
+rm(relq5)
+
+relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[20 , ] = c(1,0,0,"Grade", summary(relq15)$tTable[2, ])
+rm(relq15)
+
+####different different different####
+relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[21 , ] = c(0,0,1,"Overall", summary(relq1)$tTable[2, ])
+rm(relq1)
+
+relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[22 , ] = c(0,0,1,"Exams", summary(relq3)$tTable[2, ])
+rm(relq3)
+
+relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[23 , ] = c(0,0,1,"Fair", summary(relq4)$tTable[2, ])
+rm(relq4)
+
+relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[24 , ] = c(0,0,1,"Assignments", summary(relq9)$tTable[2, ])
+rm(relq9)
+
+relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[25 , ] = c(0,0,1,"Grade", summary(relq15)$tTable[2, ])
+rm(relq15)
+
+####different same different####
+####checkthisone####
+relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(opt = "optim"))
+
+betarel[26 , ] = c(0,1,1,"Overall", summary(relq1)$tTable[2, ])
+rm(relq1)
+
+relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(opt = "optim"))
+
+betarel[27 , ] = c(0,1,1,"Exams", summary(relq3)$tTable[2, ])
+rm(relq3)
+
+relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(opt = "optim"))
+
+betarel[28 , ] = c(0,1,1,"Fair", summary(relq4)$tTable[2, ])
+rm(relq4)
+
+relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(opt = "optim"))
+
+betarel[29 , ] = c(0,1,1,"Assignments", summary(relq9)$tTable[2, ])
+rm(relq9)
+
+relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(opt = "optim"))
+
+betarel[30 , ] = c(0,1,1,"Grade", summary(relq15)$tTable[2, ])
+rm(relq15)
+
+####different different same####
+relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[31 , ] = c(0,0,1,"Overall", summary(relq1)$tTable[2, ])
+rm(relq1)
+
+relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[32 , ] = c(0,0,1,"Exams", summary(relq3)$tTable[2, ])
+rm(relq3)
+
+relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[33 , ] = c(0,0,1,"Fair", summary(relq4)$tTable[2, ])
+rm(relq4)
+
+relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[34 , ] = c(0,0,1,"Assignments", summary(relq9)$tTable[2, ])
+rm(relq9)
+
+relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[35 , ] = c(0,0,1,"Grade", summary(relq15)$tTable[2, ])
+rm(relq15)
+
+####different same same####
+relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[36 , ] = c(1,0,1,"Overall", summary(relq1)$tTable[2, ])
+rm(relq1)
+
+relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[37 , ] = c(1,0,1,"Exams", summary(relq3)$tTable[2, ])
+rm(relq3)
+
+relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[38 , ] = c(1,0,1,"Fair", summary(relq4)$tTable[2, ])
+rm(relq4)
+
+relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[39 , ] = c(1,0,1,"Assignments", summary(relq9)$tTable[2, ])
+rm(relq9)
+
+relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+betarel[40 , ] = c(1,0,1,"Grade", summary(relq15)$tTable[2, ])
+rm(relq15)
+
+#this chunk takes forever to run, so I saved it out
+#convert betarel
+betarel = as.data.frame(betarel)
+colnames(betarel) = c("Semester", "Course", "Instructor", "Question",
+                      "b", "se", "df", "t", "p")
+write.csv(betarel, "betarel.csv", row.names = F)
+```
+
+```{r rel-graph, echo = FALSE}
+betarel = read.csv("betarel.csv")
+
+#factor the variables
+betarel$Course = factor(betarel$Course, levels = 0:1, labels = c("Different Course", "Same Course"))
+betarel$Semester = factor(betarel$Semester, levels = 0:1, labels = c("Different Semester", "Same Semester"))
+betarel$Instructor = factor(betarel$Instructor, levels = 0:1, labels = c("Different Instructor", "Same Instructor"))
+betarel$group.graph = with(betarel, interaction(Question, Semester))
+
+# ggplot(betarel, aes(Course, b, shape = Question, group = group.graph)) +
+#   geom_point(aes(size = Semester)) +
+#   xlab("Course Match") + 
+#   ylab("Partial Correlation") + 
+#   facet_grid(~Instructor) 
 
 
 ```
