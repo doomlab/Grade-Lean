@@ -669,7 +669,7 @@ beta_table = aggregate(betarel[ , 5:9], by = list(betarel$Semester, betarel$Cour
                        FUN = mean)
 colnames(beta_table)[1:3] = c("Semester", "Course", "Instructor")
 
-beta_table[, c(7)] = printnum(beta_table[ , c(7)])
+beta_table[, c(7)] = printnum(beta_table[ , c(7)], digits = 3)
 beta_table[, c(4,5)] = printnum(beta_table[ , c(4,5)], gt1 = F, digits = 3)
 beta_table[, 8] = printp(beta_table[ , 8])
 beta_table[ , 6] = as.character(beta_table[ , 6])
@@ -679,7 +679,7 @@ apa_table(beta_table[ , c(3,1,2,4:8)],
           small = T,
           caption = "Correlations for Instructor, Semester, and Course Combinations",
           col.names = c("Instructor", "Semester", "Course",
-                        "$b$", "$SE$", "$t$", "$df$", "$p$")
+                        "$b$", "$SE$", "$df$","$t$", "$p$")
  )
 ```
 
@@ -765,19 +765,19 @@ tableprint[2, ] = c("Overall to Fair",
                     beta(q1.4)$tTable[2,1], unname(summary(q1.4)$tTable[2, ], 3))
 tableprint[3, ] = c("Overall to Assignments",
                     beta(q1.9)$tTable[2,1], unname(summary(q1.9)$tTable[2, ], 3))
-tableprint[4, ] = c("Overall to Grade",
+tableprint[4, ] = c("Overall to Expected Grade",
                     beta(q1.15)$tTable[2,1], unname(summary(q1.15)$tTable[2, ], 3))
 tableprint[5, ] = c("Exams to Fair", 
                     beta(q3.4)$tTable[2,1], unname(summary(q3.4)$tTable[2, ], 3))
 tableprint[6, ] = c("Exams to Assignments", 
                     beta(q3.9)$tTable[2,1], unname(summary(q3.9)$tTable[2, ], 3))
-tableprint[7, ] = c("Exams to Grade", 
+tableprint[7, ] = c("Exams to Expected Grade", 
                     beta(q3.15)$tTable[2,1], unname(summary(q3.15)$tTable[2, ], 3))
 tableprint[8, ] = c("Fair to Assignments", 
                     beta(q4.9)$tTable[2,1], unname(summary(q4.9)$tTable[2, ], 3))
-tableprint[9, ] = c("Fair to Grade", 
+tableprint[9, ] = c("Fair to Expected Grade", 
                     beta(q4.15)$tTable[2,1], unname(summary(q4.15)$tTable[2, ], 3))
-tableprint[10, ] = c("Assignments to Grade", 
+tableprint[10, ] = c("Assignments to Expected Grade", 
                      beta(q9.15)$tTable[2,1], unname(summary(q9.15)$tTable[2, ], 3))
 
 tableprint[ , c(2,3,4)] = printnum(as.numeric(tableprint[ , c(2,3,4)]), digits = 3, gt1 = F)
@@ -786,94 +786,15 @@ tableprint[ , c(7)] = printp(as.numeric(tableprint[ , c(7)]))
 
 apa_table(tableprint,
           align = c("l", rep("c", 5)), 
-          caption = "t Statistics for Undergraduate Correlations"
+          caption = "t Statistics for Inter-item Relationship"
  )
 ```
 
 Table \@ref(tab:correlation-table) presents the inter-correlations for the five relevant evaluation questions using instructor as a random intercept in a multilevel model with evaluation sample size as an adjustor variable. The partial correlation (*pr*) is the standardized coefficient from the multilevel model analysis between items while adjusting for sample size and random effects of instructor. The raw coefficient *b*, standard error, and significance statistics are also provided. We found class expected grade was related to class overall rating, exams reflecting the material, grading fairness, and appropriateness of assignments; however, these partial correlations were approximately half of all other pairwise correlations. The correlations between grading related items were high, representing some consistency in evaluation, as well as the overall course evaluation to grading questions. 
 
-## Instructor Status and Ratings DO WE WANT THIS
-
-```{r ratings-setup, include = FALSE}
-#put in labels
-reduced$type = factor(reduced$type,
-                      levels = 4:1,
-                      labels = c("Tenure Track", "Instructor",
-                                 "Per Course", "TA"))
-
-#figure out which courses have all four types
-typesbycourse = as.data.frame(table(reduced$type, reduced$Course))
-typesbycourse = subset(typesbycourse, Freq > 0)
-coursestouse = as.data.frame(table(typesbycourse$Var2))
-coursestouse = subset(coursestouse, Freq == 4)
-
-correctedcourse = reduced[reduced$Course %in% coursestouse$Var1, ]
-correctedcourse = subset(correctedcourse, type != is.na(type))
-numevals = table(correctedcourse$type)
-#sum(table(correctedcourse$type))
-temp = unique(correctedcourse[ , c("instructcode", "type")])
-numteachers = table(temp$type)
-#sum(table(temp$type))
-```
-
-We compared teaching assistants, per-course faculty, instructors, and ranked faculty in undergraduate courses that included evaluations for all four types of teacher, usually general education classes (i.e., Introductory Psychology), required major courses (i.e., Statistics, Research Methods), and popular electives (i.e., Abnormal Psychology). This anlaysis included `r sum(table(temp$type))` teachers: `r numteachers["TA"]` teaching assistants, `r numteachers["Per Course"]` per-course instructors, `r numteachers["Instructor"]` instructors, and `r numteachers["Tenure Track"]` full-time faculty who taught `r sum(table(correctedcourse$type))` courses: `r numevals["TA"]` teaching assistants, `r numevals["Per Course"]` per-course instructors, `r numevals["Instructor"]` instructors, and `r numevals["Tenure Track"]` full-time faculty.
-
-```{r status-analysis, include = FALSE}
-
-#overallscore
-overallscore = lme(q1 ~ type + People, 
-             data = correctedcourse, 
-             method = "ML", 
-             na.action = "na.omit",
-             random = ~1|instructcode)
-summary(overallscore)
-tapply(correctedcourse$q1, correctedcourse$type, mean)
-
-#exams match assignments
-examsmatch = lme(q3 ~ type + People, 
-                   data = correctedcourse, 
-                   method = "ML", 
-                   na.action = "na.omit",
-                   random = ~1|instructcode)
-summary(examsmatch)
-tapply(correctedcourse$q3, correctedcourse$type, mean)
-
-#grading is fair
-fairgrading = lme(q4 ~ type + People, 
-                 data = correctedcourse, 
-                 method = "ML", 
-                 na.action = "na.omit",
-                 random = ~1|instructcode)
-summary(fairgrading)
-tapply(correctedcourse$q4, correctedcourse$type, mean)
-
-#assignments are appropriate
-assignappropriate = lme(q9 ~ type + People, 
-                  data = correctedcourse, 
-                  method = "ML", 
-                  na.action = "na.omit",
-                  random = ~1|instructcode)
-summary(assignappropriate)
-tapply(correctedcourse$q9, correctedcourse$type, mean)
-
-#grade student will make
-expectedgrade = lme(q15 ~ type + People, 
-                        data = correctedcourse, 
-                        method = "ML", 
-                        na.action = "na.omit",
-                        random = ~1|instructcode)
-summary(expectedgrade)
-tapply(correctedcourse$q15, correctedcourse$type, mean)
-
-```
-
-. All comparisons were made against full-time faculty to control for Type 1 error using a multilevel model with a dummy coded instructor variable, and dummy coded t values were used to determine which comparison groups were different from full-time faculty. Overall means and standard deviations are presented in Table 3, and the complete set of t value comparisons for these analyses can be found online. As shown in the Table 3, the ratings of all groups were fairly high, hovering around 4.00 on a 5.00 point scale, and the expected grade for courses was approximately a B. 
-
-For overall ratings, faculty were found to be rated less highly than teaching assistants, p = .027, but not significantly different than per-course faculty (p = .181) or instructors (p = .814). When rating if exams were representative of course material, full-time faculty were rated lower than both teaching assistants (p < .001) and per-course faculty (p = .047), but were not significantly different than instructors (p = .740). Full-time faculty were rated as less fair and appropriate in their grades than teaching assistants (p = .003), while per-course faculty (p = .128) and instructors (p = .657) had similar scores to faculty. Teaching assistants were designated to have more appropriate assignments than faculty (p < .001), while per-course (p = .060) and instructors (p = .073) had the same ratings as faculty on assignments. Finally, faculty showed significantly lower expected grades than teaching assistants (p < .001) and per-course faculty (p = .044), while having similar grades to instructors (p = .705). 
-
 ## Moderated Mediation 
 
-```{r mod-med, eval = FALSE, include=FALSE}
+```{r mod-med, include=FALSE}
 #create average grading
 reduced$average = apply(reduced[ , 9:11], 1, mean)
 
@@ -912,7 +833,7 @@ summary(medmodel3)
 
 ```
 
-```{r split-mod, eval = FALSE, include = FALSE}
+```{r split-mod, include = FALSE}
 ####Teaching Assistants####
 ##path c 
 medmodel1.ta = lme(q1 ~ zq15 + People, 
@@ -986,7 +907,7 @@ zscore.pc =  (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
 #pnorm(abs(zscore.pc), lower.pcil = F)*2
 
 bootresults.pc = boot(data = reduced[ reduced$type == "Per Course", ],
-                   spctistic = indirectsaved,
+                   statistic = indirectsaved,
                    R = nsims)
 
 bootci.pc = boot.ci(bootresults.pc, conf = .95, type = "norm")
@@ -1025,7 +946,7 @@ zscore.in =  (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
 #pnorm(abs(zscore.in), lower.inil = F)*2
 
 bootresults.in = boot(data = reduced[ reduced$type == "Instructor", ],
-                   spctistic = indirectsaved,
+                   statistic = indirectsaved,
                    R = nsims)
 
 bootci.in = boot.ci(bootresults.in, conf = .95, type = "norm")
@@ -1064,7 +985,7 @@ zscore.tt =  (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
 #pnorm(abs(zscore.tt), lower.ttil = F)*2
 
 bootresults.tt = boot(data = reduced[ reduced$type == "Tenure Track", ],
-                   spctistic = indirectsaved,
+                   statistic = indirectsaved,
                    R = nsims)
 
 bootci.tt = boot.ci(bootresults.tt, conf = .95, type = "norm")
@@ -1080,8 +1001,8 @@ tableprint = matrix(NA, nrow = 25, ncol = 5)
 colnames(tableprint) = c("$b$", "$SE$", "$df$", "$t$", "$p$")
 
 tableprint[1:7, ] = unname(summary(medmodel1)$tTable[-c(1,6), ])
- tableprint[8:14, ] = unname(round(summary(model3.2)$tTable[-1, ], 3))
-tableprint[15:25, ] = unname(round(summary(model3.3)$tTable[-1, ], 3))
+tableprint[8:14, ] = unname(summary(medmodel2)$tTable[-c(1,6), ])
+tableprint[15:25, ] = unname(summary(medmodel3)$tTable[-c(1,6), ])
 
 tableprint = cbind(
   "DV" = c(rep("Overall Course", 7),
@@ -1092,9 +1013,13 @@ tableprint = cbind(
            "Expected Grade", "Teaching Assistant", "Per-Course", "Instructor",
            "EG X TA", "EG X PC", "EG X IN",
            "Expected Grade", "Teaching Assistant", "Per-Course", "Instructor", 
-           "Average Gradding", "EG X TA", "EG X PC", "EG X IN", 
+           "Average Grading", "EG X TA", "EG X PC", "EG X IN", 
            "AG X TA", "AG X PC", "AG X IN"),
   tableprint)
+
+tableprint[ , c(3,4,6)] = printnum(as.numeric(tableprint[ , c(3,4,6)]), digits = 3)
+
+tableprint[ , 7] = printp(as.numeric(tableprint[ , 7]))
 
 apa_table(tableprint,
           align = c("l", "l", rep("c", 5)), 
@@ -1104,33 +1029,37 @@ apa_table(tableprint,
 
 ```{r table-med-split, echo = FALSE, results = 'asis'}
 tableprint = matrix(NA, nrow = 16, ncol = 5)
-colnames(tableprint) = c("*b*", "*SE*", "*df*", "*t*", "*p*")
+colnames(tableprint) = c("$b$", "$SE$", "$df$", "$t$", "$p$")
 
-tableprint[1, ] = unname(round(summary(model3.11)$tTable[-1, ], 3))
-tableprint[2, ] = unname(round(summary(model3.21)$tTable[-1, ], 3))
-tableprint[3:4, ] = unname(round(summary(model3.31)$tTable[-1, ], 3))
+tableprint[1, ] = unname(summary(medmodel1.ta)$tTable[-c(1,3), ])
+tableprint[2, ] = unname(summary(medmodel2.ta)$tTable[-c(1,3), ])
+tableprint[3:4, ] = unname(summary(medmodel3.ta)$tTable[-c(1,4), ])
 
-tableprint[5, ] = unname(round(summary(model3.12)$tTable[-1, ], 3))
-tableprint[6, ] = unname(round(summary(model3.22)$tTable[-1, ], 3))
-tableprint[7:8, ] = unname(round(summary(model3.32)$tTable[-1, ], 3))
+tableprint[5, ] = unname(summary(medmodel1.pc)$tTable[-c(1,3), ])
+tableprint[6, ] = unname(summary(medmodel2.pc)$tTable[-c(1,3), ])
+tableprint[7:8, ] = unname(summary(medmodel3.pc)$tTable[-c(1,4), ])
 
-tableprint[9, ] = unname(round(summary(model3.13)$tTable[-1, ], 3))
-tableprint[10, ] = unname(round(summary(model3.23)$tTable[-1, ], 3))
-tableprint[11:12, ] = unname(round(summary(model3.33)$tTable[-1, ], 3))
+tableprint[9, ] = unname(summary(medmodel1.in)$tTable[-c(1,3), ])
+tableprint[10, ] = unname(summary(medmodel2.in)$tTable[-c(1,3), ])
+tableprint[11:12, ] = unname(summary(medmodel3.in)$tTable[-c(1,4), ])
 
-tableprint[13, ] = unname(round(summary(model3.14)$tTable[-1, ], 3))
-tableprint[14, ] = unname(round(summary(model3.24)$tTable[-1, ], 3))
-tableprint[15:16, ] = unname(round(summary(model3.34)$tTable[-1, ], 3))
+tableprint[13, ] = unname(summary(medmodel1.tt)$tTable[-c(1,3), ])
+tableprint[14, ] = unname(summary(medmodel2.tt)$tTable[-c(1,3), ])
+tableprint[15:16, ] = unname(summary(medmodel3.tt)$tTable[-c(1,4), ])
 
 tableprint = cbind(
   "Group" = c(rep("Teaching Assistant", 4), 
               rep("Per-Course", 4),
               rep("Instructor", 4),
-              rep("Ranked Faculty", 4)),
+              rep("Tenure Track", 4)),
   "DV" = c("Overall Course", "Average Grading", "Overall Course", "Overall Course"),
   "IV" = c("Expected Grade", "Expected Grade", "Expected Grade", "Average Grading"),
 tableprint
 )
+
+tableprint[ , c(4,5,7)] = printnum(as.numeric(tableprint[ , c(4,5,7)]), digits = 3)
+
+tableprint[ , 8] = printp(as.numeric(tableprint[ , 8]))
 
 apa_table(tableprint,
           align = c("l", "l", "l", rep("c", 5)), 
@@ -1138,7 +1067,7 @@ apa_table(tableprint,
  )
 ```
 
-Given the correlations between items and differences between items and ranked faculty, we proposed a mediation relationship between expected grade, perceived grading, and overall course grades that varies by instructor type. Figure 1 demonstrates the predicted relationship between these variables. We hypothesized that expected course grade would impact the overall course rating, but this relationship would be mediated by the perceived grading in the course, which was calculated by averaging questions about exams, fairness of grading, and assignments. Therefore, as students expected to earned higher grades (leniency), their perception and ratings of the grading would increase, thus, leading to higher overall course scores. This relationship was tested using traditional and newer approaches to mediation [@Baron1986; @Hayes2017]. All categorical interactions were compared to ranked faculty. Each step of the model is described below. Because significant interactions were found, we calculated each group separately (Figure 1) to portray these differences in path coefficients. Tables of t values for the overall and separated analyses are available at http://osf.io/jdpfs. 
+We proposed a mediation relationship between expected grade, perceived grading, and overall course grades that varies by instructor type. Figure 1 demonstrates the predicted relationship between these variables. We hypothesized that expected course grade would impact the overall course rating, but this relationship would be mediated by the perceived grading in the course, which was calculated by averaging questions about exams, fairness of grading, and assignments. Therefore, as students expected to earned higher grades, their perception and ratings of the grading would increase, thus, leading to higher overall course scores. This relationship was tested using traditional and newer approaches to mediation [@Baron1986; @Hayes2017]. All categorical interactions were compared to ranked faculty. Each step of the model is described below. Because significant interactions were found, we calculated each group separately (Figure 1) to portray these differences in path coefficients. Tables of t values for the overall and separated analyses are available at http://osf.io/jdpfs. 
 
 ### C Path 
 
@@ -1148,7 +1077,10 @@ First, expected grade was used to predict the overall rating of the course, alon
 ### A Path
 
 Expected grade was then used to predict the average of the grading related questions, along with the interaction of type of instructor. Higher expected grades were related to higher ratings of appropriating grading (b = 0.21, p < .001), and a significant interaction of faculty and all three other instructor types emerged: teaching assistants (p = .001), per-course faculty (p = .001), and instructors (p < .001). As seen in Figure 1, faculty (b = 0.21) have a much weaker relationship between expected grade and average ratings of grading than teaching assistants (b = 0.55), per-course (b = 0.41), and instructors (b = 0.45). 
-B and C' Paths. In the final model, expected grade, average ratings of grading, and the two-way interactions of these two variables with type were used to predict overall course evaluation. Average rating of grading was a strong significant predictor of overall course rating (b = 1.10, p < .001), indicating that a perception of fair grading was related positively to overall course ratings. An interaction between per-course faculty and fair grading emerged, p < .001, wherein faculty (b = 1.10) had a less positive relationship than per-course (b = 1.28), while teaching assistants (b = 1.37, interaction p = .071) and instructors (b = 1.16, interaction p = .187) were not significantly different coefficients. 
+
+### B and C' Paths 
+
+In the final model, expected grade, average ratings of grading, and the two-way interactions of these two variables with type were used to predict overall course evaluation. Average rating of grading was a strong significant predictor of overall course rating (b = 1.10, p < .001), indicating that a perception of fair grading was related positively to overall course ratings. An interaction between per-course faculty and fair grading emerged, p < .001, wherein faculty (b = 1.10) had a less positive relationship than per-course (b = 1.28), while teaching assistants (b = 1.37, interaction p = .071) and instructors (b = 1.16, interaction p = .187) were not significantly different coefficients. 
 The relationship between expected grade and overall course rating decreased from the original model (b = 0.16, p < .001). However, the interaction between this path and per-course (p < .001) and instructors (p = .041) versus faculty was significant, while faculty versus teaching assistants' paths were not significantly different (p = .133). Faculty relationship between expected grade and overall course scoring, while accounting for ratings of grading was stronger (b = 0.16) than instructors (b = 0.04) and per-course (b = -0.10), but not that of teaching assistants (b = -0.04). 
 
 ###Mediation Strength

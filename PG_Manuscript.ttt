@@ -7,16 +7,16 @@
 \small{
 \begin{tabular}{lllccccc}
 \toprule
-Instructor & Semester & Course & $b$ & $SE$ & $t$ & $df$ & $p$\\
+Instructor & Semester & Course & $b$ & $SE$ & $df$ & $t$ & $p$\\
 \midrule
-Different Instructor & Different Semester & Different Course & -.001 & .000 & 10144295 & -3.58 & .013\\
-Different Instructor & Same Semester & Different Course & .006 & .002 & 152801 & 2.91 & .048\\
-Different Instructor & Different Semester & Same Course & .008 & .001 & 517353 & 6.24 & .027\\
-Different Instructor & Same Semester & Same Course & .054 & .010 & 6265 & 5.40 & < .001\\
-Same Instructor & Different Semester & Different Course & -.038 & .003 & 108849 & -13.13 & < .001\\
-Same Instructor & Same Semester & Different Course & .095 & .020 & 1872 & 4.66 & < .001\\
-Same Instructor & Different Semester & Same Course & .090 & .004 & 55057 & 21.77 & < .001\\
-Same Instructor & Same Semester & Same Course & .446 & .023 & 1401 & 19.63 & < .001\\
+Different Instructor & Different Semester & Different Course & -.001 & .000 & 10144295 & -3.580 & .013\\
+Different Instructor & Same Semester & Different Course & .006 & .002 & 152801 & 2.906 & .048\\
+Different Instructor & Different Semester & Same Course & .008 & .001 & 517353 & 6.236 & .027\\
+Different Instructor & Same Semester & Same Course & .054 & .010 & 6265 & 5.402 & < .001\\
+Same Instructor & Different Semester & Different Course & -.038 & .003 & 108849 & -13.130 & < .001\\
+Same Instructor & Same Semester & Different Course & .095 & .020 & 1872 & 4.659 & < .001\\
+Same Instructor & Different Semester & Same Course & .090 & .004 & 55057 & 21.769 & < .001\\
+Same Instructor & Same Semester & Same Course & .446 & .023 & 1401 & 19.631 & < .001\\
 \bottomrule
 \end{tabular}
 }
@@ -30,21 +30,96 @@ Same Instructor & Same Semester & Same Course & .446 & .023 & 1401 & 19.63 & < .
 [tbp]
 \begin{center}
 \begin{threeparttable}
-\caption{\label{tab:correlation-table}t Statistics for Undergraduate Correlations}
+\caption{\label{tab:correlation-table}t Statistics for Inter-item Relationship}
 \begin{tabular}{lcccccl}
 \toprule
-Coefficient & \multicolumn{1}{c}{*pr*} & \multicolumn{1}{c}{*b*} & \multicolumn{1}{c}{*SE*} & \multicolumn{1}{c}{*df*} & \multicolumn{1}{c}{*t*} & \multicolumn{1}{c}{*p*}\\
+Coefficient & \multicolumn{1}{c}{\$pr\$} & \multicolumn{1}{c}{\$b\$} & \multicolumn{1}{c}{\$SE\$} & \multicolumn{1}{c}{\$df\$} & \multicolumn{1}{c}{\$t\$} & \multicolumn{1}{c}{\$p\$}\\
 \midrule
 Overall to Exams & .637 & .828 & .014 & 4447 & 60.813 & < .001\\
 Overall to Fair & .606 & .903 & .016 & 4447 & 57.837 & < .001\\
 Overall to Assignments & .675 & .999 & .016 & 4447 & 63.251 & < .001\\
-Overall to Grade & .344 & .597 & .022 & 4447 & 27.167 & < .001\\
+Overall to Expected Grade & .344 & .597 & .022 & 4447 & 27.167 & < .001\\
 Exams to Fair & .655 & .751 & .012 & 4447 & 61.387 & < .001\\
 Exams to Assignments & .615 & .700 & .014 & 4447 & 50.425 & < .001\\
-Exams to Grade & .311 & .416 & .018 & 4447 & 23.066 & < .001\\
+Exams to Expected Grade & .311 & .416 & .018 & 4447 & 23.066 & < .001\\
 Fair to Assignments & .720 & .715 & .011 & 4447 & 63.912 & < .001\\
-Fair to Grade & .375 & .438 & .016 & 4447 & 27.865 & < .001\\
-Assignments to Grade & .344 & .404 & .015 & 4447 & 26.913 & < .001\\
+Fair to Expected Grade & .375 & .438 & .016 & 4447 & 27.865 & < .001\\
+Assignments to Expected Grade & .344 & .404 & .015 & 4447 & 26.913 & < .001\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table*}
+\efloatseparator
+ 
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:table-mod-med}t Statistics for Moderated Mediation}
+\begin{tabular}{llccccc}
+\toprule
+DV & \multicolumn{1}{c}{IV} & \multicolumn{1}{c}{\$b\$} & \multicolumn{1}{c}{\$SE\$} & \multicolumn{1}{c}{\$df\$} & \multicolumn{1}{c}{\$t\$} & \multicolumn{1}{c}{\$p\$}\\
+\midrule
+Overall Course & Expected Grade & 0.542 & 0.026 & 4336 & 20.650 & < .001\\
+Overall Course & Teaching Assistant & -0.198 & 0.109 & 191 & -1.814 & .071\\
+Overall Course & Per-Course & 0.018 & 0.076 & 191 & 0.235 & .815\\
+Overall Course & Instructor & -0.096 & 0.081 & 191 & -1.187 & .237\\
+Overall Course & EG X TA & 0.255 & 0.060 & 4336 & 4.234 & < .001\\
+Overall Course & EG X PC & 0.077 & 0.079 & 4336 & 0.976 & .329\\
+Overall Course & EG X IN & -0.049 & 0.105 & 4336 & -0.464 & .643\\
+Average Grading & Expected Grade & 0.360 & 0.017 & 4336 & 21.790 & < .001\\
+Average Grading & Teaching Assistant & -0.049 & 0.059 & 191 & -0.839 & .403\\
+Average Grading & Per-Course & 0.060 & 0.041 & 191 & 1.441 & .151\\
+Average Grading & Instructor & 0.083 & 0.044 & 191 & 1.860 & .064\\
+Average Grading & EG X TA & 0.173 & 0.038 & 4336 & 4.556 & < .001\\
+Average Grading & EG X PC & 0.167 & 0.049 & 4336 & 3.403 & .001\\
+Average Grading & EG X IN & 0.056 & 0.064 & 4336 & 0.870 & .384\\
+Overall Course & Expected Grade & 0.148 & 0.020 & 4332 & 7.537 & < .001\\
+Overall Course & Teaching Assistant & -0.133 & 0.058 & 191 & -2.286 & .023\\
+Overall Course & Per-Course & -0.056 & 0.041 & 191 & -1.354 & .177\\
+Overall Course & Instructor & -0.198 & 0.045 & 191 & -4.388 & < .001\\
+Overall Course & Average Grading & 0.000 & 0.000 & 4332 & 1.768 & .077\\
+Overall Course & EG X TA & 0.034 & 0.051 & 4332 & 0.654 & .513\\
+Overall Course & EG X PC & -0.299 & 0.063 & 4332 & -4.714 & < .001\\
+Overall Course & EG X IN & -0.173 & 0.080 & 4332 & -2.164 & .031\\
+Overall Course & AG X TA & 0.061 & 0.054 & 4332 & 1.136 & .256\\
+Overall Course & AG X PC & 0.359 & 0.061 & 4332 & 5.922 & < .001\\
+Overall Course & AG X IN & 0.142 & 0.087 & 4332 & 1.634 & .102\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table*}
+\efloatseparator
+ 
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:table-med-split}t Statistics for Individual Mediations}
+\begin{tabular}{lllccccc}
+\toprule
+Group & \multicolumn{1}{c}{DV} & \multicolumn{1}{c}{IV} & \multicolumn{1}{c}{\$b\$} & \multicolumn{1}{c}{\$SE\$} & \multicolumn{1}{c}{\$df\$} & \multicolumn{1}{c}{\$t\$} & \multicolumn{1}{c}{\$p\$}\\
+\midrule
+Teaching Assistant & Overall Course & Expected Grade & 0.510 & 0.092 & 219 & 5.534 & < .001\\
+Teaching Assistant & Average Grading & Expected Grade & 0.407 & 0.049 & 219 & 8.326 & < .001\\
+Teaching Assistant & Overall Course & Expected Grade & -0.010 & 0.077 & 218 & -0.126 & .900\\
+Teaching Assistant & Overall Course & Average Grading & 1.265 & 0.084 & 218 & 15.017 & < .001\\
+Per-Course & Overall Course & Expected Grade & 0.605 & 0.071 & 425 & 8.536 & < .001\\
+Per-Course & Average Grading & Expected Grade & 0.505 & 0.040 & 425 & 12.640 & < .001\\
+Per-Course & Overall Course & Expected Grade & -0.109 & 0.051 & 424 & -2.163 & .031\\
+Per-Course & Overall Course & Average Grading & 1.426 & 0.049 & 424 & 28.991 & < .001\\
+Instructor & Overall Course & Expected Grade & 0.836 & 0.054 & 504 & 15.511 & < .001\\
+Instructor & Average Grading & Expected Grade & 0.562 & 0.035 & 504 & 15.967 & < .001\\
+Instructor & Overall Course & Expected Grade & 0.194 & 0.044 & 503 & 4.375 & < .001\\
+Instructor & Overall Course & Average Grading & 1.144 & 0.045 & 503 & 25.230 & < .001\\
+Tenure Track & Overall Course & Expected Grade & 0.537 & 0.027 & 3185 & 19.817 & < .001\\
+Tenure Track & Average Grading & Expected Grade & 0.359 & 0.017 & 3185 & 20.722 & < .001\\
+Tenure Track & Overall Course & Expected Grade & 0.142 & 0.021 & 3184 & 6.891 & < .001\\
+Tenure Track & Overall Course & Average Grading & 1.097 & 0.020 & 3184 & 56.152 & < .001\\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
