@@ -6,20 +6,22 @@ author:
   - name          : "Erin M. Buchanan"
     affiliation   : "1"
   - name          : "Becca N. Huber"
-    affiliation   : "1"
+    affiliation   : "1, 2"
   - name          : "Arden Miller"
     affiliation   : "1"
   - name          : "David W. Stockburger"
-    affiliation   : "2"
+    affiliation   : "3"
   - name          : "Marshall Beauchamp"
-    affiliation   : "3"  
+    affiliation   : "4"  
     
 affiliation:
   - id            : "1"
     institution   : "Missouri State University"
-  - id            : "2"
-    institution   : "US Air Force Academy"
+    - id          : "2"
+    institution   : "Idaho State University"
   - id            : "3"
+    institution   : "US Air Force Academy"
+  - id            : "4"
     institution   : "University of Missouri - Kansas City"
 
 author_note: |
