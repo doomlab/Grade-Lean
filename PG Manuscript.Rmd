@@ -90,11 +90,7 @@ Much of the literature on student evaluations involves diverse and complex analy
 
 Similarly, Cognitive Dissonance Theory [@Festinger1957] predicts that people who experience poor performance but perceive themselves as competent will experience dissonance, of which they can reduce through negative evaluations of the instruction [@Maurer2006]. Attribution research [@Weiner1992] also supports the argument that among low achievement motivation students, failure is associated with external attributions for cause, and the most plausible external attribution for the student in the evaluation context is the quality of instruction and grading practices. Although arguments regarding degree of influence are reasonable, the position that they are not affected is inconsistent with existing and established theory. Thus, it is not surprising that the majority of faculty perceive student evaluations to be biased by perceived grading and course choice [@Marsh1987].
 
-<<<<<<< HEAD
-Considerable research has been conducted in support of widely distributed evaluation systems. @Centra2003 reported in a study of 9,194 class averages using the Student Instructional Support, the relationship between expected grades and global ratings was only .20. He further argued that when variance due to perceived learning outcomes was regressed from the global evaluation, the effect of expected grades was eliminated [@Centra2003]. However, a student’s best assessment of "perceived learning outcome" is their expected grade, and thus, these should be highly correlated. When perceived learning is regressed from the global evaluations, it is not surprising that suppression effects would eliminate or could even reverse the correlation between expected grade and global evaluation. In general, there are several reasons why the relationship of expected grade to global evaluations is suppressed. For example, faculty ratings are generally very high on average (i.e. quality instructors are hired), which restricts variation; thus, weakening their reliability as a measure of professor attributes. This restriction in range suppresses correlation.
-=======
 Considerable research has been conducted in support of widely distributed evaluation systems. @Centra2003 reported that in a study of 9,194 class averages using the Student Instructional Support, the relationship between expected grades and global ratings was only .20. He further argued that when variance due to perceived learning outcomes was regressed from the global evaluation, the effect of expected grades was eliminated. However, a student's best assessment of "perceived learning outcome" is their expected grade, and thus, these should be highly correlated. When perceived learning is regressed from the global evaluations, it is not surprising that suppression effects would eliminate or could even reverse the correlation between expected grade and global evaluation. In general, there are several reasons why the relationship of expected grade to global evaluations is suppressed. For example, faculty ratings are generally very high on average (i.e. quality instructors are hired), which restricts variation; thus, weakening their reliability as a measure of professor attributes. This restriction in range suppresses correlation.
->>>>>>> a60e1b8c93a3086ea9ee92e7800f2e5fb1fd8360
 
 @Marsh1987 argued that the individual is also not the proper unit of analysis because such analyses could suggest false findings related to individual differences in students. Therefore, he argued the use of class as the suggested unit of analysis [@Marsh1987]. We agree, both for his reasoning and because analyses with individual ratings can mask significant relationships as well (do we have a source for this claim???). Individual differences in expectancy will attenuate the correlation less when class average is used as the unit of analysis. To the extent that the same class average would be expected across all courses, an assumption we challenged, the class average for expected grade is a good measure of perceived grading as an instructor attribute. Course quality, not individual attributes of students, is what we attempted to assess when we used student evaluations of courses. Several studies provide support that when class is the unit of analysis, expected grade is a more significant biasing factor in student evaluations [@Blackhart2006; @DuCette1982; @Ellis2003].
 
@@ -122,6 +118,11 @@ master$Course = as.numeric(gsub("G", "", master$Course))
 #drop things above 500 as those are graduate courses
 ##q1, q3, q4, q9, q15
 reduced = master[master$Course >= 100 & master$Course < 600 , -c(5, 10, 13:16, 18:22) ]
+
+reduced$type = factor(reduced$type,
+                        levels = 1:4,
+                        labels = c("TA", "Per Course", 
+                                   "Instructor", "Tenure Track"))
 ```
 
 The archival study was conducted using data from the psychology department at a large Midwestern public university. We used data from `r nrow(master[ master$Course < 500 , ])` undergraduate, `r nrow(master[ master$Course >= 500 & master$Course < 600 , ])` mixed-level undergraduate, and `r nrow(master[ master$Course >=600 , ])` graduate psychology classes taught from 1987 to 2016 that were evaluated by students using the same 15-item instrument. The graduate courses were excluded from analyses due to the ceiling effects on expected grades. Faculty followed set procedures in distributing scan forms no more than two weeks before the conclusion of the semester. A student was assigned to collect the forms and deliver them to the departmental secretary. The instructor was required to leave the room while students completed the forms. 
@@ -843,7 +844,7 @@ medmodel1.ta = lme(q1 ~ zq15 + People,
                method = "ML", 
                na.action = "na.omit",
                random = ~1|instructcode)
-summary(medmodel1.ta)
+ summary(medmodel1.ta)
 
 ##path a
 medmodel2.ta = lme(average ~ zq15 + People, 
