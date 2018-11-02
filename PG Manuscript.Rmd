@@ -94,7 +94,9 @@ Similarly, Cognitive Dissonance Theory [@Festinger1957] predicts that people who
 
 Considerable research has been conducted in support of widely distributed evaluation systems. @Centra2003 reported that in a study of 9,194 class averages using the Student Instructional Support, the relationship between expected grades and global ratings was only .20. He further argued that when variance due to perceived learning outcomes was regressed from the global evaluation, the effect of expected grades was eliminated. However, a student's best assessment of "perceived learning outcome" is their expected grade, and thus, these should be highly correlated. When perceived learning is regressed from the global evaluations, it is not surprising that suppression effects would eliminate or could even reverse the correlation between expected grade and global evaluation. In general, there are several reasons why the relationship of expected grade to global evaluations is suppressed. For example, faculty ratings are generally very high on average (i.e. quality instructors are hired), which restricts variation; thus, weakening their reliability as a measure of professor attributes. This restriction in range suppresses correlation.
 
+CONSIDER DROPPING THIS 
 @Marsh1987 argued that the individual is also not the proper unit of analysis because such analyses could suggest false findings related to individual differences in students. Therefore, he argued the use of class as the suggested unit of analysis [@Marsh1987]. We agree, both for his reasoning and because analyses with individual ratings can mask significant relationships as well (do we have a source for this claim???). Individual differences in expectancy will attenuate the correlation less when class average is used as the unit of analysis. To the extent that the same class average would be expected across all courses, an assumption we challenged, the class average for expected grade is a good measure of perceived grading as an instructor attribute. Course quality, not individual attributes of students, is what we attempted to assess when we used student evaluations of courses. Several studies provide support that when class is the unit of analysis, expected grade is a more significant biasing factor in student evaluations [@Blackhart2006; @DuCette1982; @Ellis2003].
+TO HERE
 
 Additionally, @Blackhart2006 analyzed 167 psychology classes in a multiple regression analysis with class as the unit of analysis and found that the two most significant predictors of instructor ratings were average grade given by the instructor and instructor status (TA or rank of faculty). Because of the limited number of classes, the power of the analysis was limited. However, in addition to the concern regarding the relationship between grades and global course evaluations, it was found that TAs were rated more highly than ranked faculty. This finding raises additional questions on validity student evaluation of instructional quality. We must either accept that the least trained and qualified instructors are actually better teachers, or we must believe this result suggests that student evaluations have given us false information on the quality of instruction via their perceptions of grading.
 
@@ -159,6 +161,10 @@ abline(v = 0)}
 ```
 
 All data were checked for course coding errors, and type of instructor was coded as graduate assistant, per-course faculty, instructors, and tenure-track faculty. This data was considered structured by instructor; therefore, all analyses below were coded in *R* using the *nlme* package [@Pinheiro2017] to control for correlated error of instructor as a random intercept in a multilevel model. The overall dataset was screened for normality, linearity, homogeneity, and homoscedasticity using procedures from @Tabachnick2012. Data generally met assumptions with a slight skew and some heterogeneity. This data was not screened for outliers because it was assumed that each score was entered correctly from student evaluations. The complete set of all statistics can be found online at http://osf.io/jdpfs. This page also includes the manuscript written inline with the statistical analysis with the *papaja* package [@Aust2017] for interested researchers/reviewers.
+
+TALK MORE ABOUT THE MODELS HERE HOW THEY WORK ETC.
+CONSIDER ADDING ICC VALUES 
+EXPLAIN WHO WHAT WHERE TAS WHERE 
 
 ## Reliability of Instructor Scores DONE
 
@@ -997,8 +1003,10 @@ bootci.tt = boot.ci(bootresults.tt, conf = .95, type = "norm")
 
 ```
 
-```{r pic-mod-med, echo = FALSE}
-#pull in the picture set here and arrange them
+```{r med-mod-pic, echo=FALSE, fig.cap="A caption"}
+
+knitr::include_graphics("temp.png")
+
 ```
 
 ```{r table-mod-med, echo = FALSE, results = 'asis'}
@@ -1078,7 +1086,6 @@ We proposed a mediation relationship between expected grade, perceived grading, 
 
 First, expected grade was used to predict the overall rating of the course, along with the interaction of type of instructor and expected grade. The expected grade positively predicted overall course rating, p < .001, wherein higher expected grades was related to higher overall ratings for the course (b = 0.39). A significant interaction between type and expected grade rating was found for instructors versus faculty. In looking at Figure 1, we find that instructors (b = 0.56) have a stronger relationship between expected grade and overall course rating than faculty (b = 0.39, interaction p = .020), while per-course (b = 0.41, interaction p = .621) and teaching assistants (b = 0.71, interaction p = .068) were not significantly different than faculty on the c path coefficient. 
 
-
 ### A Path
 
 Expected grade was then used to predict the average of the grading related questions, along with the interaction of type of instructor. Higher expected grades were related to higher ratings of appropriating grading (b = 0.21, p < .001), and a significant interaction of faculty and all three other instructor types emerged: teaching assistants (p = .001), per-course faculty (p = .001), and instructors (p < .001). As seen in Figure 1, faculty (b = 0.21) have a much weaker relationship between expected grade and average ratings of grading than teaching assistants (b = 0.55), per-course (b = 0.41), and instructors (b = 0.45). 
@@ -1092,7 +1099,7 @@ The relationship between expected grade and overall course rating decreased from
 
 We then analyzed the indirect effects (i.e. the amount of mediation) for each type of instructor separately, using both the Aroian version of the Sobel test [@Baron1986], as well as bootstrapped samples to determine the 95% confidence interval of the mediation [Preacher & Hayes, 2008; @Hayes2017] because of the criticisms on Sobel. For confidence interval testing, we ran 5,000 bootstrapped samples examining the mediation effect and interpreted that the mediation was different from zero if the confidence interval did not include zero. For teaching assistants, we found mediation significantly greater than zero, indirect = 0.74 (SE = 0.14), Z = 5.15, p < .001, 95% CI[0.48, 1.02]. Per-course faculty showed mediation between expected grade and overall course rating, indirect = 0.52 (SE = 0.09), Z = 6.06, p < .001, 95% CI[0.36, 0.73]. Instructors showed a similar indirect mediation effect, indirect = 0.53 (SE = 0.07), Z = 7.31, p < .001, 95% CI[0.40, 0.66]. Last, faculty showed the smallest mediation effect, indirect = 0.23 (SE = 0.02), Z = 8.71, p < .001, 95% CI[0.19, 0.28], wherein the confidence interval did not include zero, but also did not overlap with any other instructor group. 
 
-# Discussion
+# Discussion WHY IS THIS IMPORTANT why does mediation strength matter 
 
 The findings support the model that student evaluations of Psychology faculty are related to what one might consider leniency (i.e., overall average scores of B) in grading through perceptions of assignment appropriateness, grading fairness, and the expected course grade. This position is supported both in the strong relationships between expected grade and global ratings by the evidence that greater training and experience is related to poorer evaluations, lower expected grades, and lower relationships between grading and evaluations. Faculty received lower scores than teaching assistants in every category and often lower scores than per-course faculty, but not instructors. Mediation analyses showed that expected grade is positively related to overall course ratings, although this relationship is mediated by the perceived grading in the course. Therefore, as students have higher expected grades, the perceived grading scores increase, and the overall course score also increases. Moderation of this mediation effect indicated differences in the strength of the relationships between expected grade, grading questions, and overall course rating, wherein faculty generally had weaker relationships between these variables. 
 
