@@ -1,5 +1,5 @@
-\documentclass[man]{apa6}
-
+\documentclass[,man]{apa6}
+\usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
@@ -9,126 +9,113 @@
 \else % if luatex or xelatex
   \ifxetex
     \usepackage{mathspec}
-    \usepackage{xltxtra,xunicode}
   \else
     \usepackage{fontspec}
   \fi
-  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
-  \newcommand{\euro}{€}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
-\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Perceived Grading and Student Evaluation of Instruction},
+            pdfauthor={Erin M. Buchanan, Becca N. Huber, Arden Miller, David W. Stockburger, \& Marshall Beauchamp},
+            pdfkeywords={Student evaluation, teacher evaluation, perceived grading, reliability},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
 
-% Table formatting
-\usepackage{longtable, booktabs}
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+
+  \title{Perceived Grading and Student Evaluation of Instruction}
+    \author{Erin M. Buchanan\textsuperscript{1}, Becca N.
+Huber\textsuperscript{1, 2}, Arden Miller\textsuperscript{1}, David W.
+Stockburger\textsuperscript{3}, \& Marshall Beauchamp\textsuperscript{4}}
+    \date{}
+  
+\shorttitle{Perceived Grading and Student Evaluation}
+\affiliation{
+\vspace{0.5cm}
+\textsuperscript{1} Missouri State University\\\textsuperscript{2} Idaho State University\\\textsuperscript{3} US Air Force Academy\\\textsuperscript{4} University of Missouri - Kansas City}
+\keywords{Student evaluation, teacher evaluation, perceived grading, reliability}
+\usepackage{csquotes}
+\usepackage{upgreek}
+\captionsetup{font=singlespacing,justification=justified}
+
+\usepackage{longtable}
 \usepackage{lscape}
-% \usepackage[counterclockwise]{rotating}   % Landscape page setup for large tables
-\usepackage{multirow}		% Table styling
-\usepackage{tabularx}		% Control Column width
-\usepackage[flushleft]{threeparttable}	% Allows for three part tables with a specified notes section
-\usepackage{threeparttablex}            % Lets threeparttable work with longtable
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage[flushleft]{threeparttable}
+\usepackage{threeparttablex}
 
-% Create new environments so endfloat can handle them
-% \newenvironment{ltable}
-%   {\begin{landscape}\begin{center}\begin{threeparttable}}
-%   {\end{threeparttable}\end{center}\end{landscape}}
+\newenvironment{lltable}{\begin{landscape}\begin{center}\begin{ThreePartTable}}{\end{ThreePartTable}\end{center}\end{landscape}}
 
-\newenvironment{lltable}
-  {\begin{landscape}\begin{center}\begin{ThreePartTable}}
-  {\end{ThreePartTable}\end{center}\end{landscape}}
-
-  \usepackage{ifthen} % Only add declarations when endfloat package is loaded
-  \ifthenelse{\equal{\string man}{\string man}}{%
-   \DeclareDelayedFloatFlavor{ThreePartTable}{table} % Make endfloat play with longtable
-   % \DeclareDelayedFloatFlavor{ltable}{table} % Make endfloat play with lscape
-   \DeclareDelayedFloatFlavor{lltable}{table} % Make endfloat play with lscape & longtable
-  }{}%
-
-
-
-% The following enables adjusting longtable caption width to table width
-% Solution found at http://golatex.de/longtable-mit-caption-so-breit-wie-die-tabelle-t15767.html
 \makeatletter
 \newcommand\LastLTentrywidth{1em}
 \newlength\longtablewidth
 \setlength{\longtablewidth}{1in}
-\newcommand\getlongtablewidth{%
- \begingroup
-  \ifcsname LT@\roman{LT@tables}\endcsname
-  \global\longtablewidth=0pt
-  \renewcommand\LT@entry[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}%
-  \@nameuse{LT@\roman{LT@tables}}%
-  \fi
-\endgroup}
+\newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
 
 
-\ifxetex
-  \usepackage[setpagesize=false, % page size defined by xetex
-              unicode=false, % unicode breaks when used with xetex
-              xetex]{hyperref}
-\else
-  \usepackage[unicode=true]{hyperref}
-\fi
-\hypersetup{breaklinks=true,
-            pdfauthor={},
-            pdftitle={Perceived Grading and Student Evaluation of Instruction},
-            colorlinks=true,
-            citecolor=blue,
-            urlcolor=blue,
-            linkcolor=black,
-            pdfborder={0 0 0}}
-\urlstyle{same}  % don't use monospace font for urls
+\DeclareDelayedFloatFlavor{ThreePartTable}{table}
+\DeclareDelayedFloatFlavor{lltable}{table}
+\DeclareDelayedFloatFlavor*{longtable}{table}
+\makeatletter
+\renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
+\makeatother
+\usepackage{lineno}
 
-\setlength{\parindent}{0pt}
-%\setlength{\parskip}{0pt plus 0pt minus 0pt}
+\linenumbers
 
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\authornote{A portion of this research was presented at the
+meeting of the Southwestern Psychological Association, April, 2009, San
+Antonio, TX. The authors would like to thank Melissa Fallone for
+comments on earlier drafts and Stephen Martin for his help with
+restructuring the data.
 
+Correspondence concerning this article should be addressed to Erin M.
+Buchanan, 901 S. National Ave, Springfield, MO, 65897. E-mail:
+\href{mailto:erinbuchanan@missouristate.edu}{\nolinkurl{erinbuchanan@missouristate.edu}}}
 
-% Manuscript styling
-\captionsetup{font=singlespacing,justification=justified}
-\usepackage{csquotes}
-\usepackage{upgreek}
-
- % Line numbering
-  \usepackage{lineno}
-  \linenumbers
-
-
-\usepackage{tikz} % Variable definition to generate author note
-
-% fix for \tightlist problem in pandoc 1.14
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-% Essential manuscript parts
-  \title{Perceived Grading and Student Evaluation of Instruction}
-
-  \shorttitle{Perceived Grading and Student Evaluation}
-
-
-  \author{Erin M. Buchanan\textsuperscript{1}, Becca N. Huber\textsuperscript{1}, Arden Miller\textsuperscript{1}, David W. Stockburger\textsuperscript{2}, \& Marshall Beauchamp\textsuperscript{3}}
-
-  % \def\affdep{{"", "", "", "", ""}}%
-  % \def\affcity{{"", "", "", "", ""}}%
-
-  \affiliation{
-    \vspace{0.5cm}
-          \textsuperscript{1} Missouri State University\\
-          \textsuperscript{2} US Air Force Academy\\
-          \textsuperscript{3} University of Missouri - Kansas City  }
-
-  \authornote{
-    A portion of this research was presented at the meeting of the
-    Southwestern Psychological Association, April, 2009, San Antonio, TX.
-    The authors would like to thank Melissa Fallone for comments on earlier
-    drafts and Stephen Martin for his help with restructuring the data.
-  }
-
-
-  \abstract{We analyzed student evaluations for 3,585 classes collected over 20
+\abstract{
+We analyzed student evaluations for 3,585 classes collected over 20
 years to determine stability and evaluate the relationship of perceived
 grading to global evaluations, perceived fairness, and appropriateness
 of assignments. Using class as the unit of analysis, we found small
@@ -140,15 +127,10 @@ grades, grading questions, and overall grades were found between
 full-time faculty and other types of instructors. These findings are
 expanded to a model of grading type questions mediating the relationship
 between expected grade and overall course evaluations with a moderating
-effect of type of instructor.}
-  \keywords{Student evaluation, teacher evaluation, perceived grading, reliability \\
-
-    
-  }
+effect of type of instructor.
 
 
-
-
+}
 
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[section]
@@ -165,63 +147,57 @@ effect of type of instructor.}
 \newtheorem*{remark}{Remark}
 \newtheorem*{solution}{Solution}
 \begin{document}
-
 \maketitle
 
-\setcounter{secnumdepth}{0}
+Student evaluations of professors are a typical practice, but their
+validity and reliability has been disputed. The impact of student
+evaluations on professor advancement can be great and often acts as a
+deciding factor in professor promotion, demotion, coursework choice,
+tenureship, or used to inform access to certain funding opportunities.
+Some suggest that there are variables that result in improving
+evaluations, such as giving higher grades (Greenwald \& Gillmore, 1997;
+Isely \& Singh, 2005; Krautmann \& Sander, 1999). Student evaluations
+are also influenced by likability, attractiveness, and dress (Buck \&
+Tiene, 1989; Gurung \& Vespia, 2007; Hugh Feeley, 2002). Further, 20
+years ago, ({\textbf{???}}) suggested twenty tongue-in-cheek tips in
+which professors may bolster their evaluations from students. These
+suggestions have no relationship with research supported instructional
+methods or further learning retention among the student body, such as
+being a male professor and only teaching only male students. In more
+recent research, Boring, Ottoboni, and Stark (2016) confirms that
+student evaluations of teaching are biased against female instructors,
+and the authors conclude student evaluations are more representative of
+the students' grading expectations and biases rather than an evaluation
+of objective instructional methods. All together, these findings elicit
+the argument that student evaluations are not necessarily measuring
+whether the instructional methods of professors are sound, rather
+student evaluations of instruction are measuring whether or not the
+instructor met the students' expectations of their performance in the
+classroom, in addition to the instructor meeting pre-existing biases.
 
-
-
-Student evaluations of professors have been disputed over time with
-regard to validity and reliability. The impact of student evaluations on
-professor advancement can be great and often acts as a deciding factor
-in professor promotion, demotion, or inform access to certain funding
-opportunities, coursework choice, and tenureship. There are certain
-variables researched that result in improving evaluations, such as
-giving higher grades (Greenwald \& Gillmore, 1997; Isely \& Singh, 2005;
-Krautmann \& Sander, 1999). Student evaluations have also been found to
-be influenced by likability, attractiveness, and dress (Buck \& Tiene,
-1989; Gurung \& Vespia, 2007; Hugh Feeley, 2002). Further, 20 years ago,
-(Neath 1996) suggests 20 tips in which professors may bolster their
-evaluations from students that have no relationship with proven
-instructional methods or further learning retention among the student
-body, such as being a male professor and only teaching only male
-students. In more recent research, Boring, Ottoboni, and Stark (2016)
-confirms that student evaluations of teaching are biased against female
-instructors, and the authors conclude student evaluations are more
-representative of the students' grading expectations and biases rather
-than an evaluation of objective instructional methods. All together,
-these findings elicit the argument that student evaluations are not
-necessarily measuring whether the instructional methods of professors
-are sound, rather student evaluations of instruction are measuring
-whether or not the instructor met the students' expectations of their
-performance in the classroom, in addition to the instructor meeting
-pre-existing biases.
-
-However, some authors (Centra, 2003; Marsh, 1987; Marsh \& Roche, 2000)
-have discovered professors are not able to increase their positive
-evaluations by only providing their students with higher grades to meet
-expectations. We believe this is due to what we consider the effect of
-\enquote{perceived grading}. We operationally define perceived grading
-as the students' perceptions of assignment appropriateness, grading
-fairness, and the expected course grade at the time the evaluations are
-being completed. Social psychology theory would support that students
-with low perceived grading may reduce cognitive dissonance and engage in
-ego defense by giving low evaluations of professors who give them lower
-grades (Maurer, 2006), resulting in decreased validity and reliability
-of the proposed construct, professor instruction. We argue both social
-psychology theory and the evidence from student evaluations supports
-that higher perceived grading can lead to better student evaluations of
-instruction. For example, Salmons (1993) provided causal evidence of
-lowered student evaluations due to expected grades. In her study of 444
-students completing faculty evaluations at two separate points in a
-semester, students who expected to get Fs significantly lowered their
-evaluations while students who expected to receive As and Bs
-significantly raised their evaluations (Salmons, 1993). This theory and
-evidence from student evaluation leads us to further argue student
-evaluations of professors are biased methods of data collection and
-irrelevant to the quality of the instructor and the instructional
-methods used over the course of a semester.
+However, this finding does not imply that an instructor can simply raise
+grades to meet expections (Centra, 2003; Marsh, 1987; Marsh \& Roche,
+2000), instead one should consider the effect of \enquote{perceived
+grading}. We operationally define perceived grading as the students'
+perceptions of assignment appropriateness, grading fairness, and the
+expected course grade at the time the evaluations are being completed.
+Social psychology theory would support that students with low perceived
+grading perceptions may reduce cognitive dissonance and engage in ego
+defense by giving low evaluations in turn (Maurer, 2006), resulting in
+decreased validity and reliability of the proposed construct, professor
+instruction. We argue both social psychology theory and the evidence
+from student evaluations supports that higher perceived grading can lead
+to better student evaluations of instruction. For example, Salmons
+(1993) provided causal evidence of lowered student evaluations due to
+expected grades. In her study of 444 students completing faculty
+evaluations at two separate points in a semester, students who expected
+to get Fs significantly lowered their evaluations while students who
+expected to receive As and Bs significantly raised their evaluations
+(Salmons, 1993). This theory and evidence from student evaluation leads
+us to further argue student evaluations of professors are biased towards
+their expected grade and the perceived fairness of the grading system,
+rather than the actual instructional methods used over the course of a
+semester.
 
 Much of the literature on student evaluations involves diverse and
 complex analyses (e.g., Marsh (1987)) and lacks social-psychological
@@ -229,13 +205,15 @@ theoretical guidance on human judgment. To expect that student
 evaluations would not be influenced by expected grade would contradict a
 long-standing history of social psychology research on cognitive
 dissonance, attribution, and ego threat. As we know, failure threatens
-the ego {[}Miller (1985); {]} and motivates us to find rationales to
-defend the ego. Failing students, or those performing below personal
-expectations, would be expected to defend their ego by attributing low
-grades to poor teaching or unfair evaluation practices (Maurer, 2006).
-One common strategy involves diminishing the value of the activity
-(Miller \& Klein, 1989), which would result in lowered perceived value
-of a course.
+the ego (Miller, 1985) and motivates us to find rationales to defend the
+ego. Further, ({\textbf{???}}) found guilt as a significant correlate of
+dissonance which may be illuminated in this study by the guilt of
+underperforming from a student's own expectations. Failing students, or
+those performing below personal expectations, would be expected to
+defend their ego by attributing low grades to poor teaching or unfair
+evaluation practices (Maurer, 2006). One common strategy involves
+diminishing the value of the activity (Miller \& Klein, 1989), which
+would result in lowered perceived value of a course.
 
 Similarly, Cognitive Dissonance Theory (Festinger, 1957) predicts that
 people who experience poor performance but perceive themselves as
@@ -251,157 +229,67 @@ existing and established theory. Thus, it is not surprising that the
 majority of faculty perceive student evaluations to be biased by
 perceived grading and course choice (Marsh, 1987).
 
-\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}
-HEAD Considerable research has been conducted in support of widely
-distributed evaluation systems. Centra (2003) reported in a study of
-9,194 class averages using the Student Instructional Support, the
-relationship between expected grades and global ratings was only .20. He
-further argued that when variance due to perceived learning outcomes was
-regressed from the global evaluation, the effect of expected grades was
-eliminated (Centra, 2003). However, a student's best assessment of
-\enquote{perceived learning outcome} is their expected grade, and thus,
-these should be highly correlated. When perceived learning is regressed
-from the global evaluations, it is not surprising that suppression
-effects would eliminate or could even reverse the correlation between
-expected grade and global evaluation. In general, there are several
-reasons why the relationship of expected grade to global evaluations is
-suppressed. For example, faculty ratings are generally very high on
-average (i.e.~quality instructors are hired), which restricts variation;
-thus, weakening their reliability as a measure of professor attributes.
-This restriction in range suppresses correlation. ======= Considerable
-research has been conducted in support of widely distributed evaluation
-systems. Centra (2003) reported that in a study of 9,194 class averages
-using the Student Instructional Support, the relationship between
-expected grades and global ratings was only .20. He further argued that
-when variance due to perceived learning outcomes was regressed from the
-global evaluation, the effect of expected grades was eliminated.
-However, a student's best assessment of \enquote{perceived learning
-outcome} is their expected grade, and thus, these should be highly
-correlated. When perceived learning is regressed from the global
-evaluations, it is not surprising that suppression effects would
-eliminate or could even reverse the correlation between expected grade
-and global evaluation. In general, there are several reasons why the
-relationship of expected grade to global evaluations is suppressed. For
-example, faculty ratings are generally very high on average
-(i.e.~quality instructors are hired), which restricts variation; thus,
-weakening their reliability as a measure of professor attributes. This
-restriction in range suppresses correlation.
-\textgreater{}\textgreater{}\textgreater{}\textgreater{}\textgreater{}\textgreater{}\textgreater{}
-a60e1b8c93a3086ea9ee92e7800f2e5fb1fd8360
+Blackhart, Peruche, DeWall, and Joiner (2006) analyzed 167 psychology
+classes in a multiple regression analysis and found that the two most
+significant predictors of instructor ratings were average grade given by
+the instructor and instructor status (teaching assistant or ranked
+faculty). Because of the limited number of classes, the power of the
+analysis was limited. However, in addition to the concern regarding the
+relationship between grades and global course evaluations, it was found
+that teaching assistants were rated more highly than ranked faculty.
+This finding raises additional questions on validity student evaluation
+of instructional quality. We must either accept that the least trained
+and qualified instructors are actually better teachers, or we must
+believe this result suggests that student evaluations have given us
+false information on the quality of instruction via their perceptions of
+grading. Research from DuCette and Kenney (1982) and Ellis, Burke,
+Lomire, and McCormack (2003) also showed medium to large correlations
+between expected grade and course ratings. However, these studies did
+not consider the predictive relationship for instructors across
+different courses and semesters, which was one aim of the current study.
+Using nearly twenty years of data from a large midwestern university,
+the following research questions were examined:
 
-Marsh (1987) argued that the individual is also not the proper unit of
-analysis because such analyses could suggest false findings related to
-individual differences in students. Therefore, he argued the use of
-class as the suggested unit of analysis (Marsh, 1987). We agree, both
-for his reasoning and because analyses with individual ratings can mask
-significant relationships as well (do we have a source for this
-claim???). Individual differences in expectancy will attenuate the
-correlation less when class average is used as the unit of analysis. To
-the extent that the same class average would be expected across all
-courses, an assumption we challenged, the class average for expected
-grade is a good measure of perceived grading as an instructor attribute.
-Course quality, not individual attributes of students, is what we
-attempted to assess when we used student evaluations of courses. Several
-studies provide support that when class is the unit of analysis,
-expected grade is a more significant biasing factor in student
-evaluations (Blackhart, Peruche, DeWall, \& Joiner, 2006; DuCette \&
-Kenney, 1982; Ellis, Burke, Lomire, \& McCormack, 2003).
-
-Additionally, Blackhart et al. (2006) analyzed 167 psychology classes in
-a multiple regression analysis with class as the unit of analysis and
-found that the two most significant predictors of instructor ratings
-were average grade given by the instructor and instructor status (TA or
-rank of faculty). Because of the limited number of classes, the power of
-the analysis was limited. However, in addition to the concern regarding
-the relationship between grades and global course evaluations, it was
-found that TAs were rated more highly than ranked faculty. This finding
-raises additional questions on validity student evaluation of
-instructional quality. We must either accept that the least trained and
-qualified instructors are actually better teachers, or we must believe
-this result suggests that student evaluations have given us false
-information on the quality of instruction via their perceptions of
-grading.
-
-DuCette and Kenney (1982) provided further evidence that using course as
-a unit of analysis increased the correlation between expected grade and
-other course ratings. Within specific groupings of classes, these
-correlations ranged from .23 to .53. Two factors limited the level of
-their relationships. First, the classes used were all upper division
-courses and graduate courses. Secondly, over 90\% of the students in
-these classes expected an A or a B. Consequently, the correlations
-between expected grade and global course ratings would be reduced due to
-the absence of variation in expected grades. Similarly, Ellis et al.
-(2003) found a correlation of .35 between average course grade and
-average rating of the instructor in 165 classes during a two-year
-period. However, these studies did not consider the predictive
-relationship for instructors across different courses and semesters,
-which was one aim of the current study.
-
-It is pertinent to note that different disciplines and subject areas
-have diverse GPA standards, and students have differing grade and
-workload expectations in different courses, as well. For example, an
-instructor in Anatomy giving a 3.00 GPA might be considered lenient
-while an Education instructor giving a 3.25 GPA might be considered hard
-(examples for illustration only). To have a valid measure of workload
-and leniency factors, correlations should be conducted with varied
-teachers of the same course. Further, different populations take courses
-in different disciplines, resulting in potential population differences
-between anatomy classes and education classes, which could create or
-mask findings. Hence, analysis of these correlations within the same
-discipline and course would be expected to strengthen the relationship
-between expected grades and quality measures, offering more valid
-results.
-
-Further, in most studies of student evaluations, reliability is
-established through internal consistency reliability. However, this form
-of reliability is confounded with halo effects (i.e.~a cognitive bias
-that influences ratings based on an overall perception of the person
-teaching, rather than the individual components of the course), and
-tells only whether the individual responding to the questions is
-consistent and reliable(??? do we have a source for halo effects from
-internal consistency reliability???). By having many different classes
-for the same instructor, we can establish the reliability of ratings
-across the same and different courses during the same and different
-semesters. As a result, we should be able to deduce if student ratings
-can be considered a valid measure of an instructor's teaching skills if
-they are or are not able to reliably differentiate instructors within
-the same course across different semesters.
-
-If ratings are, in fact, valid measures of instructor attributes, it
-should be expected that ratings would have some stability across
-semester and specific course taught. If variation were due to instructor
-attributes and not the course they are assigned, we would expect ratings
-to be most stable across two different courses during the same semester.
-We would expect these correlations to decline somewhat for the same
-course in a different semester, since faculty members may improve or
-decline with experience. But if they are reliable and stable enough to
-use in making choices about retention, their stability should be
-demonstrated across different semesters, as well. Therefore, in the
-current study, we first sought to establish reliability of ratings for
-the instructors across courses and semesters.
-
-The current study used data collected over a 20-year period to allow for
-more powerful analyses, with such analyses occurring within many
-sections of the same course at the same university. After examining
-reliability, we sought to show that items on instructor evaluations were
-positively correlated for undergraduate and graduate students (???didn't
-we want to eliminate graduate students from the analyses because they're
-a special population???), demonstrating that overall course evaluations
-are related to the perceived grading of the students. We also expected
-correlations to be substantially higher than those obtained by previous
-researchers who used individual students as their unit of analysis,
-since we used the course as the unit of analysis. Next, we examined if
-rating differences across these questions were found between types of
-instructors compared to full-time faculty, such as teaching-assistants
-and per-course faculty. The presumption of university hiring
-requirements that include a terminal degree for regular faculty is that
-better-trained faculty will be more effective teachers. Therefore, if
-student evaluations are a valid measure, better-trained, full-time
-faculty should receive higher ratings than per-course instructors and
-teaching assistants. However, existing literature appears to contradict
-this expectation (Blackhart et al., 2006). Given these differences, we
-proposed and examined a moderated mediation analysis to portray the
-expected relationship of the variables across instructor type.
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\item
+  If ratings are, in fact, valid measures of instructor attributes, it
+  should be expected that ratings would have some stability across
+  semesters and specific courses. If variation were due to instructor
+  attributes and not the course they are assigned, we would expect
+  ratings to be most stable across two different courses during the same
+  semester. We would expect these correlations to decline somewhat for
+  the same course in a different semester, since faculty members may
+  improve or decline with experience. But if they are reliable and
+  stable enough to use in making choices about retention, their
+  stability should be demonstrated across different semesters, as well.
+  Therefore, in the current study, we first sought to establish if
+  ratings are reliable for instructors across courses and semesters.
+  This analysis was conducted by calculating all possible correlations
+  between each average course rating in the dataset to examine course
+  (same/different) by semester (same/different) by instructor
+  (same/different) reliability.
+\item
+  After examining reliability, we sought to show that items on
+  instructor evaluations were positively correlated, demonstrating that
+  overall course evaluations are related to perceived grading ratings
+  from the students.
+\item
+  Given the proposed differences in ratings by instructor type
+  (Blackhart et al., 2006), we examined a moderated mediation analysis
+  to portray the expected relationship of the variables across
+  instructor type. First, for the mediation analysis, we hypothesized
+  that expected grade predicted overall course rating, with perceived
+  grading ratings mediating that relationship. With this analysis, we
+  would demonstrate that evaluations are not merely a measure of
+  expected grade, but also influenced by grading system used in the
+  course (i.e., students with higher grades likely perceive grading to
+  be more fair/appropriate, which then influences their ratings of the
+  course). This mediation was expected to be moderated by instructor
+  type, as previous research has shown that different types of
+  instructors (teaching assistants, ranked faculty) appear to receive
+  different ratings overall.
+\end{enumerate}
 
 \hypertarget{method}{%
 \section{Method}\label{method}}
@@ -424,37 +312,71 @@ how grades related to global course evaluation and grading/assignment
 evaluations. These items were presented with a five-point scale from 1
 (\emph{strongly disagree}) to 5 (\emph{strongly agree}):
 
-\begin{verbatim}
-1. The overall quality of this course was among the top 20% of those I have taken. 
-2. The examinations were representative of the material covered in the assigned readings and class lectures. 
-3. The instructor used fair and appropriate methods in the determination of grades. 
-4. The assignments and required activities in this class were appropriate. 
-5. What grade do you expect to receive in this course? (A = 5, B, C, D, F = 1).
-\end{verbatim}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  The overall quality of this course was among the top 20\% of those I
+  have taken.
+\item
+  The examinations were representative of the material covered in the
+  assigned readings and class lectures.
+\item
+  The instructor used fair and appropriate methods in the determination
+  of grades.
+\item
+  The assignments and required activities in this class were
+  appropriate.
+\item
+  What grade do you expect to receive in this course? (A = 5, B, C, D, F
+  = 1).
+\end{enumerate}
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
 All data were checked for course coding errors, and type of instructor
-was coded as graduate assistant, per-course faculty, instructors, and
-tenure-track faculty. This data was considered structured by instructor;
-therefore, all analyses below were coded in \emph{R} using the
-\emph{nlme} package (Pinheiro, Bates, Debroy, Sarkar, \& Team, 2017) to
-control for correlated error of instructor as a random intercept in a
-multilevel model. The overall dataset was screened for normality,
-linearity, homogeneity, and homoscedasticity using procedures from
-Tabachnick and Fidell (2012). Data generally met assumptions with a
-slight skew and some heterogeneity. This data was not screened for
-outliers because it was assumed that each score was entered correctly
-from student evaluations. The complete set of all statistics can be
-found online at \url{http://osf.io/jdpfs}. This page also includes the
-manuscript written inline with the statistical analysis with the
-\emph{papaja} package ({\textbf{???}}) for interested
-researchers/reviewers.
+was coded as graduate assistant, per-course faculty, full-time
+instructors, and tenure-track faculty. Graduate teaching assistants were
+generally assigned to teach lower-level introductory courses
+(Introduction to Psychology, Statistics for Psychology, Research Methods
+labratories), and these students were interviewed and hired by the
+faculty supervising those courses. Graduate students were generally in
+their second year of the masters program in the department, and levels
+of supervision varied by course and supervisor.
 
-\hypertarget{reliability-of-instructor-scores-done}{%
-\subsection{Reliability of Instructor Scores
-DONE}\label{reliability-of-instructor-scores-done}}
+This data was considered structured by instructor; therefore, all
+analyses below were coded in \emph{R} using the \emph{nlme} package
+(Pinheiro, Bates, Debroy, Sarkar, \& Team, 2017) to control for
+correlated error of instructor as a random intercept in a multilevel
+model. Multilevel models allow for analysis of repeated measures data
+without collapsing by participant (i.e., each instructor/semester/course
+combination can be kept separate without averaging over these
+measurements; {\textbf{???}}). Random intercept models are regression
+models on the repeated data that structure the data by a specified
+variable, which was instructor in this analysis. Therefore, each
+instructor's average rating score was allowed to vary within the
+analysis, as ratings would be expected to be different from instructor
+to instructor. In each of the analyses described below, the number of
+students providing ratings for the course was included as a control
+variable to even out differences in course size as an influence in the
+results. The dependent variable and predictors varied based on the
+research question, and these are described with each analysis below.
+
+The overall dataset was screened for normality, linearity, homogeneity,
+and homoscedasticity using procedures from Tabachnick and Fidell (2012).
+Data generally met assumptions with a slight skew and some
+heterogeneity. This data was not screened for outliers because it was
+assumed that each score was entered correctly from student evaluations.
+The complete set of all statistics can be found online at
+\url{http://osf.io/jdpfs}. This page also includes the manuscript
+written inline with the statistical analysis with the \emph{papaja}
+package ({\textbf{???}}) for interested researchers/reviewers who wish
+to recreate these analyses.
+
+\hypertarget{reliability-of-instructor-scores}{%
+\subsection{Reliability of Instructor
+Scores}\label{reliability-of-instructor-scores}}
 
 \begin{table}[tbp]
 \begin{center}
@@ -488,39 +410,47 @@ attribute. A file was created with all possible course pairings for
 every instructor, semester, and course combination. Therefore, this
 created eight possible combinations of matching v. no match for
 instructor by semester by course. Multilevel models were used to
-calculate correlations on each fo the eight combinations controlling for
+calculate correlations on each of the eight combinations controlling for
 response size for both courses (i.e., course 1 number of ratings and
-course 2 number of ratings) and random intercepts for instructor(s).
-Correlations were calculated separately for each question, however, the
-overall pattern of the data was the same for each of the eight
-combinations, and these were averaged for Table @ref:(tab:rel-table).
-The complete set of all correlations can be found online. Because the
-large sample size can bias statistical significance, we focused on the
-size of the correlations. The correlations were largest for the same
-instructor in the same semester and course, followed by the same
-instructor in the same semester with a different course and the same
-instructor in a different semester with the same course. The first shows
-that scores are somewhat reliable (i.e., \emph{r}s \textasciitilde{}
-.45) for instructors teaching two or more of the same class at the same
-time. The correlations within instructor then drop to \emph{r}s
-\textasciitilde{} .09 for the same semester or same course. All other
-correlations are nearly zero, with the same semester, same course, and
-different instructor as the next largest at \emph{r}s \textasciitilde{}
-.05. Given these values are still low for traditional reliability
-standards, this results may indicate that student demand characteristics
-or course changes impact instructor ratings.
+course 2 number of ratings) and random intercepts for instructor(s). The
+independent variable was the question rating for one
+instructor/semester/course combination, while the dependent variable was
+the same question rating for a second combination. The target variable
+of interest was therefore the correlation between these two ratings,
+after adjusting for individual differences due to instructor (random
+intercepts) and course size (control variable). Correlations were
+calculated separately for each of the target questions listed above.
 
-\hypertarget{correlations-of-evaluation-questions-done}{%
-\subsection{Correlations of Evaluation Questions
-DONE}\label{correlations-of-evaluation-questions-done}}
+The overall pattern of the data was the same for each of the eight
+combinations, and these were averaged for Table \ref{tab:rel-table}. The
+complete set of all correlations can be found online. Because the large
+sample size would bias statistical significance based on
+\emph{p}-values, we focused on the size of the correlations. The
+correlations were largest for the same instructor in the same semester
+and course, followed by the same instructor in the same semester with a
+different course and the same instructor in a different semester with
+the same course. The first shows that scores are somewhat reliable
+(i.e., \emph{r}s \textasciitilde{} .45) for instructors teaching two or
+more of the same class at the same time. The correlations within
+instructor then drop to \emph{r}s \textasciitilde{} .09 for the same
+semester or same course. All other correlations are nearly zero, with
+the same semester, same course, and different instructor as the next
+largest at \emph{r}s \textasciitilde{} .05. Given these values are still
+low for traditional reliability standards, these results may indicate
+that student demand characteristics or course changes impact instructor
+ratings.
+
+\hypertarget{correlations-of-evaluation-questions}{%
+\subsection{Correlations of Evaluation
+Questions}\label{correlations-of-evaluation-questions}}
 
 \begin{table}[tbp]
 \begin{center}
 \begin{threeparttable}
 \caption{\label{tab:correlation-table}t Statistics for Inter-item Relationship}
-\begin{tabular}{lcccccl}
+\begin{tabular}{lcccccc}
 \toprule
-Coefficient & \multicolumn{1}{c}{\$pr\$} & \multicolumn{1}{c}{\$b\$} & \multicolumn{1}{c}{\$SE\$} & \multicolumn{1}{c}{\$df\$} & \multicolumn{1}{c}{\$t\$} & \multicolumn{1}{c}{\$p\$}\\
+Coefficient & $pr$ & $b$ & $SE$ & $df$ & $t$ & $p$\\
 \midrule
 Overall to Exams & .637 & .828 & .014 & 4447 & 60.813 & < .001\\
 Overall to Fair & .606 & .903 & .016 & 4447 & 57.837 & < .001\\
@@ -538,100 +468,76 @@ Assignments to Expected Grade & .344 & .404 & .015 & 4447 & 26.913 & < .001\\
 \end{center}
 \end{table}
 
+In this analysis, we correlated each of the five relevant evaluation
+questions, as the above analysis indicated reliability for each item
+across time, but not their relation to each other. The multilevel models
+for this analysis included course size as an adjustor variable, one
+evaluation item as the independent variable, and a separate evaluation
+item as the dependent variable. Again, these included the instructor as
+a random intercept to control for differences in average ratings. This
+analysis was on the original dataset where each
+semester/course/instructor combination was only compared to the matching
+semester/course/instructor combination (i.e., ratings are correlated
+only on the exact same course, semester, and instructor), rather than
+the special dataset created above for reliability.
+
 Table \ref{tab:correlation-table} presents the inter-correlations for
-the five relevant evaluation questions using instructor as a random
-intercept in a multilevel model with evaluation sample size as an
-adjustor variable. The partial correlation (\emph{pr}) is the
-standardized coefficient from the multilevel model analysis between
-items while adjusting for sample size and random effects of instructor.
-The raw coefficient \emph{b}, standard error, and significance
-statistics are also provided. We found class expected grade was related
-to class overall rating, exams reflecting the material, grading
-fairness, and appropriateness of assignments; however, these partial
-correlations were approximately half of all other pairwise correlations.
-The correlations between grading related items were high, representing
-some consistency in evaluation, as well as the overall course evaluation
-to grading questions.
-
-\hypertarget{instructor-status-and-ratings-do-we-want-this}{%
-\subsection{Instructor Status and Ratings DO WE WANT
-THIS}\label{instructor-status-and-ratings-do-we-want-this}}
-
-We compared teaching assistants, per-course faculty, instructors, and
-ranked faculty in undergraduate courses that included evaluations for
-all four types of teacher, usually general education classes (i.e.,
-Introductory Psychology), required major courses (i.e., Statistics,
-Research Methods), and popular electives (i.e., Abnormal Psychology).
-This anlaysis included 179 teachers: 49 teaching assistants, 54
-per-course instructors, 17 instructors, and 59 full-time faculty who
-taught 2744 courses: 266 teaching assistants, 400 per-course
-instructors, 354 instructors, and 1724 full-time faculty.
-
-. All comparisons were made against full-time faculty to control for
-Type 1 error using a multilevel model with a dummy coded instructor
-variable, and dummy coded t values were used to determine which
-comparison groups were different from full-time faculty. Overall means
-and standard deviations are presented in Table 3, and the complete set
-of t value comparisons for these analyses can be found online. As shown
-in the Table 3, the ratings of all groups were fairly high, hovering
-around 4.00 on a 5.00 point scale, and the expected grade for courses
-was approximately a B.
-
-For overall ratings, faculty were found to be rated less highly than
-teaching assistants, p = .027, but not significantly different than
-per-course faculty (p = .181) or instructors (p = .814). When rating if
-exams were representative of course material, full-time faculty were
-rated lower than both teaching assistants (p \textless{} .001) and
-per-course faculty (p = .047), but were not significantly different than
-instructors (p = .740). Full-time faculty were rated as less fair and
-appropriate in their grades than teaching assistants (p = .003), while
-per-course faculty (p = .128) and instructors (p = .657) had similar
-scores to faculty. Teaching assistants were designated to have more
-appropriate assignments than faculty (p \textless{} .001), while
-per-course (p = .060) and instructors (p = .073) had the same ratings as
-faculty on assignments. Finally, faculty showed significantly lower
-expected grades than teaching assistants (p \textless{} .001) and
-per-course faculty (p = .044), while having similar grades to
-instructors (p = .705).
+the five relevant evaluation questions. The partial correlation
+(\emph{pr}) is the standardized coefficient from the multilevel model
+analysis between items while adjusting for sample size and random
+effects of instructor. The raw coefficient \emph{b}, standard error, and
+significance statistics are also provided. We found class expected grade
+was related to class overall rating, exams reflecting the material,
+grading fairness, and appropriateness of assignments; however, these
+partial correlations were approximately half of all other pairwise
+correlations. The correlations between grading related items were high,
+representing some consistency in evaluation, as well as the overall
+course evaluation to grading questions.
 
 \hypertarget{moderated-mediation}{%
 \subsection{Moderated Mediation}\label{moderated-mediation}}
+
+\begin{figure}
+\includegraphics[width=7in,height=5in]{complete_medmod} \caption{Mediation models for moderated mediation analysis indicating mediation effects for each type of teacher. Expected grading indicates student entered grade expected in the course, perceived grading is an average score of fairness, appropriateness, and exam grading questions, and overall rating indicates the omnibus rating for a course.}\label{fig:med-mod-pic}
+\end{figure}
 
 \begin{table}[tbp]
 \begin{center}
 \begin{threeparttable}
 \caption{\label{tab:table-mod-med}t Statistics for Moderated Mediation}
+\small{
 \begin{tabular}{llccccc}
 \toprule
-DV & \multicolumn{1}{c}{IV} & \multicolumn{1}{c}{\$b\$} & \multicolumn{1}{c}{\$SE\$} & \multicolumn{1}{c}{\$df\$} & \multicolumn{1}{c}{\$t\$} & \multicolumn{1}{c}{\$p\$}\\
+DV & IV & $b$ & $SE$ & $df$ & $t$ & $p$\\
 \midrule
 Overall Course & Expected Grade & 0.542 & 0.026 & 4336 & 20.650 & < .001\\
-Overall Course & Teaching Assistant & -0.198 & 0.109 & 191 & -1.814 & .071\\
+Overall Course & Teaching Assistant & -0.096 & 0.081 & 191 & -1.187 & .237\\
 Overall Course & Per-Course & 0.018 & 0.076 & 191 & 0.235 & .815\\
-Overall Course & Instructor & -0.096 & 0.081 & 191 & -1.187 & .237\\
-Overall Course & EG X TA & 0.255 & 0.060 & 4336 & 4.234 & < .001\\
+Overall Course & Instructor & -0.198 & 0.109 & 191 & -1.814 & .071\\
+Overall Course & EG X TA & -0.049 & 0.105 & 4336 & -0.464 & .643\\
 Overall Course & EG X PC & 0.077 & 0.079 & 4336 & 0.976 & .329\\
-Overall Course & EG X IN & -0.049 & 0.105 & 4336 & -0.464 & .643\\
+Overall Course & EG X IN & 0.255 & 0.060 & 4336 & 4.234 & < .001\\
 Average Grading & Expected Grade & 0.360 & 0.017 & 4336 & 21.790 & < .001\\
-Average Grading & Teaching Assistant & -0.049 & 0.059 & 191 & -0.839 & .403\\
+Average Grading & Teaching Assistant & 0.083 & 0.044 & 191 & 1.860 & .064\\
 Average Grading & Per-Course & 0.060 & 0.041 & 191 & 1.441 & .151\\
-Average Grading & Instructor & 0.083 & 0.044 & 191 & 1.860 & .064\\
-Average Grading & EG X TA & 0.173 & 0.038 & 4336 & 4.556 & < .001\\
+Average Grading & Instructor & -0.049 & 0.059 & 191 & -0.839 & .403\\
+Average Grading & EG X TA & 0.056 & 0.064 & 4336 & 0.870 & .384\\
 Average Grading & EG X PC & 0.167 & 0.049 & 4336 & 3.403 & .001\\
-Average Grading & EG X IN & 0.056 & 0.064 & 4336 & 0.870 & .384\\
+Average Grading & EG X IN & 0.173 & 0.038 & 4336 & 4.556 & < .001\\
 Overall Course & Expected Grade & 0.148 & 0.020 & 4332 & 7.537 & < .001\\
-Overall Course & Teaching Assistant & -0.133 & 0.058 & 191 & -2.286 & .023\\
+Overall Course & Teaching Assistant & -0.198 & 0.045 & 191 & -4.388 & < .001\\
 Overall Course & Per-Course & -0.056 & 0.041 & 191 & -1.354 & .177\\
-Overall Course & Instructor & -0.198 & 0.045 & 191 & -4.388 & < .001\\
-Overall Course & Average Grading & 0.000 & 0.000 & 4332 & 1.768 & .077\\
-Overall Course & EG X TA & 0.034 & 0.051 & 4332 & 0.654 & .513\\
+Overall Course & Instructor & -0.133 & 0.058 & 191 & -2.286 & .023\\
+Overall Course & Average Grading & 1.098 & 0.019 & 4332 & 58.334 & < .001\\
+Overall Course & EG X TA & -0.173 & 0.080 & 4332 & -2.164 & .031\\
 Overall Course & EG X PC & -0.299 & 0.063 & 4332 & -4.714 & < .001\\
-Overall Course & EG X IN & -0.173 & 0.080 & 4332 & -2.164 & .031\\
-Overall Course & AG X TA & 0.061 & 0.054 & 4332 & 1.136 & .256\\
+Overall Course & EG X IN & 0.034 & 0.051 & 4332 & 0.654 & .513\\
+Overall Course & AG X TA & 0.142 & 0.087 & 4332 & 1.634 & .102\\
 Overall Course & AG X PC & 0.359 & 0.061 & 4332 & 5.922 & < .001\\
-Overall Course & AG X IN & 0.142 & 0.087 & 4332 & 1.634 & .102\\
+Overall Course & AG X IN & 0.061 & 0.054 & 4332 & 1.136 & .256\\
 \bottomrule
 \end{tabular}
+}
 \end{threeparttable}
 \end{center}
 \end{table}
@@ -642,7 +548,7 @@ Overall Course & AG X IN & 0.142 & 0.087 & 4332 & 1.634 & .102\\
 \caption{\label{tab:table-med-split}t Statistics for Individual Mediations}
 \begin{tabular}{lllccccc}
 \toprule
-Group & \multicolumn{1}{c}{DV} & \multicolumn{1}{c}{IV} & \multicolumn{1}{c}{\$b\$} & \multicolumn{1}{c}{\$SE\$} & \multicolumn{1}{c}{\$df\$} & \multicolumn{1}{c}{\$t\$} & \multicolumn{1}{c}{\$p\$}\\
+Group & DV & IV & $b$ & $SE$ & $df$ & $t$ & $p$\\
 \midrule
 Teaching Assistant & Overall Course & Expected Grade & 0.510 & 0.092 & 219 & 5.534 & < .001\\
 Teaching Assistant & Average Grading & Expected Grade & 0.407 & 0.049 & 219 & 8.326 & < .001\\
@@ -666,40 +572,66 @@ Tenure Track & Overall Course & Average Grading & 1.097 & 0.020 & 3184 & 56.152 
 \end{center}
 \end{table}
 
-Given the correlations between items and differences between items and
-ranked faculty, we proposed a mediation relationship between expected
-grade, perceived grading, and overall course grades that varies by
-instructor type. Figure 1 demonstrates the predicted relationship
+We proposed a mediation relationship between expected grade, perceived
+grading, and overall course grades that varies by instructor type.
+Figure \ref{fig:med-mod-pic} demonstrates the predicted relationship
 between these variables. We hypothesized that expected course grade
 would impact the overall course rating, but this relationship would be
 mediated by the perceived grading in the course, which was calculated by
 averaging questions about exams, fairness of grading, and assignments.
-Therefore, as students expected to earned higher grades (leniency),
-their perception and ratings of the grading would increase, thus,
-leading to higher overall course scores. This relationship was tested
-using traditional and newer approaches to mediation (Baron \& Kenny,
-1986; Hayes, 2017). All categorical interactions were compared to ranked
-faculty. Each step of the model is described below. Because significant
-interactions were found, we calculated each group separately (Figure 1)
-to portray these differences in path coefficients. Tables of t values
-for the overall and separated analyses are available at
-\url{http://osf.io/jdpfs}.
+Therefore, as students expected to earned higher grades, their
+perception and ratings of the grading would increase, thus, leading to
+higher overall course scores. This relationship was tested using
+traditional and newer approaches to mediation (Baron \& Kenny, 1986;
+Hayes, 2017) wherein the following steps were examined:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  The c path: Expected grade was hypothesized to predict overall course
+  rating.
+\item
+  The a path: Expected grade was hypothesized to predict perceived
+  grading.
+\item
+  The b path: Perceived grading was expected to predict overall course
+  rating, adjusting for expected grade in the same model.
+\item
+  The c' path/mediation: Expected grade's prediction of overall course
+  rating should diminish when including perceived grading in the same
+  model. In this step, the confidence interval of the indirect effect
+  (i.e., the amount of mediation) was calculated by bootstrapping the
+  analysis 1000 times. If the confidence interval of the indirect effect
+  did not include zero, we concluded that mediation occurred.
+\end{enumerate}
+
+All categorical interactions were compared to ranked faculty. Each step
+of the model is described below, as independent and dependent variables
+change based on the path analyzed. Because significant interactions were
+found, we calculated each group separately to portray these differences
+in path coefficients. Tables \ref{tab:table-mod-med} and
+\ref{tab:table-med-split} provide all regression statistics for
+predictor variables in the overall and separated models. All regressions
+were analyzed with multilevel models including course size as the
+adjustor variable and instructor as the random intercept.
 
 \hypertarget{c-path}{%
-\subsubsection{C Path}\label{c-path}}
+\subsubsection{c Path}\label{c-path}}
 
 First, expected grade was used to predict the overall rating of the
 course, along with the interaction of type of instructor and expected
-grade. The expected grade positively predicted overall course rating, p
-\textless{} .001, wherein higher expected grades was related to higher
-overall ratings for the course (b = 0.39). A significant interaction
-between type and expected grade rating was found for instructors versus
-faculty. In looking at Figure 1, we find that instructors (b = 0.56)
-have a stronger relationship between expected grade and overall course
-rating than faculty (b = 0.39, interaction p = .020), while per-course
-(b = 0.41, interaction p = .621) and teaching assistants (b = 0.71,
-interaction p = .068) were not significantly different than faculty on
-the c path coefficient.
+grade. The expected grade positively predicted overall course rating,
+\emph{p} \textless{} .001, wherein higher expected grades was related to
+higher overall ratings for the course (\emph{b} = 0.542). A significant
+interaction between type and expected grade rating was found for
+instructors versus faculty. When examining Figure \ref{fig:med-mod-pic},
+we find that instructors (\emph{b} = 0.836) have a stronger relationship
+between expected grade and overall course rating than faculty (\emph{b}
+= 0.537, interaction \emph{p} \textless{} .001), while per-course
+(\emph{b} = 0.605, interaction \emph{p} = .329) and teaching assistants
+(\emph{b} = 0.510, interaction \emph{p} = .643) were not significantly
+different than faculty on the c path coefficient.
 
 \hypertarget{a-path}{%
 \subsubsection{A Path}\label{a-path}}
@@ -707,76 +639,85 @@ the c path coefficient.
 Expected grade was then used to predict the average of the grading
 related questions, along with the interaction of type of instructor.
 Higher expected grades were related to higher ratings of appropriating
-grading (b = 0.21, p \textless{} .001), and a significant interaction of
-faculty and all three other instructor types emerged: teaching
-assistants (p = .001), per-course faculty (p = .001), and instructors (p
-\textless{} .001). As seen in Figure 1, faculty (b = 0.21) have a much
-weaker relationship between expected grade and average ratings of
-grading than teaching assistants (b = 0.55), per-course (b = 0.41), and
-instructors (b = 0.45). B and C' Paths. In the final model, expected
-grade, average ratings of grading, and the two-way interactions of these
-two variables with type were used to predict overall course evaluation.
-Average rating of grading was a strong significant predictor of overall
-course rating (b = 1.10, p \textless{} .001), indicating that a
-perception of fair grading was related positively to overall course
-ratings. An interaction between per-course faculty and fair grading
-emerged, p \textless{} .001, wherein faculty (b = 1.10) had a less
-positive relationship than per-course (b = 1.28), while teaching
-assistants (b = 1.37, interaction p = .071) and instructors (b = 1.16,
-interaction p = .187) were not significantly different coefficients. The
-relationship between expected grade and overall course rating decreased
-from the original model (b = 0.16, p \textless{} .001). However, the
-interaction between this path and per-course (p \textless{} .001) and
-instructors (p = .041) versus faculty was significant, while faculty
-versus teaching assistants' paths were not significantly different (p =
-.133). Faculty relationship between expected grade and overall course
-scoring, while accounting for ratings of grading was stronger (b = 0.16)
-than instructors (b = 0.04) and per-course (b = -0.10), but not that of
-teaching assistants (b = -0.04).
+grading (\emph{b} = 0.360, \emph{p} \textless{} .001), and a significant
+interaction of faculty by per-course (\emph{p} = .001) and faculty by
+instructors (\emph{p} \textless{} .001) were found, but not faculty by
+teaching assistants (\emph{p} = .384). Faculty (\emph{b} = 0.359) have a
+much weaker relationship between expected grade and average ratings of
+grading than per-course (\emph{b} =0.505), and instructors (\emph{b} =
+0.562), while faculty were equal to teaching assistants in this path
+(\emph{b} = 0.407).
 
-\#\#\#Mediation Strength
+\hypertarget{b-and-c-paths}{%
+\subsubsection{B and C' Paths}\label{b-and-c-paths}}
 
-We then analyzed the indirect effects (i.e.~the amount of mediation) for
-each type of instructor separately, using both the Aroian version of the
-Sobel test (Baron \& Kenny, 1986), as well as bootstrapped samples to
-determine the 95\% confidence interval of the mediation (Preacher \&
-Hayes, 2008; Hayes, 2017) because of the criticisms on Sobel. For
-confidence interval testing, we ran 5,000 bootstrapped samples examining
+In the final model, expected grade, average ratings of grading, and the
+two-way interactions of these two variables with type were used to
+predict overall course evaluation. Average rating of perceived grading
+was a significant predictor of overall course rating (\emph{b} = 1.098,
+\emph{p} \textless{} .001), indicating that a perception of fair grading
+was related positively to overall course ratings. An interaction between
+per-course faculty and fair grading emerged, \emph{p} \textless{} .001,
+wherein faculty (\emph{b} = 1.097) had a less positive relationship than
+per-course (\emph{b} = 1.426), while teaching assistants (\emph{b} =
+1.265, interaction \emph{p} = .102) and instructors (\emph{b} = 1.144,
+interaction \emph{p} = .256) were not significantly different
+coefficients.
+
+The relationship between expected grade and overall course rating
+decreased from the original model (\emph{b} = 0.148, \emph{p}
+\textless{} .001). However, the interaction between this path and
+per-course (\emph{p} \textless{} .001) and teaching assistants (\emph{p}
+= .031) versus faculty was significant, while faculty versus
+instructors' paths were not significantly different (\emph{p} = .513).
+Faculty relationship between expected grade and overall course scoring,
+while accounting for ratings of grading was stronger (\emph{b} = 0.142)
+than per-course (\emph{b} = -0.109) and teaching assistants (\emph{b} =
+-0.010), but not that of instructors (\emph{b} = 0.194).
+
+\hypertarget{mediation-strength}{%
+\subsubsection{Mediation Strength}\label{mediation-strength}}
+
+We then analyzed the indirect effects (i.e., the amount of mediation)
+for each type of instructor separately, using both the Aroian version of
+the Sobel test (Baron \& Kenny, 1986), as well as bootstrapped samples
+to determine the 95\% confidence interval of the mediation
+({\textbf{???}}; Hayes, 2017) because of the criticisms on Sobel. For
+confidence interval testing, we ran 1000 bootstrapped samples examining
 the mediation effect and interpreted that the mediation was different
-from zero if the confidence interval did not include zero. For teaching
-assistants, we found mediation significantly greater than zero, indirect
-= 0.74 (SE = 0.14), Z = 5.15, p \textless{} .001, 95\% CI{[}0.48,
-1.02{]}. Per-course faculty showed mediation between expected grade and
-overall course rating, indirect = 0.52 (SE = 0.09), Z = 6.06, p
-\textless{} .001, 95\% CI{[}0.36, 0.73{]}. Instructors showed a similar
-indirect mediation effect, indirect = 0.53 (SE = 0.07), Z = 7.31, p
-\textless{} .001, 95\% CI{[}0.40, 0.66{]}. Last, faculty showed the
-smallest mediation effect, indirect = 0.23 (SE = 0.02), Z = 8.71, p
-\textless{} .001, 95\% CI{[}0.19, 0.28{]}, wherein the confidence
-interval did not include zero, but also did not overlap with any other
-instructor group.
+from zero if the confidence interval did not include zero.
 
-\hypertarget{discussion}{%
-\section{Discussion}\label{discussion}}
+For teaching assistants, we found mediation significantly greater than
+zero, indirect = 0.51 (\emph{SE} = 0.10), \emph{Z} = 5.39, \emph{p}
+\textless{} .001, 95\% CI{[}0.30, 0.70{]}. Per-course faculty showed
+mediation between expected grade and overall course rating, indirect =
+0.72 (\emph{SE} = 0.13), \emph{Z} = 9.43, \emph{p} \textless{} .001,
+95\% CI{[}0.45, 0.95{]}. Instructors showed a similar indirect mediation
+effect, indirect = 0.64 (\emph{SE} = 0.06), \emph{Z} = 10.34, \emph{p}
+\textless{} .001, 95\% CI{[}0.57, 0.81{]}. Last, faculty showed the
+smallest mediation effect, indirect = 0.39 (\emph{SE} = 0.03), \emph{Z}
+= 14.39, \emph{p} \textless{} .001, 95\% CI{[}0.33, 0.44{]}, wherein the
+confidence interval did not include zero.
 
-The findings support the model that student evaluations of Psychology
-faculty are related to what one might consider leniency (i.e., overall
-average scores of B) in grading through perceptions of assignment
-appropriateness, grading fairness, and the expected course grade. This
-position is supported both in the strong relationships between expected
-grade and global ratings by the evidence that greater training and
-experience is related to poorer evaluations, lower expected grades, and
-lower relationships between grading and evaluations. Faculty received
-lower scores than teaching assistants in every category and often lower
-scores than per-course faculty, but not instructors. Mediation analyses
-showed that expected grade is positively related to overall course
-ratings, although this relationship is mediated by the perceived grading
-in the course. Therefore, as students have higher expected grades, the
-perceived grading scores increase, and the overall course score also
-increases. Moderation of this mediation effect indicated differences in
-the strength of the relationships between expected grade, grading
-questions, and overall course rating, wherein faculty generally had
-weaker relationships between these variables.
+\hypertarget{discussion-why-is-this-important-why-does-mediation-strength-matter}{%
+\section{Discussion WHY IS THIS IMPORTANT why does mediation strength
+matter}\label{discussion-why-is-this-important-why-does-mediation-strength-matter}}
+
+These findings appear to indicate that faculty ratings are only somewhat
+reliable, with lower correlations (or no correlation) between semester
+and course iterations of teaching. Only the same instructor, in the same
+semester with the same course showed a medium correlation, while all
+others were practically zero. The individual items appeared to be
+correlated, with the strongest inter-item correlations between perceived
+grading items. Mediation analyses showed that expected grade was
+positively related to overall course ratings, although this relationship
+was mediated by the perceived grading in the course. Therefore, as
+students have higher expected grades, the perceived grading scores
+increase, and the overall course score also increases. Moderation of
+this mediation effect indicated differences in the strength of the
+relationships between expected grade, grading questions, and overall
+course rating, wherein faculty generally had weaker relationships
+between these variables.
 
 Because the study was not experimental, causal conclusions from this
 study alone need to be limited. However, Salmons (1993) provides some
@@ -796,43 +737,10 @@ semester are higher than reliability estimates across the board). It is
 very likely that these correlations with expected grade are suppressed
 by the loading of scores at the high end of the scale for course ratings
 and expected grade. Generally, evaluation items reflect scores at the
-high end of the 1-5 scale (see Table 3) even when items are
-intentionally constructed to move evaluators from the ends. The item,
-\enquote{The overall quality of this course was among the top 20\% of
-those I have taken,} is conspicuously designed to move subjects away
-from the top rating. Yet average global ratings remain about a 4.00. The
-grade expectation average was approximately 4.00, which relates to a B
-average or 3.00 GPA.
-
-One way of establishing convergent validity would be a finding that
-better trained and more experienced teachers get higher ratings than
-less well trained instructors. If the measure were valid, we would
-expect that regular faculty and full time instructors would get higher
-ratings than per course faculty and teaching assistants. To argue
-otherwise is to challenge the merits of higher education units with a
-faculty of professors with doctoral status. If the university were a
-researcher powerhouse where faculty research is emphasized over teaching
-and graduate assistants are admitted from the highest ranks of
-undergraduates, the finding that teaching assistants and per course
-faculty get higher ratings might be less of a challenge to the validity
-of these ratings. However, the university at which the data were
-collected is a non-doctoral program with greater emphasis on teaching
-and moderate emphasis on research, and teaching assistants are master's
-candidates with less substantial admission expectations than doctoral
-programs. Hence, these findings challenge the convergent validity of the
-teaching evaluations.
-
-Like most studies in this area, a major limitation is the absence of an
-independent measure of learning. Of course, this limitation is based
-upon the belief that the goal is to create educated persons, not just
-satisfied consumers. Even when common tests are used, these are invalid
-if the instructors are aware of the course content. Teachers seeking
-high evaluations are able to improve their ratings and scores by
-directly addressing the content of the specific test items. ETS now
-allows faculty who administer Major Field Tests to access the specific
-items which thereby invalidates it as a measure for these purposes.
-Ultimately, answering questions about the validity of student
-evaluations is a daunting task without such measures.
+high end of the 1-5 scale even when items are intentionally constructed
+to move evaluators from the ends. The item, \enquote{The overall quality
+of this course was among the top 20\% of those I have taken} is
+conspicuously designed to move subjects away from the top rating.
 
 Evidence suggests that student evaluations are influenced by likability,
 attractiveness, and dress (Buck \& Tiene, 1989; Gurung \& Vespia, 2007;
@@ -849,8 +757,8 @@ positive relationship to independent measures of achievement is
 essential to the acceptance of student evaluations as a measure of
 teaching quality.
 
-Perception of the influence of leniency on teacher evaluations is far
-more detrimental to the quality of education than the biased evaluations
+The influence of perceived grading on teacher evaluations is far more
+detrimental to the quality of education than the biased evaluations
 themselves. It is unlikely that good teachers, even if more challenging,
 will get bad evaluations (i.e.~evaluations where the majority of
 students rate the course poorly). Good teachers are rarely losing their
@@ -875,16 +783,16 @@ likely to lead to grade inflation and permissiveness for the least
 motivated and most negligent students. Some researchers (Ellis et al.,
 2003; Greenwald \& Gillmore, 1997) argue that student evaluations of
 instruction should be adjusted on the basis of grades assigned. However,
-there are problems with such an approach. The regression Betas are
+there are problems with such an approach. The regression values are
 likely to differ based upon course and many other factors. In our
-research and in research by DuCettte and Kenney (1982), substantial
-variation in correlations was found across different course sets.
-Establishing valid adjustments would be problematic at best. Further,
-such an approach would punish instructors when they happen to get an
-unusually intelligent and motivated class (or teach an honors class) and
-give students the grades they deserve. Student evaluations are not a
-proper motivational factor for instructors in grade assignment, whether
-it is to inflate or deflate grades.
+research and in research by ({\textbf{???}}), substantial variation in
+correlations was found across different course sets. Establishing valid
+adjustments would be problematic at best. Further, such an approach
+would punish instructors when they happen to get an unusually
+intelligent and motivated class (or teach an honors class) and give
+students the grades they deserve. Student evaluations are not a proper
+motivational factor for instructors in grade assignment, whether it is
+to inflate or deflate grades.
 
 It would seem nearly impossible to eliminate invalid bias in student
 ratings of instruction. Yet, they may tell us a teacher is ineffective
@@ -1104,10 +1012,6 @@ doi:\href{https://doi.org/10.1016/j.stueduc.2016.08.007}{10.1016/j.stueduc.2016.
 \leavevmode\hypertarget{ref-Weiner1992}{}%
 Weiner, B. (1992). \emph{Human motivation : metaphors, theories, and
 research} (p. 391). Sage.
-
-
-
-
 
 
 \end{document}
