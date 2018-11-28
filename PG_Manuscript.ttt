@@ -33,11 +33,7 @@ Same Instructor & Same Semester & Same Course & .446 & .023 & 1401 & 19.631 & < 
 \caption{\label{tab:correlation-table}t Statistics for Inter-item Relationship}
 \begin{tabular}{lcccccc}
 \toprule
-<<<<<<< HEAD
-Coefficient & \multicolumn{1}{c}{$pr$} & \multicolumn{1}{c}{$b$} & \multicolumn{1}{c}{$SE$} & \multicolumn{1}{c}{$df$} & \multicolumn{1}{c}{$t$} & \multicolumn{1}{c}{$p$}\\
-=======
 Coefficient & $pr$ & $b$ & $SE$ & $df$ & $t$ & $p$\\
->>>>>>> ff99f09104d8bb0542b219d7d208df34759c2f8f
 \midrule
 Overall to Exams & .637 & .828 & .014 & 4447 & 60.813 & < .001\\
 Overall to Fair & .606 & .903 & .016 & 4447 & 57.837 & < .001\\
@@ -65,8 +61,7 @@ Assignments to Expected Grade & .344 & .404 & .015 & 4447 & 26.913 & < .001\\
 \small{
 \begin{tabular}{llccccc}
 \toprule
-<<<<<<< HEAD
-DV & \multicolumn{1}{c}{IV} & \multicolumn{1}{c}{$b$} & \multicolumn{1}{c}{$SE$} & \multicolumn{1}{c}{$df$} & \multicolumn{1}{c}{$t$} & \multicolumn{1}{c}{$p$}\\
+DV & IV & $b$ & $SE$ & $df$ & $t$ & $p$\\
 \midrule
 Overall Course & Expected Grade & 0.493 & 0.102 & 4336 & 4.857 & < .001\\
 Overall Course & Teaching Assistant & 0.114 & 0.085 & 191 & 1.345 & .180\\
@@ -86,42 +81,13 @@ Overall Course & Expected Grade & -0.024 & 0.077 & 4332 & -0.313 & .755\\
 Overall Course & Teaching Assistant & 0.142 & 0.048 & 191 & 2.936 & .004\\
 Overall Course & Per-Course & 0.065 & 0.063 & 191 & 1.028 & .305\\
 Overall Course & Instructor & 0.198 & 0.045 & 191 & 4.388 & < .001\\
-Overall Course & Average Grading & 0.000 & 0.000 & 4332 & 1.768 & .077\\
+Overall Course & Average Grading & 1.241 & 0.085 & 4332 & 14.583 & < .001\\
 Overall Course & EG X TA & -0.126 & 0.098 & 4332 & -1.283 & .200\\
 Overall Course & EG X PC & 0.206 & 0.091 & 4332 & 2.271 & .023\\
 Overall Course & EG X IN & 0.173 & 0.080 & 4332 & 2.164 & .031\\
 Overall Course & AG X TA & 0.216 & 0.103 & 4332 & 2.107 & .035\\
 Overall Course & AG X PC & -0.081 & 0.099 & 4332 & -0.821 & .412\\
 Overall Course & AG X IN & -0.142 & 0.087 & 4332 & -1.634 & .102\\
-=======
-DV & IV & $b$ & $SE$ & $df$ & $t$ & $p$\\
-\midrule
-Overall Course & Expected Grade & 0.542 & 0.026 & 4336 & 20.650 & < .001\\
-Overall Course & Teaching Assistant & -0.096 & 0.081 & 191 & -1.187 & .237\\
-Overall Course & Per-Course & 0.018 & 0.076 & 191 & 0.235 & .815\\
-Overall Course & Instructor & -0.198 & 0.109 & 191 & -1.814 & .071\\
-Overall Course & EG X TA & -0.049 & 0.105 & 4336 & -0.464 & .643\\
-Overall Course & EG X PC & 0.077 & 0.079 & 4336 & 0.976 & .329\\
-Overall Course & EG X IN & 0.255 & 0.060 & 4336 & 4.234 & < .001\\
-Average Grading & Expected Grade & 0.360 & 0.017 & 4336 & 21.790 & < .001\\
-Average Grading & Teaching Assistant & 0.083 & 0.044 & 191 & 1.860 & .064\\
-Average Grading & Per-Course & 0.060 & 0.041 & 191 & 1.441 & .151\\
-Average Grading & Instructor & -0.049 & 0.059 & 191 & -0.839 & .403\\
-Average Grading & EG X TA & 0.056 & 0.064 & 4336 & 0.870 & .384\\
-Average Grading & EG X PC & 0.167 & 0.049 & 4336 & 3.403 & .001\\
-Average Grading & EG X IN & 0.173 & 0.038 & 4336 & 4.556 & < .001\\
-Overall Course & Expected Grade & 0.148 & 0.020 & 4332 & 7.537 & < .001\\
-Overall Course & Teaching Assistant & -0.198 & 0.045 & 191 & -4.388 & < .001\\
-Overall Course & Per-Course & -0.056 & 0.041 & 191 & -1.354 & .177\\
-Overall Course & Instructor & -0.133 & 0.058 & 191 & -2.286 & .023\\
-Overall Course & Average Grading & 1.098 & 0.019 & 4332 & 58.334 & < .001\\
-Overall Course & EG X TA & -0.173 & 0.080 & 4332 & -2.164 & .031\\
-Overall Course & EG X PC & -0.299 & 0.063 & 4332 & -4.714 & < .001\\
-Overall Course & EG X IN & 0.034 & 0.051 & 4332 & 0.654 & .513\\
-Overall Course & AG X TA & 0.142 & 0.087 & 4332 & 1.634 & .102\\
-Overall Course & AG X PC & 0.359 & 0.061 & 4332 & 5.922 & < .001\\
-Overall Course & AG X IN & 0.061 & 0.054 & 4332 & 1.136 & .256\\
->>>>>>> ff99f09104d8bb0542b219d7d208df34759c2f8f
 \bottomrule
 \end{tabular}
 }
@@ -138,11 +104,7 @@ Overall Course & AG X IN & 0.061 & 0.054 & 4332 & 1.136 & .256\\
 \caption{\label{tab:table-med-split}t Statistics for Individual Mediations}
 \begin{tabular}{lllccccc}
 \toprule
-<<<<<<< HEAD
-Group & \multicolumn{1}{c}{DV} & \multicolumn{1}{c}{IV} & \multicolumn{1}{c}{$b$} & \multicolumn{1}{c}{$SE$} & \multicolumn{1}{c}{$df$} & \multicolumn{1}{c}{$t$} & \multicolumn{1}{c}{$p$}\\
-=======
 Group & DV & IV & $b$ & $SE$ & $df$ & $t$ & $p$\\
->>>>>>> ff99f09104d8bb0542b219d7d208df34759c2f8f
 \midrule
 Teaching Assistant & Overall Course & Expected Grade & 0.510 & 0.092 & 219 & 5.534 & < .001\\
 Teaching Assistant & Average Grading & Expected Grade & 0.407 & 0.049 & 219 & 8.326 & < .001\\
