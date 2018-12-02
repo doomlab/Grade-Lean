@@ -45,7 +45,7 @@ lineno            : yes
 mask              : no
 
 class             : "man"
-output            : papaja::apa6_pdf
+output            : papaja::apa6_word
 csl               : apa6.csl
 replace_ampersands: yes
 ---
