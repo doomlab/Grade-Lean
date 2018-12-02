@@ -162,6 +162,7 @@ The overall dataset was screened for normality, linearity, homogeneity, and homo
 
 ```{r reliability, eval = FALSE, include=FALSE}
 ##let's see if twitter can help here - yes! @smartin2018 for the win!
+#please note these have been scrambled while mainitaining the year/semester/instructor combination to keep the data confidential. 
 
 #create every pairwise combination 
 combns <- t(combn(reduced$evalid,2))
