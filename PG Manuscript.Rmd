@@ -1,30 +1,32 @@
 ---
 title             : "Perceived Grading and Student Evaluation of Instruction"
-shorttitle        : "Perceived Grading and Student Evaluation"
+shorttitle        : "Grades and Evaluations"
 
 author: 
   - name          : "Erin M. Buchanan"
     affiliation   : "1"
     corresponding : yes    # Define only one corresponding author
-    address       : "901 S. National Ave, Springfield, MO, 65897"
-    email         : "erinbuchanan@missouristate.edu"
+    address       : "326 Market St, Harrisburg, PA 17101"
+    email         : "ebuchanan@harrisburgu.edu"
   - name          : "Becca N. Huber"
-    affiliation   : "1, 2"
+    affiliation   : "2"
   - name          : "Arden Miller"
-    affiliation   : "1"
-  - name          : "David W. Stockburger"
     affiliation   : "3"
+  - name          : "David W. Stockburger"
+    affiliation   : "4"
   - name          : "Marshall Beauchamp"
-    affiliation   : "4"  
+    affiliation   : "5"  
           
 affiliation:
   - id            : "1"
-    institution   : "Missouri State University"
+    institution   : "Harrisburg University of Science and Technology"
   - id            : "2"
     institution   : "Idaho State University"
   - id            : "3"
-    institution   : "US Air Force Academy"
+    institution   : "Missouri State University"
   - id            : "4"
+    institution   : "US Air Force Academy"
+  - id            : "5"
     institution   : "University of Missouri - Kansas City"
 
 author_note: |
@@ -44,8 +46,8 @@ footnotelist      : no
 lineno            : yes
 mask              : no
 
-class             : "man"
-output            : papaja::apa6_word
+class             : "man,mask"
+output            : papaja::apa6_pdf
 csl               : apa6.csl
 replace_ampersands: yes
 ---
@@ -88,7 +90,7 @@ Student evaluations of professors are a typical practice, but their validity and
 
 However, this finding does not imply that an instructor can simply raise grades to meet expectations [@Centra2003; @Marsh1987; @Marsh2000], instead one should consider the effect of "perceived grading". We operationally define perceived grading as the students' perceptions of assignment appropriateness, grading fairness, and the expected course grade at the time the evaluations are being completed. Social psychology theory would support that students with low perceived grading perceptions may reduce cognitive dissonance and engage in ego defense by giving low evaluations in turn [@Maurer2006], subsequently resulting in decreased validity and reliability of the proposed construct, professor instruction. We argue both social psychology theory and the evidence from student evaluations supports that higher perceived grading can lead to better student evaluations of instruction. For example, @Salmons1993 provided causal evidence of lowered student evaluations due to expected grades. In her study of 444 students completing faculty evaluations at two separate points in a semester, students who expected to get Fs significantly lowered their evaluations while students who expected to receive As and Bs significantly raised their evaluations [@Salmons1993]. This theory and evidence from student evaluation leads us to further argue student evaluations of professors are biased towards their expected grade and the perceived fairness of the grading system, rather than the actual instructional methods used over the course of a semester. 
 
-Much of the literature on student evaluations involves diverse and complex analyses (e.g., @Marsh1987) and lacks social-psychological theoretical guidance on human judgment. To expect that student evaluations would not be influenced by expected grade would contradict a long-standing history of social psychology research on cognitive dissonance, attribution, and ego threat. As we know, failure threatens the ego [@Miller1985] and motivates us to find rationales to defend the ego. Further, @Kenworthy2011 found guilt as a significant correlate of dissonance which may be illuminated in this study by the guilt of under-performing from a student's own expectations. Failing students, or those performing below personal expectations, would be expected to defend their ego by attributing low grades to poor teaching or unfair evaluation practices [@Maurer2006]. One common strategy involves diminishing the value of the activity [@Miller1989], which would result in lowered perceived value of a course.
+Much of the literature on student evaluations involves diverse and complex analyses [e.g., @Marsh1987] and lacks social-psychological theoretical guidance on human judgment. To expect that student evaluations would not be influenced by expected grade would contradict a long-standing history of social psychology research on cognitive dissonance, attribution, and ego threat. As we know, failure threatens the ego [@Miller1985] and motivates us to find rationales to defend the ego. Further, @Kenworthy2011 found guilt as a significant correlate of dissonance which may be illuminated in this study by the guilt of under-performing from a student's own expectations. Failing students, or those performing below personal expectations, would be expected to defend their ego by attributing low grades to poor teaching or unfair evaluation practices [@Maurer2006]. One common strategy involves diminishing the value of the activity [@Miller1989], which would result in lowered perceived value of a course.
 
 Similarly, Cognitive Dissonance Theory [@Festinger1957] predicts that people who experience poor performance but perceive themselves as competent will experience dissonance, of which they can reduce through negative evaluations of the instruction [@Maurer2006]. Attribution research [@Weiner1992] also supports the argument that among low achievement motivation students, failure is associated with external attributions for cause, and the most plausible external attribution for the student in the evaluation context is the quality of instruction and grading practices. Although arguments regarding degree of influence are reasonable, the position that they are not affected is inconsistent with existing and established theory. Thus, it is not surprising that the majority of faculty perceive student evaluations to be biased by perceived grading and course choice [@Marsh1987].
 
