@@ -1,34 +1,36 @@
 ---
 title             : "Perceived Grading and Student Evaluation of Instruction"
-shorttitle        : "Perceived Grading and Student Evaluation"
+shorttitle        : "Grades and Evaluations"
 
 author: 
   - name          : "Erin M. Buchanan"
     affiliation   : "1"
     corresponding : yes    # Define only one corresponding author
-    address       : "901 S. National Ave, Springfield, MO, 65897"
-    email         : "erinbuchanan@missouristate.edu"
+    address       : "326 Market St, Harrisburg, PA 17101"
+    email         : "ebuchanan@harrisburgu.edu"
   - name          : "Becca N. Huber"
-    affiliation   : "1, 2"
+    affiliation   : "2"
   - name          : "Arden Miller"
-    affiliation   : "1"
-  - name          : "David W. Stockburger"
     affiliation   : "3"
+  - name          : "David W. Stockburger"
+    affiliation   : "4"
   - name          : "Marshall Beauchamp"
-    affiliation   : "4"  
+    affiliation   : "5"  
           
 affiliation:
   - id            : "1"
-    institution   : "Missouri State University"
+    institution   : "Harrisburg University of Science and Technology"
   - id            : "2"
     institution   : "Idaho State University"
   - id            : "3"
-    institution   : "US Air Force Academy"
+    institution   : "Missouri State University"
   - id            : "4"
+    institution   : "US Air Force Academy"
+  - id            : "5"
     institution   : "University of Missouri - Kansas City"
 
 author_note: |
-  A portion of this research was presented at the meeting of the Southwestern Psychological Association, April, 2009, San Antonio, TX. The authors would like to thank Melissa Fallone for comments on earlier drafts and Stephen Martin for his help with restructuring the data.
+  The authors would like to thank Melissa Fallone for comments on earlier drafts and Stephen Martin for his help with restructuring the data.
 
 abstract: |
   We analyzed student evaluations for 3,585 classes collected over 20 years to determine stability and evaluate the relationship of perceived grading to global evaluations, perceived fairness, and appropriateness of assignments. Using class as the unit of analysis, we found small evaluation reliability when professors taught the same course in the same semester, with much weaker correlations for differing courses. Expected grade and grading related questions correlated with overall evaluations of courses. Differences in course evaluations on expected grades, grading questions, and overall grades were found between full-time faculty and other types of instructors. These findings are expanded to a model of grading type questions mediating the relationship between expected grade and overall course evaluations with a moderating effect of type of instructor. 
@@ -44,7 +46,7 @@ footnotelist      : no
 lineno            : yes
 mask              : no
 
-class             : "man"
+class             : "man,mask"
 output            : papaja::apa6_pdf
 csl               : apa6.csl
 replace_ampersands: yes
@@ -80,8 +82,7 @@ indirectsaved = function(dataset, random) {
 
 library(boot)
 ##change nsims to lower so it knits, use 1000 for manuscript
-#nsims = 1000
-nsims = 10
+nsims = 1000
 
 ```
 
@@ -89,7 +90,7 @@ Student evaluations of professors are a typical practice, but their validity and
 
 However, this finding does not imply that an instructor can simply raise grades to meet expectations [@Centra2003; @Marsh1987; @Marsh2000], instead one should consider the effect of "perceived grading". We operationally define perceived grading as the students' perceptions of assignment appropriateness, grading fairness, and the expected course grade at the time the evaluations are being completed. Social psychology theory would support that students with low perceived grading perceptions may reduce cognitive dissonance and engage in ego defense by giving low evaluations in turn [@Maurer2006], subsequently resulting in decreased validity and reliability of the proposed construct, professor instruction. We argue both social psychology theory and the evidence from student evaluations supports that higher perceived grading can lead to better student evaluations of instruction. For example, @Salmons1993 provided causal evidence of lowered student evaluations due to expected grades. In her study of 444 students completing faculty evaluations at two separate points in a semester, students who expected to get Fs significantly lowered their evaluations while students who expected to receive As and Bs significantly raised their evaluations [@Salmons1993]. This theory and evidence from student evaluation leads us to further argue student evaluations of professors are biased towards their expected grade and the perceived fairness of the grading system, rather than the actual instructional methods used over the course of a semester. 
 
-Much of the literature on student evaluations involves diverse and complex analyses (e.g., @Marsh1987) and lacks social-psychological theoretical guidance on human judgment. To expect that student evaluations would not be influenced by expected grade would contradict a long-standing history of social psychology research on cognitive dissonance, attribution, and ego threat. As we know, failure threatens the ego [@Miller1985] and motivates us to find rationales to defend the ego. Further, @Kenworthy2011 found guilt as a significant correlate of dissonance which may be illuminated in this study by the guilt of under-performing from a student's own expectations. Failing students, or those performing below personal expectations, would be expected to defend their ego by attributing low grades to poor teaching or unfair evaluation practices [@Maurer2006]. One common strategy involves diminishing the value of the activity [@Miller1989], which would result in lowered perceived value of a course.
+Much of the literature on student evaluations involves diverse and complex analyses [e.g., @Marsh1987] and lacks social-psychological theoretical guidance on human judgment. To expect that student evaluations would not be influenced by expected grade would contradict a long-standing history of social psychology research on cognitive dissonance, attribution, and ego threat. As we know, failure threatens the ego [@Miller1985] and motivates us to find rationales to defend the ego. Further, @Kenworthy2011 found guilt as a significant correlate of dissonance which may be illuminated in this study by the guilt of under-performing from a student's own expectations. Failing students, or those performing below personal expectations, would be expected to defend their ego by attributing low grades to poor teaching or unfair evaluation practices [@Maurer2006]. One common strategy involves diminishing the value of the activity [@Miller1989], which would result in lowered perceived value of a course.
 
 Similarly, Cognitive Dissonance Theory [@Festinger1957] predicts that people who experience poor performance but perceive themselves as competent will experience dissonance, of which they can reduce through negative evaluations of the instruction [@Maurer2006]. Attribution research [@Weiner1992] also supports the argument that among low achievement motivation students, failure is associated with external attributions for cause, and the most plausible external attribution for the student in the evaluation context is the quality of instruction and grading practices. Although arguments regarding degree of influence are reasonable, the position that they are not affected is inconsistent with existing and established theory. Thus, it is not surprising that the majority of faculty perceive student evaluations to be biased by perceived grading and course choice [@Marsh1987].
 
@@ -157,12 +158,13 @@ All data were checked for course coding errors, and type of instructor was coded
 
 This data was considered structured by instructor; therefore, all analyses below were coded in *R* using the *nlme* package [@Pinheiro2017] to control for correlated error of instructor as a random intercept in a multilevel model. Multilevel models allow for analysis of repeated measures data without collapsing by participant [i.e., each instructor/semester/course combination can be kept separate without averaging over these measurements; @Gelman2006]. Random intercept models are regression models on the repeated data that structure the data by a specified variable, which was instructor in this analysis. Therefore, each instructor's average rating score was allowed to vary within the analysis, as ratings would be expected to be different from instructor to instructor. In each of the analyses described below, the number of students providing ratings for the course was included as a control variable to even out differences in course size as an influence in the results. The dependent variable and predictors varied based on the research question, and these are described with each analysis below. 
 
-The overall dataset was screened for normality, linearity, homogeneity, and homoscedasticity using procedures from @Tabachnick2012. Data generally met assumptions with a slight skew and some heterogeneity. This data was not screened for outliers because it was assumed that each score was entered correctly from student evaluations. The complete set of all statistics can be found online at http://osf.io/jdpfs. This page also includes the manuscript written inline with the statistical analysis with the *papaja* package [@Aust2017] for interested researchers/reviewers who wish to recreate these analyses.
+The overall dataset was screened for normality, linearity, homogeneity, and homoscedasticity using procedures from @Tabachnick2012. Data generally met assumptions with a slight skew and some heterogeneity. This data was not screened for outliers because it was assumed that each score was entered correctly from student evaluations. The complete anonymized dataset and other information can be found online at http://osf.io/jdpfs. This page also includes the manuscript written inline with the statistical analysis with the *papaja* package [@Aust2017] for interested researchers/reviewers who wish to recreate these analyses.
 
 ## Reliability of Instructor Scores
 
 ```{r reliability, eval = FALSE, include=FALSE}
 ##let's see if twitter can help here - yes! @smartin2018 for the win!
+#please note these have been scrambled while mainitaining the year/semester/instructor combination to keep the data confidential. 
 
 #create every pairwise combination 
 combns <- t(combn(reduced$evalid,2))
