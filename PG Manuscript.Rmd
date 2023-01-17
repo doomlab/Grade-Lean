@@ -47,7 +47,7 @@ lineno            : yes
 mask              : no
 
 class             : "man,mask"
-output            : papaja::apa6_pdf
+output            : papaja::apa6_docx
 csl               : apa6.csl
 replace_ampersands: yes
 ---
@@ -768,25 +768,25 @@ colnames(tableprint) = c("Coefficient", "$pr$",
                          "$b$", "$SE$", "$df$", "$t$", "$p$")
 
 tableprint[1, ] = c("Overall to Exams", 
-                    beta(q1.3)$tTable[2,1], unname(summary(q1.3)$tTable[2, ], 3))
+                    summary(q1.3)$tTable[2,1], unname(summary(q1.3)$tTable[2, ], 3))
 tableprint[2, ] = c("Overall to Fair",
-                    beta(q1.4)$tTable[2,1], unname(summary(q1.4)$tTable[2, ], 3))
+                    summary(q1.4)$tTable[2,1], unname(summary(q1.4)$tTable[2, ], 3))
 tableprint[3, ] = c("Overall to Assignments",
-                    beta(q1.9)$tTable[2,1], unname(summary(q1.9)$tTable[2, ], 3))
+                    summary(q1.9)$tTable[2,1], unname(summary(q1.9)$tTable[2, ], 3))
 tableprint[4, ] = c("Overall to Expected Grade",
-                    beta(q1.15)$tTable[2,1], unname(summary(q1.15)$tTable[2, ], 3))
+                    summary(q1.15)$tTable[2,1], unname(summary(q1.15)$tTable[2, ], 3))
 tableprint[5, ] = c("Exams to Fair", 
-                    beta(q3.4)$tTable[2,1], unname(summary(q3.4)$tTable[2, ], 3))
+                    summary(q3.4)$tTable[2,1], unname(summary(q3.4)$tTable[2, ], 3))
 tableprint[6, ] = c("Exams to Assignments", 
-                    beta(q3.9)$tTable[2,1], unname(summary(q3.9)$tTable[2, ], 3))
+                    summary(q3.9)$tTable[2,1], unname(summary(q3.9)$tTable[2, ], 3))
 tableprint[7, ] = c("Exams to Expected Grade", 
-                    beta(q3.15)$tTable[2,1], unname(summary(q3.15)$tTable[2, ], 3))
+                    summary(q3.15)$tTable[2,1], unname(summary(q3.15)$tTable[2, ], 3))
 tableprint[8, ] = c("Fair to Assignments", 
-                    beta(q4.9)$tTable[2,1], unname(summary(q4.9)$tTable[2, ], 3))
+                    summary(q4.9)$tTable[2,1], unname(summary(q4.9)$tTable[2, ], 3))
 tableprint[9, ] = c("Fair to Expected Grade", 
-                    beta(q4.15)$tTable[2,1], unname(summary(q4.15)$tTable[2, ], 3))
+                    summary(q4.15)$tTable[2,1], unname(summary(q4.15)$tTable[2, ], 3))
 tableprint[10, ] = c("Assignments to Expected Grade", 
-                     beta(q9.15)$tTable[2,1], unname(summary(q9.15)$tTable[2, ], 3))
+                     summary(q9.15)$tTable[2,1], unname(summary(q9.15)$tTable[2, ], 3))
 
 tableprint[ , c(2,3,4)] = printnum(as.numeric(tableprint[ , c(2,3,4)]), digits = 3, gt1 = F)
 tableprint[ , c(6)] = printnum(as.numeric(tableprint[ , c(6)]), digits = 3, gt1 = T)
