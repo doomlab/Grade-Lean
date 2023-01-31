@@ -62,7 +62,7 @@ knitr::opts_chunk$set(cache = TRUE)
 ####Bootstrapping the Mediation Effect####
 ##write a function that gives you the numbers you want
 ##we want the indirect effect
-indirectsaved = function(dataset, random) {
+indirectsaved <- function(dataset, random) {
   d = dataset[random, ] #randomize by row
   apath = lme(average ~ zq15 + People, 
                   data = d, 
@@ -82,7 +82,7 @@ indirectsaved = function(dataset, random) {
 
 library(boot)
 ##change nsims to lower so it knits, use 1000 for manuscript
-nsims = 1000
+nsims <- 1000
 
 ```
 
@@ -105,21 +105,21 @@ Similarly, Cognitive Dissonance Theory [@Festinger1957] predicts that people who
 # Method
 
 ```{r load-data, include = FALSE}
-master = read.csv("all_evals.csv")
+master <- read.csv("all_evals.csv")
 
 #remove Gs that were only used for online rendering
-master$Course = as.numeric(gsub("G", "", master$Course))
+master$Course <- as.numeric(gsub("G", "", master$Course))
 
 #drop things below 100 don't know what those are
 #drop things above 500 as those are graduate courses
 ##q1, q3, q4, q9, q15
-reduced = master[master$Course >= 100 & master$Course < 600 , -c(5, 10, 13:16, 18:22) ]
+reduced <- master[master$Course >= 100 & master$Course < 600 , -c(5, 10, 13:16, 18:22) ]
 
-reduced$type = factor(reduced$type,
+reduced$type <- factor(reduced$type,
                         levels = 1:4,
                         labels = c("TA", "Per Course", 
                                    "Instructor", "Tenure Track"))
-reduced$type = factor(reduced$type,
+reduced$type <- factor(reduced$type,
                       levels = c("Tenure Track", "TA", "Per Course", "Instructor"))
 ```
 
@@ -136,8 +136,8 @@ We focused upon the five items, which seemed most pertinent to the issues of per
 # Results
 
 ```{r datascreening, include = FALSE}
-random = rchisq(nrow(reduced), 7)
-output = lm(random ~ ., data = reduced[ , 8:12])
+random <- rchisq(nrow(reduced), 7)
+output <- lm(random ~ ., data = reduced[ , 8:12])
 standardized = rstudent(output)
 fitvalues = scale(output$fitted.values)
 
@@ -164,7 +164,7 @@ The overall dataset was screened for normality, linearity, homogeneity, and homo
 
 ```{r reliability, eval = FALSE, include=FALSE}
 ##let's see if twitter can help here - yes! @smartin2018 for the win!
-#please note these have been scrambled while mainitaining the year/semester/instructor combination to keep the data confidential. 
+#please note these have been scrambled while maintaining the year/semester/instructor combination to keep the data confidential. 
 
 #create every pairwise combination 
 combns <- t(combn(reduced$evalid,2))
@@ -173,29 +173,29 @@ combns <- t(combn(reduced$evalid,2))
 longrel <- data.frame(evalid=combns[,1],evalid2=combns[,2]); rm(combns)
 
 #add person 1 information back to dataframe
-templong = merge(longrel, reduced, by = "evalid")
-colnames(templong)[1:2] = c("evalid1", "evalid")
+templong <- merge(longrel, reduced, by = "evalid")
+colnames(templong)[1:2] <- c("evalid1", "evalid")
 
 #add person 2 information back to the dataframe, remove other frame for the love of space
-longrel = merge(templong, reduced, by = "evalid")
+longrel <- merge(templong, reduced, by = "evalid")
 rm(templong)
 
 #create factors
-longrel$instructormatch = as.numeric(longrel$instructcode.x == longrel$instructcode.y)
-longrel$semestermatch = as.numeric(longrel$Semester.x == longrel$Semester.y &
+longrel$instructormatch <- as.numeric(longrel$instructcode.x == longrel$instructcode.y)
+longrel$semestermatch <- as.numeric(longrel$Semester.x == longrel$Semester.y &
                                      longrel$Year.x == longrel$Year.y)
-longrel$coursematch = as.numeric(longrel$Course.x == longrel$Course.y)
+longrel$coursematch <- as.numeric(longrel$Course.x == longrel$Course.y)
 
 #look at the contingency table
 #table(longrel$instructormatch, longrel$semestermatch, longrel$coursematch)
 
 ####make a dataframe of the beta values####
-betarel = matrix(NA, nrow = 2*2*2*5, ncol = 4+5)
+betarel <- matrix(NA, nrow = 2*2*2*5, ncol = 4+5)
 
 #going to let these overwrite each other so memory isn't bonkers
 #semester, course, instructor
 ####same same same####
-relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+relq1 <- lme(q1.x ~ q1.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 1, ], 
@@ -203,10 +203,10 @@ relq1 = lme(q1.x ~ q1.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[1 , ] = c(1,1,1,"Overall", summary(relq1)$tTable[2, ])
+betarel[1 , ] <- c(1,1,1,"Overall", summary(relq1)$tTable[2, ])
 rm(relq1)
 
-relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+relq3 <- lme(q3.x ~ q3.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 1, ], 
@@ -214,10 +214,10 @@ relq3 = lme(q3.x ~ q3.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[2 , ] = c(1,1,1,"Exams", summary(relq3)$tTable[2, ])
+betarel[2 , ] <- c(1,1,1,"Exams", summary(relq3)$tTable[2, ])
 rm(relq3)
 
-relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+relq4 <- lme(q4.x ~ q4.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 1, ], 
@@ -225,10 +225,10 @@ relq4 = lme(q4.x ~ q4.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[3 , ] = c(1,1,1,"Fair", summary(relq4)$tTable[2, ])
+betarel[3 , ] <- c(1,1,1,"Fair", summary(relq4)$tTable[2, ])
 rm(relq4)
 
-relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+relq9 <- lme(q9.x ~ q9.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 1, ], 
@@ -236,10 +236,10 @@ relq9 = lme(q9.x ~ q9.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[4 , ] = c(1,1,1,"Assignments", summary(relq9)$tTable[2, ])
+betarel[4 , ] <- c(1,1,1,"Assignments", summary(relq9)$tTable[2, ])
 rm(relq9)
 
-relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+relq15 <- lme(q15.x ~ q15.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 1, ], 
@@ -247,11 +247,11 @@ relq15 = lme(q15.x ~ q15.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[5 , ] = c(1,1,1,"Grade", summary(relq15)$tTable[2, ])
+betarel[5 , ] <- c(1,1,1,"Grade", summary(relq15)$tTable[2, ])
 rm(relq15)
 
 ####same same different####
-relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+relq1 <- lme(q1.x ~ q1.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 0, ], 
@@ -259,10 +259,10 @@ relq1 = lme(q1.x ~ q1.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[6 , ] = c(1,1,0,"Overall", summary(relq1)$tTable[2, ])
+betarel[6 , ] <- c(1,1,0,"Overall", summary(relq1)$tTable[2, ])
 rm(relq1)
 
-relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+relq3 <- lme(q3.x ~ q3.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 0, ], 
@@ -270,10 +270,10 @@ relq3 = lme(q3.x ~ q3.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[7 , ] = c(1,1,0,"Exams", summary(relq3)$tTable[2, ])
+betarel[7 , ] <- c(1,1,0,"Exams", summary(relq3)$tTable[2, ])
 rm(relq3)
 
-relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+relq4 <- lme(q4.x ~ q4.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 0, ], 
@@ -281,10 +281,10 @@ relq4 = lme(q4.x ~ q4.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[8 , ] = c(1,1,0,"Fair", summary(relq4)$tTable[2, ])
+betarel[8 , ] <- c(1,1,0,"Fair", summary(relq4)$tTable[2, ])
 rm(relq4)
 
-relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+relq9 <- lme(q9.x ~ q9.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 0, ], 
@@ -292,22 +292,23 @@ relq9 = lme(q9.x ~ q9.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[9 , ] = c(1,1,0,"Assignments", summary(relq9)$tTable[2, ])
+betarel[9 , ] <- c(1,1,0,"Assignments", summary(relq9)$tTable[2, ])
 rm(relq9)
 
-relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+relq15 <- lme(q15.x ~ q15.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 0, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+          control=lmeControl(returnObject=TRUE))
 
-betarel[10 , ] = c(1,1,0,"Grade", summary(relq15)$tTable[2, ])
+betarel[10 , ] <- c(1,1,0,"Grade", summary(relq15)$tTable[2, ])
 rm(relq15)
 
 ####same different same####
-relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+relq1 <- lme(q1.x ~ q1.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 1, ], 
@@ -315,10 +316,10 @@ relq1 = lme(q1.x ~ q1.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[11 , ] = c(1,0,1,"Overall", summary(relq1)$tTable[2, ])
+betarel[11 , ] <- c(1,0,1,"Overall", summary(relq1)$tTable[2, ])
 rm(relq1)
 
-relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+relq3 <- lme(q3.x ~ q3.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 1, ], 
@@ -326,10 +327,10 @@ relq3 = lme(q3.x ~ q3.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[12 , ] = c(1,0,1,"Exams", summary(relq3)$tTable[2, ])
+betarel[12 , ] <- c(1,0,1,"Exams", summary(relq3)$tTable[2, ])
 rm(relq3)
 
-relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+relq4 <- lme(q4.x ~ q4.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 1, ], 
@@ -337,10 +338,10 @@ relq4 = lme(q4.x ~ q4.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[13 , ] = c(1,0,1,"Fair", summary(relq4)$tTable[2, ])
+betarel[13 , ] <- c(1,0,1,"Fair", summary(relq4)$tTable[2, ])
 rm(relq4)
 
-relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+relq9 <- lme(q9.x ~ q9.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 1, ], 
@@ -348,10 +349,10 @@ relq9 = lme(q9.x ~ q9.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[14 , ] = c(1,0,1,"Assignments", summary(relq9)$tTable[2, ])
+betarel[14 , ] <- c(1,0,1,"Assignments", summary(relq9)$tTable[2, ])
 rm(relq9)
 
-relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+relq15 <- lme(q15.x ~ q15.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 1, ], 
@@ -359,11 +360,11 @@ relq15 = lme(q15.x ~ q15.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[15 , ] = c(1,0,1,"Grade", summary(relq15)$tTable[2, ])
+betarel[15 , ] <- c(1,0,1,"Grade", summary(relq15)$tTable[2, ])
 rm(relq15)
 
 ####same different different####
-relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+relq1 <- lme(q1.x ~ q1.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 0, ], 
@@ -371,10 +372,10 @@ relq1 = lme(q1.x ~ q1.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[16 , ] = c(1,0,0,"Overall", summary(relq1)$tTable[2, ])
+betarel[16 , ] <- c(1,0,0,"Overall", summary(relq1)$tTable[2, ])
 rm(relq1)
 
-relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+relq3 <- lme(q3.x ~ q3.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 0, ], 
@@ -382,10 +383,10 @@ relq3 = lme(q3.x ~ q3.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[17 , ] = c(1,0,0,"Exams", summary(relq3)$tTable[2, ])
+betarel[17 , ] <- c(1,0,0,"Exams", summary(relq3)$tTable[2, ])
 rm(relq3)
 
-relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+relq4 <- lme(q4.x ~ q4.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 0, ], 
@@ -393,10 +394,10 @@ relq4 = lme(q4.x ~ q4.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[18 , ] = c(1,0,0,"Fair", summary(relq4)$tTable[2, ])
+betarel[18 , ] <- c(1,0,0,"Fair", summary(relq4)$tTable[2, ])
 rm(relq4)
 
-relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+relq9 <- lme(q9.x ~ q9.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 0, ], 
@@ -404,22 +405,23 @@ relq9 = lme(q9.x ~ q9.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[19 , ] = c(1,0,0,"Assignments", summary(relq9)$tTable[2, ])
-rm(relq5)
+betarel[19 , ] <- c(1,0,0,"Assignments", summary(relq9)$tTable[2, ])
+rm(relq9)
 
-relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+relq15 <- lme(q15.x ~ q15.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 1 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 0, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(returnObject=TRUE))
 
-betarel[20 , ] = c(1,0,0,"Grade", summary(relq15)$tTable[2, ])
+betarel[20 , ] <- c(1,0,0,"Grade", summary(relq15)$tTable[2, ])
 rm(relq15)
 
 ####different different different####
-relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+relq1 <- lme(q1.x ~ q1.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 0, ], 
@@ -427,56 +429,60 @@ relq1 = lme(q1.x ~ q1.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[21 , ] = c(0,0,0,"Overall", summary(relq1)$tTable[2, ])
+betarel[21 , ] <- c(0,0,0,"Overall", summary(relq1)$tTable[2, ])
 rm(relq1)
 
-relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+relq3 <- lme(q3.x ~ q3.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 0, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(returnObject=TRUE))
 
-betarel[22 , ] = c(0,0,0,"Exams", summary(relq3)$tTable[2, ])
+betarel[22 , ] <- c(0,0,0,"Exams", summary(relq3)$tTable[2, ])
 rm(relq3)
 
-relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+relq4 <- lme(q4.x ~ q4.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 0, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(returnObject=TRUE))
 
-betarel[23 , ] = c(0,0,0,"Fair", summary(relq4)$tTable[2, ])
+betarel[23 , ] <- c(0,0,0,"Fair", summary(relq4)$tTable[2, ])
 rm(relq4)
 
-relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+relq9 <- lme(q9.x ~ q9.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 0, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(returnObject=TRUE))
 
-betarel[24 , ] = c(0,0,0,"Assignments", summary(relq9)$tTable[2, ])
+betarel[24 , ] <- c(0,0,0,"Assignments", summary(relq9)$tTable[2, ])
 rm(relq9)
 
-relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+relq15 <- lme(q15.x ~ q15.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 0, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(returnObject=TRUE))
 
-betarel[25 , ] = c(0,0,0,"Grade", summary(relq15)$tTable[2, ])
+betarel[25 , ] <- c(0,0,0,"Grade", summary(relq15)$tTable[2, ])
 rm(relq15)
 
 ####different same different####
 ####checkthisone####
-relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+relq1 <- lme(q1.x ~ q1.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 0, ], 
@@ -485,10 +491,10 @@ relq1 = lme(q1.x ~ q1.y + People.x + People.y,
            random = list(~1|instructcode.x, ~1|instructcode.y),
            control=lmeControl(opt = "optim"))
 
-betarel[26 , ] = c(0,1,0,"Overall", summary(relq1)$tTable[2, ])
+betarel[26 , ] <- c(0,1,0,"Overall", summary(relq1)$tTable[2, ])
 rm(relq1)
 
-relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+relq3 <- lme(q3.x ~ q3.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 0, ], 
@@ -497,10 +503,10 @@ relq3 = lme(q3.x ~ q3.y + People.x + People.y,
            random = list(~1|instructcode.x, ~1|instructcode.y),
            control=lmeControl(opt = "optim"))
 
-betarel[27 , ] = c(0,1,0,"Exams", summary(relq3)$tTable[2, ])
+betarel[27 , ] <- c(0,1,0,"Exams", summary(relq3)$tTable[2, ])
 rm(relq3)
 
-relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+relq4 <- lme(q4.x ~ q4.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 0, ], 
@@ -509,10 +515,10 @@ relq4 = lme(q4.x ~ q4.y + People.x + People.y,
            random = list(~1|instructcode.x, ~1|instructcode.y),
            control=lmeControl(opt = "optim"))
 
-betarel[28 , ] = c(0,1,0,"Fair", summary(relq4)$tTable[2, ])
+betarel[28 , ] <- c(0,1,0,"Fair", summary(relq4)$tTable[2, ])
 rm(relq4)
 
-relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+relq9 <- lme(q9.x ~ q9.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 0, ], 
@@ -521,10 +527,10 @@ relq9 = lme(q9.x ~ q9.y + People.x + People.y,
            random = list(~1|instructcode.x, ~1|instructcode.y),
            control=lmeControl(opt = "optim"))
 
-betarel[29 , ] = c(0,1,0,"Assignments", summary(relq9)$tTable[2, ])
+betarel[29 , ] <- c(0,1,0,"Assignments", summary(relq9)$tTable[2, ])
 rm(relq9)
 
-relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+relq15 <- lme(q15.x ~ q15.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 0, ], 
@@ -533,11 +539,11 @@ relq15 = lme(q15.x ~ q15.y + People.x + People.y,
            random = list(~1|instructcode.x, ~1|instructcode.y),
            control=lmeControl(opt = "optim"))
 
-betarel[30 , ] = c(0,1,0,"Grade", summary(relq15)$tTable[2, ])
+betarel[30 , ] <- c(0,1,0,"Grade", summary(relq15)$tTable[2, ])
 rm(relq15)
 
 ####different different same####
-relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+relq1 <- lme(q1.x ~ q1.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 1, ], 
@@ -545,10 +551,10 @@ relq1 = lme(q1.x ~ q1.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[31 , ] = c(0,0,1,"Overall", summary(relq1)$tTable[2, ])
+betarel[31 , ] <- c(0,0,1,"Overall", summary(relq1)$tTable[2, ])
 rm(relq1)
 
-relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+relq3 <- lme(q3.x ~ q3.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 1, ], 
@@ -556,21 +562,22 @@ relq3 = lme(q3.x ~ q3.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[32 , ] = c(0,0,1,"Exams", summary(relq3)$tTable[2, ])
+betarel[32 , ] <- c(0,0,1,"Exams", summary(relq3)$tTable[2, ])
 rm(relq3)
 
-relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+relq4 <- lme(q4.x ~ q4.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 1, ], 
            method = "ML", 
            na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
+           random = list(~1|instructcode.x, ~1|instructcode.y),
+           control=lmeControl(returnObject=TRUE,singular.ok = TRUE))
 
-betarel[33 , ] = c(0,0,1,"Fair", summary(relq4)$tTable[2, ])
+betarel[33 , ] <- c(0,0,1,"Fair", summary(relq4)$tTable[2, ])
 rm(relq4)
 
-relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+relq9 <- lme(q9.x ~ q9.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 1, ], 
@@ -578,10 +585,10 @@ relq9 = lme(q9.x ~ q9.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[34 , ] = c(0,0,1,"Assignments", summary(relq9)$tTable[2, ])
+betarel[34 , ] <- c(0,0,1,"Assignments", summary(relq9)$tTable[2, ])
 rm(relq9)
 
-relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+relq15 <- lme(q15.x ~ q15.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 0 & 
                              longrel$instructormatch == 1, ], 
@@ -589,11 +596,11 @@ relq15 = lme(q15.x ~ q15.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[35 , ] = c(0,0,1,"Grade", summary(relq15)$tTable[2, ])
+betarel[35 , ] <- c(0,0,1,"Grade", summary(relq15)$tTable[2, ])
 rm(relq15)
 
 ####different same same####
-relq1 = lme(q1.x ~ q1.y + People.x + People.y, 
+relq1 <- lme(q1.x ~ q1.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 1, ], 
@@ -601,10 +608,10 @@ relq1 = lme(q1.x ~ q1.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[36 , ] = c(0,1,1,"Overall", summary(relq1)$tTable[2, ])
+betarel[36 , ] <- c(0,1,1,"Overall", summary(relq1)$tTable[2, ])
 rm(relq1)
 
-relq3 = lme(q3.x ~ q3.y + People.x + People.y, 
+relq3 <- lme(q3.x ~ q3.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 1, ], 
@@ -612,10 +619,10 @@ relq3 = lme(q3.x ~ q3.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[37 , ] = c(0,1,1,"Exams", summary(relq3)$tTable[2, ])
+betarel[37 , ] <- c(0,1,1,"Exams", summary(relq3)$tTable[2, ])
 rm(relq3)
 
-relq4 = lme(q4.x ~ q4.y + People.x + People.y, 
+relq4 <- lme(q4.x ~ q4.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 1, ], 
@@ -623,10 +630,10 @@ relq4 = lme(q4.x ~ q4.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[38 , ] = c(0,1,1,"Fair", summary(relq4)$tTable[2, ])
+betarel[38 , ] <- c(0,1,1,"Fair", summary(relq4)$tTable[2, ])
 rm(relq4)
 
-relq9 = lme(q9.x ~ q9.y + People.x + People.y, 
+relq9 <- lme(q9.x ~ q9.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 1, ], 
@@ -634,10 +641,10 @@ relq9 = lme(q9.x ~ q9.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[39 , ] = c(0,1,1,"Assignments", summary(relq9)$tTable[2, ])
+betarel[39 , ] <- c(0,1,1,"Assignments", summary(relq9)$tTable[2, ])
 rm(relq9)
 
-relq15 = lme(q15.x ~ q15.y + People.x + People.y, 
+relq15 <- lme(q15.x ~ q15.y + People.x + People.y, 
            data = longrel[ longrel$semestermatch == 0 & 
                              longrel$coursematch == 1 & 
                              longrel$instructormatch == 1, ], 
@@ -645,24 +652,24 @@ relq15 = lme(q15.x ~ q15.y + People.x + People.y,
            na.action = "na.omit",
            random = list(~1|instructcode.x, ~1|instructcode.y))
 
-betarel[40 , ] = c(0,1,1,"Grade", summary(relq15)$tTable[2, ])
+betarel[40 , ] <- c(0,1,1,"Grade", summary(relq15)$tTable[2, ])
 rm(relq15)
 
 #this chunk takes forever to run, so I saved it out
 #convert betarel
 betarel = as.data.frame(betarel)
-colnames(betarel) = c("Semester", "Course", "Instructor", "Question",
+colnames(betarel) <- c("Semester", "Course", "Instructor", "Question",
                       "b", "se", "df", "t", "p")
 write.csv(betarel, "betarel.csv", row.names = F)
 ```
 
 ```{r rel-table, results = 'asis', echo = FALSE}
-betarel = read.csv("betarel.csv")
+betarel <- read.csv("betarel.csv")
 
 #factor the variables
-betarel$Course = factor(betarel$Course, levels = 0:1, labels = c("Different Course", "Same Course"))
-betarel$Semester = factor(betarel$Semester, levels = 0:1, labels = c("Different Semester", "Same Semester"))
-betarel$Instructor = factor(betarel$Instructor, levels = 0:1, labels = c("Different Instructor", "Same Instructor"))
+betarel$Course <- factor(betarel$Course, levels = 0:1, labels = c("Different Course", "Same Course"))
+betarel$Semester <- factor(betarel$Semester, levels = 0:1, labels = c("Different Semester", "Same Semester"))
+betarel$Instructor <- factor(betarel$Instructor, levels = 0:1, labels = c("Different Instructor", "Same Instructor"))
 
 # ggplot(betarel, aes(Course, b, shape = Question, group = group.graph)) +
 #   geom_point(aes(size = Semester)) +
@@ -671,14 +678,14 @@ betarel$Instructor = factor(betarel$Instructor, levels = 0:1, labels = c("Differ
 #   facet_grid(~Instructor) 
 
 #average down for paper presentation
-beta_table = aggregate(betarel[ , 5:9], by = list(betarel$Semester, betarel$Course, betarel$Instructor),
+beta_table <- aggregate(betarel[ , 5:9], by = list(betarel$Semester, betarel$Course, betarel$Instructor),
                        FUN = mean)
-colnames(beta_table)[1:3] = c("Semester", "Course", "Instructor")
+colnames(beta_table)[1:3] <- c("Semester", "Course", "Instructor")
 
-beta_table[, c(7)] = printnum(beta_table[ , c(7)], digits = 3)
-beta_table[, c(4,5)] = printnum(beta_table[ , c(4,5)], gt1 = F, digits = 3)
-beta_table[, 8] = printp(beta_table[ , 8])
-beta_table[ , 6] = as.character(beta_table[ , 6])
+beta_table[, c(7)] <- printnum(beta_table[ , c(7)], digits = 3)
+beta_table[, c(4,5)] <- printnum(beta_table[ , c(4,5)], gt1 = F, digits = 3)
+beta_table[, 8] <- printp(beta_table[ , 8])
+beta_table[ , 6] <- as.character(beta_table[ , 6])
 
 apa_table(beta_table[ , c(3,1,2,4:8)],
           align = c(rep("l", 3), rep("c", 5)),
@@ -698,64 +705,64 @@ The overall pattern of the data was the same for each of the eight combinations,
 ```{r correlations, include = FALSE}
 
 #q1 to everything
-q1.3 = lme(q1 ~ q3 + People, 
+q1.3 <- lme(q1 ~ q3 + People, 
            data = reduced, 
            method = "ML", 
            na.action = "na.omit",
            random = ~1|instructcode)
 
-q1.4 = lme(q1 ~ q4 + People, 
+q1.4 <- lme(q1 ~ q4 + People, 
            data = reduced, 
            method = "ML", 
            na.action = "na.omit",
            random = ~1|instructcode)
 
-q1.9 = lme(q1 ~ q9 + People, 
+q1.9 <- lme(q1 ~ q9 + People, 
            data = reduced, 
            method = "ML", 
            na.action = "na.omit",
            random = ~1|instructcode)
 
-q1.15 = lme(q1 ~ q15 + People, 
+q1.15 <- lme(q1 ~ q15 + People, 
            data = reduced, 
            method = "ML", 
            na.action = "na.omit",
            random = ~1|instructcode)
 
 #3 to rest
-q3.4 = lme(q3 ~ q4 + People, 
+q3.4 <- lme(q3 ~ q4 + People, 
            data = reduced, 
            method = "ML", 
            na.action = "na.omit",
            random = ~1|instructcode)
 
-q3.9 = lme(q3 ~ q9 + People, 
+q3.9 <- lme(q3 ~ q9 + People, 
            data = reduced, 
            method = "ML", 
            na.action = "na.omit",
            random = ~1|instructcode)
 
-q3.15 = lme(q3 ~ q15 + People, 
+q3.15 <- lme(q3 ~ q15 + People, 
            data = reduced, 
            method = "ML", 
            na.action = "na.omit",
            random = ~1|instructcode)
 
 #q 4 to rest
-q4.9 = lme(q4 ~ q9 + People, 
+q4.9 <- lme(q4 ~ q9 + People, 
            data = reduced, 
            method = "ML", 
            na.action = "na.omit",
            random = ~1|instructcode)
 
-q4.15 = lme(q4 ~ q15 + People, 
+q4.15 <- lme(q4 ~ q15 + People, 
            data = reduced, 
            method = "ML", 
            na.action = "na.omit",
            random = ~1|instructcode)
 
 #q9 to rest
-q9.15 = lme(q9 ~ q15 + People, 
+q9.15 <- lme(q9 ~ q15 + People, 
            data = reduced, 
            method = "ML", 
            na.action = "na.omit",
@@ -763,34 +770,34 @@ q9.15 = lme(q9 ~ q15 + People,
 ```
 
 ```{r correlation-table, echo=FALSE, results='asis'}
-tableprint = matrix(NA, nrow = 10, ncol = 7)
-colnames(tableprint) = c("Coefficient", "$pr$",
+tableprint <- matrix(NA, nrow = 10, ncol = 7)
+colnames(tableprint) <- c("Coefficient", "$pr$",
                          "$b$", "$SE$", "$df$", "$t$", "$p$")
 
-tableprint[1, ] = c("Overall to Exams", 
+tableprint[1, ] <- c("Overall to Exams", 
                     summary(q1.3)$tTable[2,1], unname(summary(q1.3)$tTable[2, ], 3))
-tableprint[2, ] = c("Overall to Fair",
+tableprint[2, ] <- c("Overall to Fair",
                     summary(q1.4)$tTable[2,1], unname(summary(q1.4)$tTable[2, ], 3))
-tableprint[3, ] = c("Overall to Assignments",
+tableprint[3, ] <- c("Overall to Assignments",
                     summary(q1.9)$tTable[2,1], unname(summary(q1.9)$tTable[2, ], 3))
-tableprint[4, ] = c("Overall to Expected Grade",
+tableprint[4, ] <- c("Overall to Expected Grade",
                     summary(q1.15)$tTable[2,1], unname(summary(q1.15)$tTable[2, ], 3))
-tableprint[5, ] = c("Exams to Fair", 
+tableprint[5, ] <- c("Exams to Fair", 
                     summary(q3.4)$tTable[2,1], unname(summary(q3.4)$tTable[2, ], 3))
-tableprint[6, ] = c("Exams to Assignments", 
+tableprint[6, ] <- c("Exams to Assignments", 
                     summary(q3.9)$tTable[2,1], unname(summary(q3.9)$tTable[2, ], 3))
-tableprint[7, ] = c("Exams to Expected Grade", 
+tableprint[7, ] <- c("Exams to Expected Grade", 
                     summary(q3.15)$tTable[2,1], unname(summary(q3.15)$tTable[2, ], 3))
-tableprint[8, ] = c("Fair to Assignments", 
+tableprint[8, ] <- c("Fair to Assignments", 
                     summary(q4.9)$tTable[2,1], unname(summary(q4.9)$tTable[2, ], 3))
-tableprint[9, ] = c("Fair to Expected Grade", 
+tableprint[9, ] <- c("Fair to Expected Grade", 
                     summary(q4.15)$tTable[2,1], unname(summary(q4.15)$tTable[2, ], 3))
-tableprint[10, ] = c("Assignments to Expected Grade", 
+tableprint[10, ] <- c("Assignments to Expected Grade", 
                      summary(q9.15)$tTable[2,1], unname(summary(q9.15)$tTable[2, ], 3))
 
-tableprint[ , c(2,3,4)] = printnum(as.numeric(tableprint[ , c(2,3,4)]), digits = 3, gt1 = F)
-tableprint[ , c(6)] = printnum(as.numeric(tableprint[ , c(6)]), digits = 3, gt1 = T)
-tableprint[ , c(7)] = printp(as.numeric(tableprint[ , c(7)]))
+tableprint[ , c(2,3,4)] <- printnum(as.numeric(tableprint[ , c(2,3,4)]), digits = 3, gt1 = F)
+tableprint[ , c(6)] <- printnum(as.numeric(tableprint[ , c(6)]), digits = 3, gt1 = T)
+tableprint[ , c(7)] <- printp(as.numeric(tableprint[ , c(7)]))
 
 apa_table(tableprint,
           align = c("l", rep("c", 6)), 
@@ -808,18 +815,18 @@ Table \@ref(tab:correlation-table) presents the inter-correlations for the five 
 
 ```{r mod-med, include=FALSE}
 #create average grading
-reduced$average = apply(reduced[ , 9:11], 1, mean)
+reduced$average <- apply(reduced[ , 9:11], 1, mean)
 
 #scale for moderation
-reduced$zq15 = scale(reduced$q15, scale = F)
-reduced$zaverage = scale(reduced$average, scale = F)
+reduced$zq15 <- scale(reduced$q15, scale = F)
+reduced$zaverage <- scale(reduced$average, scale = F)
 
 ##X = Q15
 ##Y = Q1
 ##Mediator = Average Grade
 ##Moderator = Type 
 ##path c 
-medmodel1 = lme(q1 ~ zq15*type + People, 
+medmodel1 <- lme(q1 ~ zq15*type + People, 
                data = reduced, 
                method = "ML", 
                na.action = "na.omit",
@@ -828,7 +835,7 @@ summary(medmodel1)
 
 ##path a
 ##average grade should not be scaled here
-medmodel2 = lme(average ~ zq15*type + People, 
+medmodel2 <- lme(average ~ zq15*type + People, 
                data = reduced, 
                method = "ML", 
                na.action = "na.omit",
@@ -836,7 +843,7 @@ medmodel2 = lme(average ~ zq15*type + People,
 summary(medmodel2)
 
 ##path b, c'
-medmodel3 = lme(q1 ~ zq15*type + zaverage*type + People, 
+medmodel3 <- lme(q1 ~ zq15*type + zaverage*type + People, 
                data = reduced, 
                method = "ML", 
                na.action = "na.omit",
@@ -848,7 +855,7 @@ summary(medmodel3)
 ```{r split-mod, include = FALSE}
 ####Teaching Assistants####
 ##path c 
-medmodel1.ta = lme(q1 ~ zq15 + People, 
+medmodel1.ta <- lme(q1 ~ zq15 + People, 
                data = reduced[ reduced$type == "TA", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -856,7 +863,7 @@ medmodel1.ta = lme(q1 ~ zq15 + People,
  summary(medmodel1.ta)
 
 ##path a
-medmodel2.ta = lme(average ~ zq15 + People, 
+medmodel2.ta <- lme(average ~ zq15 + People, 
                data = reduced[ reduced$type == "TA", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -864,7 +871,7 @@ medmodel2.ta = lme(average ~ zq15 + People,
 summary(medmodel2.ta)
 
 ##path b, c'
-medmodel3.ta = lme(q1 ~ zq15 + zaverage + People, 
+medmodel3.ta <- lme(q1 ~ zq15 + zaverage + People, 
                data = reduced[ reduced$type == "TA", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -872,22 +879,22 @@ medmodel3.ta = lme(q1 ~ zq15 + zaverage + People,
 summary(medmodel3.ta)
 
 #aroian sobel
-a = coef(medmodel2.ta)[1,2]
-b = coef(medmodel3.ta)[1,3]
-SEa = summary(medmodel2.ta)$tTable[2,2]
-SEb = summary(medmodel3.ta)$tTable[3,2]
-zscore.ta =  (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
+a <- coef(medmodel2.ta)[1,2]
+b <- coef(medmodel3.ta)[1,3]
+SEa <- summary(medmodel2.ta)$tTable[2,2]
+SEb <- summary(medmodel3.ta)$tTable[3,2]
+zscore.ta <- (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
 #pnorm(abs(zscore.ta), lower.tail = F)*2
 
-bootresults.ta = boot(data = reduced[ reduced$type == "TA", ],
+bootresults.ta <- boot(data = reduced[ reduced$type == "TA", ],
                    statistic = indirectsaved,
                    R = nsims)
 
-bootci.ta = boot.ci(bootresults.ta, conf = .95, type = "norm")
+bootci.ta <- boot.ci(bootresults.ta, conf = .95, type = "norm")
 
 ####Per Course Faculty####
 ##path c 
-medmodel1.pc = lme(q1 ~ zq15 + People, 
+medmodel1.pc <- lme(q1 ~ zq15 + People, 
                data = reduced[ reduced$type == "Per Course", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -895,7 +902,7 @@ medmodel1.pc = lme(q1 ~ zq15 + People,
 summary(medmodel1.pc)
 
 ##path a
-medmodel2.pc = lme(average ~ zq15 + People, 
+medmodel2.pc <- lme(average ~ zq15 + People, 
                data = reduced[ reduced$type == "Per Course", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -903,7 +910,7 @@ medmodel2.pc = lme(average ~ zq15 + People,
 summary(medmodel2.pc)
 
 ##path b, c'
-medmodel3.pc = lme(q1 ~ zq15 + zaverage + People, 
+medmodel3.pc <- lme(q1 ~ zq15 + zaverage + People, 
                data = reduced[ reduced$type == "Per Course", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -911,22 +918,22 @@ medmodel3.pc = lme(q1 ~ zq15 + zaverage + People,
 summary(medmodel3.pc)
 
 #aroian sobel
-a = coef(medmodel2.pc)[1,2]
-b = coef(medmodel3.pc)[1,3]
-SEa = summary(medmodel2.pc)$tTable[2,2]
-SEb = summary(medmodel3.pc)$tTable[3,2]
-zscore.pc =  (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
+a <- coef(medmodel2.pc)[1,2]
+b <- coef(medmodel3.pc)[1,3]
+SEa <- summary(medmodel2.pc)$tTable[2,2]
+SEb <- summary(medmodel3.pc)$tTable[3,2]
+zscore.pc <- (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
 #pnorm(abs(zscore.pc), lower.pcil = F)*2
 
-bootresults.pc = boot(data = reduced[ reduced$type == "Per Course", ],
+bootresults.pc <- boot(data = reduced[ reduced$type == "Per Course", ],
                    statistic = indirectsaved,
                    R = nsims)
 
-bootci.pc = boot.ci(bootresults.pc, conf = .95, type = "norm")
+bootci.pc <- boot.ci(bootresults.pc, conf = .95, type = "norm")
 
 ####Instructors####
 ##path c 
-medmodel1.in = lme(q1 ~ zq15 + People, 
+medmodel1.in <- lme(q1 ~ zq15 + People, 
                data = reduced[ reduced$type == "Instructor", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -934,7 +941,7 @@ medmodel1.in = lme(q1 ~ zq15 + People,
 summary(medmodel1.in)
 
 ##path a
-medmodel2.in = lme(average ~ zq15 + People, 
+medmodel2.in <- lme(average ~ zq15 + People, 
                data = reduced[ reduced$type == "Instructor", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -942,7 +949,7 @@ medmodel2.in = lme(average ~ zq15 + People,
 summary(medmodel2.in)
 
 ##path b, c'
-medmodel3.in = lme(q1 ~ zq15 + zaverage + People, 
+medmodel3.in <- lme(q1 ~ zq15 + zaverage + People, 
                data = reduced[ reduced$type == "Instructor", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -950,22 +957,22 @@ medmodel3.in = lme(q1 ~ zq15 + zaverage + People,
 summary(medmodel3.in)
 
 #aroian sobel
-a = coef(medmodel2.in)[1,2]
-b = coef(medmodel3.in)[1,3]
-SEa = summary(medmodel2.in)$tTable[2,2]
-SEb = summary(medmodel3.in)$tTable[3,2]
-zscore.in =  (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
+a <- coef(medmodel2.in)[1,2]
+b <- coef(medmodel3.in)[1,3]
+SEa <- summary(medmodel2.in)$tTable[2,2]
+SEb <- summary(medmodel3.in)$tTable[3,2]
+zscore.in <- (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
 #pnorm(abs(zscore.in), lower.inil = F)*2
 
-bootresults.in = boot(data = reduced[ reduced$type == "Instructor", ],
+bootresults.in <- boot(data = reduced[ reduced$type == "Instructor", ],
                    statistic = indirectsaved,
                    R = nsims)
 
-bootci.in = boot.ci(bootresults.in, conf = .95, type = "norm")
+bootci.in <- boot.ci(bootresults.in, conf = .95, type = "norm")
 
 ####Tenure Track Faculty####
 ##path c 
-medmodel1.tt = lme(q1 ~ zq15 + People, 
+medmodel1.tt <- lme(q1 ~ zq15 + People, 
                data = reduced[ reduced$type == "Tenure Track", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -973,7 +980,7 @@ medmodel1.tt = lme(q1 ~ zq15 + People,
 summary(medmodel1.tt)
 
 ##path a
-medmodel2.tt = lme(average ~ zq15 + People, 
+medmodel2.tt <- lme(average ~ zq15 + People, 
                data = reduced[ reduced$type == "Tenure Track", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -981,7 +988,7 @@ medmodel2.tt = lme(average ~ zq15 + People,
 summary(medmodel2.tt)
 
 ##path b, c'
-medmodel3.tt = lme(q1 ~ zq15 + zaverage + People, 
+medmodel3.tt <- lme(q1 ~ zq15 + zaverage + People, 
                data = reduced[ reduced$type == "Tenure Track", ], 
                method = "ML", 
                na.action = "na.omit",
@@ -989,19 +996,18 @@ medmodel3.tt = lme(q1 ~ zq15 + zaverage + People,
 summary(medmodel3.tt)
 
 #aroian sobel
-a = coef(medmodel2.tt)[1,2]
-b = coef(medmodel3.tt)[1,3]
-SEa = summary(medmodel2.tt)$tTable[2,2]
-SEb = summary(medmodel3.tt)$tTable[3,2]
-zscore.tt =  (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
+a <- coef(medmodel2.tt)[1,2]
+b <- coef(medmodel3.tt)[1,3]
+SEa <- summary(medmodel2.tt)$tTable[2,2]
+SEb <- summary(medmodel3.tt)$tTable[3,2]
+zscore.tt <- (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
 #pnorm(abs(zscore.tt), lower.ttil = F)*2
 
-bootresults.tt = boot(data = reduced[ reduced$type == "Tenure Track", ],
+bootresults.tt <- boot(data = reduced[ reduced$type == "Tenure Track", ],
                    statistic = indirectsaved,
                    R = nsims)
 
-bootci.tt = boot.ci(bootresults.tt, conf = .95, type = "norm")
-
+bootci.tt <- boot.ci(bootresults.tt, conf = .95, type = "norm")
 ```
 
 ```{r med-mod-pic, echo=FALSE, fig.cap="Mediation models for moderated mediation analysis indicating mediation effects for each type of teacher. Expected grading indicates student entered grade expected in the course, perceived grading is an average score of fairness, appropriateness, and exam grading questions, and overall rating indicates the omnibus rating for a course.", out.height="5in", out.width="7in"}
@@ -1011,14 +1017,14 @@ knitr::include_graphics("complete_medmod.png")
 ```
 
 ```{r table-mod-med, echo = FALSE, results = 'asis'}
-tableprint = matrix(NA, nrow = 25, ncol = 5)
-colnames(tableprint) = c("$b$", "$SE$", "$df$", "$t$", "$p$")
+tableprint <- matrix(NA, nrow = 25, ncol = 5)
+colnames(tableprint) <- c("$b$", "$SE$", "$df$", "$t$", "$p$")
 
-tableprint[1:7, ] = unname(summary(medmodel1)$tTable[-c(1,6), ])
-tableprint[8:14, ] = unname(summary(medmodel2)$tTable[-c(1,6), ])
-tableprint[15:25, ] = unname(summary(medmodel3)$tTable[-c(1,7), ])
+tableprint[1:7, ] <- unname(summary(medmodel1)$tTable[-c(1,6), ])
+tableprint[8:14, ] <- unname(summary(medmodel2)$tTable[-c(1,6), ])
+tableprint[15:25, ] <- unname(summary(medmodel3)$tTable[-c(1,7), ])
 
-tableprint = cbind(
+tableprint <- cbind(
   "DV" = c(rep("Overall Course", 7),
            rep("Average Grading", 7),
            rep("Overall Course", 11)),
@@ -1031,9 +1037,9 @@ tableprint = cbind(
            "AG X TA", "AG X PC", "AG X IN"),
   tableprint)
 
-tableprint[ , c(3,4,6)] = printnum(as.numeric(tableprint[ , c(3,4,6)]), digits = 3)
+tableprint[ , c(3,4,6)] <- printnum(as.numeric(tableprint[ , c(3,4,6)]), digits = 3)
 
-tableprint[ , 7] = printp(as.numeric(tableprint[ , 7]))
+tableprint[ , 7] <- printp(as.numeric(tableprint[ , 7]))
 
 apa_table(tableprint,
           align = c("l", "l", rep("c", 5)), 
@@ -1046,26 +1052,26 @@ table_overall = tableprint
 ```
 
 ```{r table-med-split, echo = FALSE, results = 'asis'}
-tableprint = matrix(NA, nrow = 16, ncol = 5)
-colnames(tableprint) = c("$b$", "$SE$", "$df$", "$t$", "$p$")
+tableprint <- matrix(NA, nrow = 16, ncol = 5)
+colnames(tableprint) <- c("$b$", "$SE$", "$df$", "$t$", "$p$")
 
-tableprint[1, ] = unname(summary(medmodel1.ta)$tTable[-c(1,3), ])
-tableprint[2, ] = unname(summary(medmodel2.ta)$tTable[-c(1,3), ])
-tableprint[3:4, ] = unname(summary(medmodel3.ta)$tTable[-c(1,4), ])
+tableprint[1, ] <- unname(summary(medmodel1.ta)$tTable[-c(1,3), ])
+tableprint[2, ] <- unname(summary(medmodel2.ta)$tTable[-c(1,3), ])
+tableprint[3:4, ] <- unname(summary(medmodel3.ta)$tTable[-c(1,4), ])
 
-tableprint[5, ] = unname(summary(medmodel1.pc)$tTable[-c(1,3), ])
-tableprint[6, ] = unname(summary(medmodel2.pc)$tTable[-c(1,3), ])
-tableprint[7:8, ] = unname(summary(medmodel3.pc)$tTable[-c(1,4), ])
+tableprint[5, ] <- unname(summary(medmodel1.pc)$tTable[-c(1,3), ])
+tableprint[6, ] <- unname(summary(medmodel2.pc)$tTable[-c(1,3), ])
+tableprint[7:8, ] <- unname(summary(medmodel3.pc)$tTable[-c(1,4), ])
 
-tableprint[9, ] = unname(summary(medmodel1.in)$tTable[-c(1,3), ])
-tableprint[10, ] = unname(summary(medmodel2.in)$tTable[-c(1,3), ])
-tableprint[11:12, ] = unname(summary(medmodel3.in)$tTable[-c(1,4), ])
+tableprint[9, ] <- unname(summary(medmodel1.in)$tTable[-c(1,3), ])
+tableprint[10, ] <- unname(summary(medmodel2.in)$tTable[-c(1,3), ])
+tableprint[11:12, ] <- unname(summary(medmodel3.in)$tTable[-c(1,4), ])
 
-tableprint[13, ] = unname(summary(medmodel1.tt)$tTable[-c(1,3), ])
-tableprint[14, ] = unname(summary(medmodel2.tt)$tTable[-c(1,3), ])
-tableprint[15:16, ] = unname(summary(medmodel3.tt)$tTable[-c(1,4), ])
+tableprint[13, ] <- unname(summary(medmodel1.tt)$tTable[-c(1,3), ])
+tableprint[14, ] <- unname(summary(medmodel2.tt)$tTable[-c(1,3), ])
+tableprint[15:16, ] <- unname(summary(medmodel3.tt)$tTable[-c(1,4), ])
 
-tableprint = cbind(
+tableprint <- cbind(
   "Group" = c(rep("Teaching Assistant", 4), 
               rep("Per-Course", 4),
               rep("Instructor", 4),
@@ -1075,9 +1081,9 @@ tableprint = cbind(
 tableprint
 )
 
-tableprint[ , c(4,5,7)] = printnum(as.numeric(tableprint[ , c(4,5,7)]), digits = 3)
+tableprint[ , c(4,5,7)] <- printnum(as.numeric(tableprint[ , c(4,5,7)]), digits = 3)
 
-tableprint[ , 8] = printp(as.numeric(tableprint[ , 8]))
+tableprint[ , 8] <- printp(as.numeric(tableprint[ , 8]))
 
 apa_table(tableprint,
           align = c("l", "l", "l", rep("c", 5)), 
@@ -1086,7 +1092,7 @@ apa_table(tableprint,
           small = T
  )
 
-table_individual = tableprint
+table_individual <- tableprint
 ```
 
 We proposed a mediation relationship between expected grade, perceived grading, and overall course grades that varies by instructor type. Figure \@ref(fig:med-mod-pic) demonstrates the predicted relationship between these variables. We hypothesized that expected course grade would impact the overall course rating, but this relationship would be mediated by the perceived grading in the course, which was calculated by averaging questions about exams, fairness of grading, and assignments. Therefore, as students expected to earned higher grades, their perception and ratings of the grading would increase, thus, leading to higher overall course scores. This relationship was tested using traditional and newer approaches to mediation [@Baron1986; @Hayes2017] wherein the following steps were examined:

@@ -1,6 +1,8 @@
 no sync/
 *_files/
 
+~$*.docx
+
 # History files
 .Rhistory
 .Rapp.history
