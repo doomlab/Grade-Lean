@@ -1,0 +1,149 @@
+---
+title             : "The title"
+shorttitle        : "Title"
+
+author: 
+  - name          : "First Author"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Postal address"
+    email         : "my@email.com"
+    role:         # Contributorship roles (e.g., CRediT, https://casrai.org/credit/)
+      - "Conceptualization"
+      - "Writing - Original Draft Preparation"
+      - "Writing - Review & Editing"
+  - name          : "Ernst-August Doelle"
+    affiliation   : "1,2"
+    role:
+      - "Writing - Review & Editing"
+      - "Supervision"
+
+affiliation:
+  - id            : "1"
+    institution   : "Wilhelm-Wundt-University"
+  - id            : "2"
+    institution   : "Konstanz Business School"
+
+authornote: |
+  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
+
+  Enter author note here.
+
+abstract: |
+  One or two sentences providing a **basic introduction** to the field,  comprehensible to a scientist in any discipline.
+  
+  Two to three sentences of **more detailed background**, comprehensible  to scientists in related disciplines.
+  
+  One sentence clearly stating the **general problem** being addressed by  this particular study.
+  
+  One sentence summarizing the main result (with the words "**here we show**" or their equivalent).
+  
+  Two or three sentences explaining what the **main result** reveals in direct comparison to what was thought to be the case previously, or how the  main result adds to previous knowledge.
+  
+  One or two sentences to put the results into a more **general context**.
+  
+  Two or three sentences to provide a **broader perspective**, readily comprehensible to a scientist in any discipline.
+  
+  <!-- https://tinyurl.com/ybremelq -->
+  
+keywords          : "keywords"
+wordcount         : "X"
+
+bibliography      : "r-references.bib"
+
+floatsintext      : no
+linenumbers       : yes
+draft             : no
+mask              : no
+
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+
+classoption       : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+r_refs("r-references.bib")
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(94854905)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed, echo = FALSE, include = FALSE)
+library(rio)
+library(dplyr)
+```
+
+Exploratory Research Questions:
+
+1) What is the reliability of instructor evaluations?
+2) Are instructor evaluations reliable across time? 
+3) Is the perceived fairness of the grading in the course a moderator of reliability in instructor evaluations? 
+
+# Method
+
+## Data Source
+
+```{r import-data}
+# please note the data is deidentified but timing and course number is accurate
+DF <- import("final_evals.csv")
+```
+
+
+The archival study was conducted using data from the psychology department at a large Midwestern public university. We used data from `r nrow(DF[ DF$course_level == "undergraduate" , ])` undergraduate, `r nrow(DF[ DF$course_level == "mixed", ])` mixed-level undergraduate, and `r nrow(DF[ DF$course_level == "masters" , ])` graduate psychology classes taught from 1987 to 2018 that were evaluated by students using the same 15-item instrument. The graduate courses were excluded from analyses due to the ceiling effects on expected grades. Faculty followed set procedures in distributing scan forms no more than two weeks before the conclusion of the semester. A student was assigned to collect the forms and deliver them to the departmental secretary. The instructor was required to leave the room while students completed the forms. 
+
+The questionnaire given to students can be found on XXXOSF LINXXX. These items were presented with a five-point scale from 1 (*strongly disagree*) to 5 (*strongly agree*). Demographics table? 
+
+## Data analysis
+
+- Minimum sample size *n* = 10
+- Robustness check with smaller samples in appendix 
+- Covary out sample size 
+
+```{r}
+DF_sample <- DF %>% 
+  filter(People >= 10)
+```
+
+
+```{r}
+# let's see if twitter can help here - yes! @smartin2018 for the win!
+
+# create unique id
+DF_sample$evalid <- 1:nrow(DF_sample)
+
+# create every pairwise combination 
+combns <- t(combn(DF_sample$evalid,2))
+
+# create a dataframe to hold that information, remove other frame for the love of space
+longrel <- data.frame(evalid=combns[,1],evalid2=combns[,2]); rm(combns)
+
+# add person 1 information back to dataframe
+templong <- merge(longrel, DF_sample, by = "evalid")
+colnames(templong)[1:2] <- c("evalid1", "evalid")
+
+# add person 2 information back to the dataframe, remove other frame for the love of space
+longrel <- merge(templong, DF_sample, by = "evalid")
+rm(templong)
+
+# create factors
+longrel$instructormatch <- as.numeric(longrel$instructor_code.x == longrel$instructor_code.y)
+longrel$semestermatch <- as.numeric(longrel$semester_count.x == longrel$semester_count.y)
+longrel$coursematch <- as.numeric(longrel$new_course.x == longrel$new_course.y)
+```
+
+
+# Results
+
+# Discussion
+
+
+\newpage
+
+# References
+
+::: {#refs custom-style="Bibliography"}
+:::
