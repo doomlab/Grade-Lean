@@ -83,6 +83,15 @@ Exploratory Research Questions:
 2) Are instructor evaluations reliable across time? 
 3) Is the perceived fairness of the grading in the course a moderator of reliability in instructor evaluations? 
 
+1 - Same as Before. 
+ "Are student ratings reliable for instructors across courses and semesters?"
+
+2 "Does the amount of time taught between courses (same course, same instructor) moderate reliability?"
+
+3 - "Does perceived fairness of the grading system moderate reliability?"
+
+4 - "Does lower variability in perceived fairness predict higher reliability of student ratings?"
+
 # Method
 
 ## Data Source
@@ -102,10 +111,43 @@ The questionnaire given to students can be found on XXXOSF LINXXX. These items w
 - Minimum sample size *n* = 10
 - Robustness check with smaller samples in appendix 
 - Covary out sample size 
+- Include all course types 
+- Explain the counting mechanism 0-1-2-etc. 
+
+RQ1: are instructor evals reliable
+- Calculate reliability on Q1, Q4
+- Calculate separately to talk about quality and fairness
+- 2X2X2 (same/different): course X instructor X semester 
+- control for sample size 
+- Q1 ~ Q1 + (1|person)
+
+potentially covary sample size on the question scores, then calculate reliability on these scores. 
+
+RQ2: time
+- Calculate time on both of them 
+- same course, same instructor, manipulate semester 
+- don't compare stats to lang over time that's weird 
+- reliability ~ time + (1|person)
+
+relq1 <- lme(q1.x ~ q1.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+RQ3/4: moderation and variability 
+- Think more here 
+- reliability ~ time*avg(Fairness) + var(fairness_overall_instructor)
+- same course, same instructor, manipulate semester 
 
 ```{r}
 DF_sample <- DF %>% 
-  filter(People >= 10)
+  filter(People >= 10) 
+
+tapply(DF_sample$Q1AVG, DF_sample$course_level, mean)
+tapply(DF_sample$Q1AVG, DF_sample$course_level, sd)
 ```
 
 
