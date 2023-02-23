@@ -1,50 +1,38 @@
 ---
-title             : "The title"
-shorttitle        : "Title"
+title             : "Reliability of Instructor Evaluations"
+shorttitle        : "RELIABILITY EVALUATIONS"
 
 author: 
-  - name          : "First Author"
+  - name          : "Erin M. Buchanan"
     affiliation   : "1"
     corresponding : yes    # Define only one corresponding author
-    address       : "Postal address"
-    email         : "my@email.com"
+    address       : "326 Market St., Harrisburg, PA 17010"
+    email         : "ebuchanan@harrisburgu.edu"
     role:         # Contributorship roles (e.g., CRediT, https://casrai.org/credit/)
       - "Conceptualization"
       - "Writing - Original Draft Preparation"
       - "Writing - Review & Editing"
-  - name          : "Ernst-August Doelle"
-    affiliation   : "1,2"
+      - "Analysis"
+  - name          : "Jacob Miranda"
+    affiliation   : "2"
     role:
-      - "Writing - Review & Editing"
-      - "Supervision"
+      - "Writing - Original Draft Preparation"
+  - name          : "Christian Stephens"
+    affiliation   : "2"
+    role:
+      - "Writing - Original Draft Preparation"
 
 affiliation:
   - id            : "1"
-    institution   : "Wilhelm-Wundt-University"
+    institution   : "Harrisburg University of Science and Technology"
   - id            : "2"
-    institution   : "Konstanz Business School"
+    institution   : "University of Alabama"
 
 authornote: |
-  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
-
-  Enter author note here.
+  TBA
 
 abstract: |
-  One or two sentences providing a **basic introduction** to the field,  comprehensible to a scientist in any discipline.
-  
-  Two to three sentences of **more detailed background**, comprehensible  to scientists in related disciplines.
-  
-  One sentence clearly stating the **general problem** being addressed by  this particular study.
-  
-  One sentence summarizing the main result (with the words "**here we show**" or their equivalent).
-  
-  Two or three sentences explaining what the **main result** reveals in direct comparison to what was thought to be the case previously, or how the  main result adds to previous knowledge.
-  
-  One or two sentences to put the results into a more **general context**.
-  
-  Two or three sentences to provide a **broader perspective**, readily comprehensible to a scientist in any discipline.
-  
-  <!-- https://tinyurl.com/ybremelq -->
+  TBA
   
 keywords          : "keywords"
 wordcount         : "X"
@@ -71,26 +59,21 @@ r_refs("r-references.bib")
 
 ```{r analysis-preferences}
 # Seed for random number generation
-set.seed(94854905)
+set.seed(89432289)
 knitr::opts_chunk$set(cache.extra = knitr::rand_seed, echo = FALSE, include = FALSE)
 library(rio)
 library(dplyr)
+library(nlme)
+library(effectsize)
+library(ggplot2)
 ```
 
 Exploratory Research Questions:
 
-1) What is the reliability of instructor evaluations?
+1) What is the reliability of instructor evaluations? 
 2) Are instructor evaluations reliable across time? 
 3) Is the perceived fairness of the grading in the course a moderator of reliability in instructor evaluations? 
-
-1 - Same as Before. 
- "Are student ratings reliable for instructors across courses and semesters?"
-
-2 "Does the amount of time taught between courses (same course, same instructor) moderate reliability?"
-
-3 - "Does perceived fairness of the grading system moderate reliability?"
-
-4 - "Does lower variability in perceived fairness predict higher reliability of student ratings?"
+4) Does the variability in instructor fairness rating predict reliability of instructor evaluations? 
 
 # Method
 
@@ -99,57 +82,66 @@ Exploratory Research Questions:
 ```{r import-data}
 # please note the data is deidentified but timing and course number is accurate
 DF <- import("final_evals.csv")
-```
 
-
-The archival study was conducted using data from the psychology department at a large Midwestern public university. We used data from `r nrow(DF[ DF$course_level == "undergraduate" , ])` undergraduate, `r nrow(DF[ DF$course_level == "mixed", ])` mixed-level undergraduate, and `r nrow(DF[ DF$course_level == "masters" , ])` graduate psychology classes taught from 1987 to 2018 that were evaluated by students using the same 15-item instrument. The graduate courses were excluded from analyses due to the ceiling effects on expected grades. Faculty followed set procedures in distributing scan forms no more than two weeks before the conclusion of the semester. A student was assigned to collect the forms and deliver them to the departmental secretary. The instructor was required to leave the room while students completed the forms. 
-
-The questionnaire given to students can be found on XXXOSF LINXXX. These items were presented with a five-point scale from 1 (*strongly disagree*) to 5 (*strongly agree*). Demographics table? 
-
-## Data analysis
-
-- Minimum sample size *n* = 10
-- Robustness check with smaller samples in appendix 
-- Covary out sample size 
-- Include all course types 
-- Explain the counting mechanism 0-1-2-etc. 
-
-RQ1: are instructor evals reliable
-- Calculate reliability on Q1, Q4
-- Calculate separately to talk about quality and fairness
-- 2X2X2 (same/different): course X instructor X semester 
-- control for sample size 
-- Q1 ~ Q1 + (1|person)
-
-potentially covary sample size on the question scores, then calculate reliability on these scores. 
-
-RQ2: time
-- Calculate time on both of them 
-- same course, same instructor, manipulate semester 
-- don't compare stats to lang over time that's weird 
-- reliability ~ time + (1|person)
-
-relq1 <- lme(q1.x ~ q1.y + People.x + People.y, 
-           data = longrel[ longrel$semestermatch == 1 & 
-                             longrel$coursematch == 1 & 
-                             longrel$instructormatch == 1, ], 
-           method = "ML", 
-           na.action = "na.omit",
-           random = list(~1|instructcode.x, ~1|instructcode.y))
-
-RQ3/4: moderation and variability 
-- Think more here 
-- reliability ~ time*avg(Fairness) + var(fairness_overall_instructor)
-- same course, same instructor, manipulate semester 
-
-```{r}
+# we will only use courses with at least 10 ratings
 DF_sample <- DF %>% 
   filter(People >= 10) 
 
-tapply(DF_sample$Q1AVG, DF_sample$course_level, mean)
-tapply(DF_sample$Q1AVG, DF_sample$course_level, sd)
+# for this pre-reg we will randomly sample 20 percent of instructors 
+random_sample <- sample(unique(DF_sample$instructor_code), 
+                        size = round(length(unique(DF_sample$instructor_code)) * .20),
+                        replace = FALSE)
+
+DF_sample <- DF_sample %>% 
+  filter(instructor_code %in% random_sample)
 ```
 
+The archival study was conducted using data from the psychology department at a large Midwestern public university. We used data from `r nrow(DF_sample[ DF_sample$course_level == "undergraduate" , ])` undergraduate, `r nrow(DF_sample[ DF_sample$course_level == "mixed", ])` mixed-level undergraduate, and `r nrow(DF_sample[ DF_sample$course_level == "masters" , ])` graduate psychology classes taught from 1987 to 2018 that were evaluated by students using the same 15-item instrument. Faculty followed set procedures in distributing scan forms no more than two weeks before the conclusion of the semester. A student was assigned to collect the forms and deliver them to the departmental secretary. The instructor was required to leave the room while students completed the forms. In the last several years of evaluations, online versions of these forms were used with faculty encouraged to give students time to complete them in class while they were outside the classroom. 
+
+The questionnaire given to students can be found at https://osf.io/4sphx. These items were presented with a five-point scale from 1 (*strongly disagree*) to 5 (*strongly agree*). For this study, the overall instructor evaluation question was "The overall quality of this course was among the top 20% of those I have taken.". For fairness, we used the question of "The instructor used fair and appropriate methods in the determination of grades.". The ratings were averaged for each course, and the sample size for each rating was included. 
+
+## Planned Analyses
+
+The evaluations will be filtered for those with at least ten student ratings for the course. We will perform a robustness check for the first research question on the data when the sample size is at least *n* = 5 up to *n* = 9 (i.e., on all evaluations with at least 5 ratings, then at least 6 ratings, etc.) to determine if the reliability estimates are stable at lower sample sizes. We will first screen the dataset (two evaluation questions, sample size for course) for accuracy errors, linearity, normality, and homoscedasticity. The data is assumed to not have traditional "outliers", as these evaluations represent true averages from student evaluations. If the linearity assumption fails, we will consider potential nonparametric models to address non-linearity. Deviations from normality will be noted as the large sample size should provide coverage [BETTER WORD] for any violations of normality. If data appears to be heteroscedastic, we will use bootstrapping to provide estimates and confidence intervals. 
+
+This data was considered structured by instructor; therefore, all analyses below were coded in *R* using the *nlme* package [@Pinheiro2017] to control for correlated error of instructor as a random intercept in a multilevel model. Multilevel models allow for analysis of repeated measures data without collapsing by participant [i.e., each instructor/semester/course combination can be kept separate without averaging over these measurements; @Gelman2006]. Random intercept models are regression models on the repeated data that structure the data by a specified variable, which was instructor in this analysis. Therefore, each instructor's average rating score was allowed to vary within the analysis, as ratings would be expected to be different from instructor to instructor. In each of the analyses described below, the number of students providing ratings for the course was included as a control variable to even out differences in course size as an influence in the results. However, this variable will be excluded if the models do not converge. The dependent variable and predictors varied based on the research question, and these are described with each analysis below. 
+
+### RQ1
+
+In this research question, we will examine the reliability of instructor evaluations on the overall rating and separately on the fairness rating. We will calculate eight types of reliability using course (same or different) by instructor (same or different) by semester (same or different). The dependent variable will be the first question average with a predictor of the comparison question average,  and both sample sizes (first sample size, comparison sample size). Instructor code will be used as the random intercept for both ratings (i.e., two instructor random intercepts, first and comparison). The value of interest is the standardized regression coefficient for the fixed effect of question from this model. Given that the large sample size will likely produce "significant" *p*-values, we will use the 95% CI to determine which reliability values are larger than zero and to compare reliability estimates to each other.
+
+## RQ2
+
+We will use the reliability for the same instructor and course calculated as described in RQ1 at each time point difference between semesters. For example, the same semester would create a time difference of 0. The next semester (Spring to Summer, Summer to Fall, Fall to Spring) would create a time difference of 1. We will use the time difference as a fixed effect to predict reliability for the overall question only with a random intercept of instructor. We will use the coefficient of time difference and its confidence interval to determine if there is a linear change over time. Finally, we will plot the changes over time to examine if this effect is non-linear in nature and discuss implications of the graph. 
+
+# Results
+
+## Data Screening
+
+```{r datascreening, include = FALSE}
+random <- rchisq(nrow(DF_sample), 7)
+output <- lm(random ~ ., data = DF_sample %>% select(People, Q1AVG, Q4AVG))
+standardized <- rstudent(output)
+fitvalues <- scale(output$fitted.values)
+
+#linear
+{qqnorm(standardized)
+abline(0,1)}
+
+#multivariate normality
+hist(standardized, breaks=15)
+
+#homogeneity and homoscedasticity
+{plot(fitvalues, standardized) 
+abline(0,0)
+abline(v = 0)}
+```
+
+The overall dataset was screened for normality, linearity, homogeneity, and homoscedasticity using procedures from @Tabachnick2012. [Data generally met assumptions with a slight skew and some heterogeneity. UPDATE] The complete anonymized dataset and other information can be found online at https://osf.io/k7zh2. This page also includes the manuscript written inline with the statistical analysis with the *papaja* package [@Aust2017] for interested researchers/reviewers who wish to recreate these analyses.
+
+## Descriptive Statistics
+
+## RQ1
 
 ```{r}
 # let's see if twitter can help here - yes! @smartin2018 for the win!
@@ -175,10 +167,246 @@ rm(templong)
 longrel$instructormatch <- as.numeric(longrel$instructor_code.x == longrel$instructor_code.y)
 longrel$semestermatch <- as.numeric(longrel$semester_count.x == longrel$semester_count.y)
 longrel$coursematch <- as.numeric(longrel$new_course.x == longrel$new_course.y)
+
+#look at the contingency table
+#table(longrel$instructormatch, longrel$semestermatch, longrel$coursematch)
+
+# dataframe to put stuff in ----
+betarel <- matrix(NA, nrow = 2*2*2*2, ncol = 4+3)
+
+# going to let these overwrite each other so memory isn't bonkers
+# semester, course, instructor
+## same same same ----
+relq1 <- lme(Q1AVG.x ~ Q1AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq1)
+betarel[1 , ] <- c(1,1,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.x ~ Q4AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq4)
+betarel[2 , ] <- c(1,1,1,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## same same different ----
+relq1 <- lme(Q1AVG.x ~ Q1AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq1)
+betarel[3 , ] <- c(1,1,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.x ~ Q4AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq4)
+betarel[4 , ] <- c(1,1,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## same different same ----
+relq1 <- lme(Q1AVG.x ~ Q1AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq1)
+betarel[5 , ] <- c(1,0,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.x ~ Q4AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq4)
+betarel[6 , ] <- c(1,0,1,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## same different different ----
+relq1 <- lme(Q1AVG.x ~ Q1AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq1)
+betarel[7 , ] <- c(1,0,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.x ~ Q4AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq4)
+betarel[8 , ] <- c(1,0,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## different different different ----
+relq1 <- lme(Q1AVG.x ~ Q1AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq1)
+betarel[9 , ] <- c(0,0,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.x ~ Q4AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq4)
+betarel[10 , ] <- c(0,0,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## different same different ----
+relq1 <- lme(Q1AVG.x ~ Q1AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq1)
+betarel[11 , ] <- c(0,1,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.x ~ Q4AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq4)
+betarel[12 , ] <- c(0,1,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## different different same ----
+relq1 <- lme(Q1AVG.x ~ Q1AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq1)
+betarel[13 , ] <- c(0,0,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.x ~ Q4AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq4)
+betarel[14 , ] <- c(0,0,1,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## different same same ----
+relq1 <- lme(Q1AVG.x ~ Q1AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq1)
+betarel[15 , ] <- c(0,1,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.x ~ Q4AVG.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y))
+temp <- standardize_parameters(relq4)
+betarel[16 , ] <- c(1,1,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+betarel <- as.data.frame(betarel)
+colnames(betarel) <- c("Semester", "Course", "Instructor", "Question",
+                      "b", "CI_Low", "CI_High")
+```
+
+```{r}
+ggplot()
 ```
 
 
-# Results
+## RQ2 
+
+should there be a min number of ratings that go into the "reliability"? 
+calculate this by instructor, not just semester difference 
+
+```{r}
+long_match <- longrel %>% 
+  filter(coursematch == 1) %>% 
+  filter(instructormatch == 1) %>% 
+  select(instructor_code.x, semester_count.x, People.x, Q1AVG.x, Q4AVG.x, 
+         instructor_code.y, semester_count.y, People.y, Q1AVG.y, Q4AVG.y) %>% 
+  mutate(semester_diff = semester_count.y - semester_count.x)
+
+# loop over semester_diff
+
+# loop over instructor
+
+# select data
+
+# calculate reliability
+
+# save it
+```
+
+
+relq1 <- lme(q1.x ~ q1.y + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructcode.x, ~1|instructcode.y))
+
+RQ3/4: moderation and variability 
+- Think more here 
+- reliability ~ time*avg(Fairness) + var(fairness_overall_instructor)
+
 
 # Discussion
 
