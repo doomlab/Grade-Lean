@@ -83,13 +83,13 @@ Exploratory Research Questions:
 # please note the data is deidentified but timing and course number is accurate
 DF <- import("final_evals.csv")
 
-# we will only use courses with at least 10 ratings
+# we will only use courses with at least 15 ratings ... look at the paper that may be reliable (2013)
 DF_sample <- DF %>% 
-  filter(People >= 10) 
+  filter(People >= 15)
 
 # for this pre-reg we will randomly sample 20 percent of instructors 
 random_sample <- sample(unique(DF_sample$instructor_code), 
-                        size = round(length(unique(DF_sample$instructor_code)) * .20),
+                        size = round(length(unique(DF_sample$instructor_code)) * .30),
                         replace = FALSE)
 
 DF_sample <- DF_sample %>% 
@@ -368,14 +368,34 @@ colnames(betarel) <- c("Semester", "Course", "Instructor", "Question",
 ```
 
 ```{r}
-ggplot()
-```
+betarel$b <- as.numeric(betarel$b)
+betarel$CI_Low <- as.numeric(betarel$CI_Low)
+betarel$CI_High <- as.numeric(betarel$CI_High)
+betarel$Semester <- factor(betarel$Semester, 
+                           levels = c(0,1),
+                           labels = c("Different", "Same"))
+betarel$Instructor <- factor(betarel$Instructor, 
+                           levels = c(0,1),
+                           labels = c("Different", "Same"))
+betarel$Course <- factor(betarel$Course, 
+                           levels = c(0,1),
+                           labels = c("Different", "Same"))
 
+ggplot(betarel, aes(Semester, b, color = Course)) + 
+  geom_point() +
+  theme_classic() + 
+  facet_wrap(~Instructor) + 
+  geom_errorbar(aes(ymin = betarel$CI_Low, ymax = betarel$CI_High))
+```
 
 ## RQ2 
 
 should there be a min number of ratings that go into the "reliability"? 
+https://www.researchgate.net/post/What-is-the-minimum-sample-size-to-run-Pearsons-R
 calculate this by instructor, not just semester difference 
+
+can we control for experience 
+https://www.researchgate.net/profile/Herb-Marsh/publication/232498766_Do_University_Teachers_Become_More_Effective_With_Experience_A_Multilevel_Growth_Model_of_Students%27_Evaluations_of_Teaching_Over_13_Years/links/5bdfa69292851c6b27a7927a/Do-University-Teachers-Become-More-Effective-With-Experience-A-Multilevel-Growth-Model-of-Students-Evaluations-of-Teaching-Over-13-Years.pdf
 
 ```{r}
 long_match <- longrel %>% 
@@ -383,7 +403,7 @@ long_match <- longrel %>%
   filter(instructormatch == 1) %>% 
   select(instructor_code.x, semester_count.x, People.x, Q1AVG.x, Q4AVG.x, 
          instructor_code.y, semester_count.y, People.y, Q1AVG.y, Q4AVG.y) %>% 
-  mutate(semester_diff = semester_count.y - semester_count.x)
+  mutate(semester_diff = round(semester_count.y - semester_count.x))
 
 # loop over semester_diff
 
