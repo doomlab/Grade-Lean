@@ -143,6 +143,8 @@ The overall dataset was screened for normality, linearity, homogeneity, and homo
 
 ## RQ1
 
+what type of plot 
+
 ```{r}
 # let's see if twitter can help here - yes! @smartin2018 for the win!
 
