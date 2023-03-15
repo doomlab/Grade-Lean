@@ -49,7 +49,7 @@ tablelist         : no
 footnotelist      : no
 
 classoption       : "man"
-output            : papaja::apa6_pdf
+output            : papaja::apa6_docx
 ---
 
 ```{r setup, include = FALSE}
@@ -74,9 +74,8 @@ Exploratory Research Questions:
 
 1)  What is the reliability of instructor evaluations?
 2)  Are instructor evaluations reliable across time?
-3)  Is the perceived fairness of the grading in the course a moderator
-    of reliability in instructor evaluations?
-4)  Does the variability in instructor fairness rating predict
+3)  Is the average level of perceived fairness of the grading in the course a moderator of reliability in instructor evaluations?
+4)  Does the average variability in instructor fairness rating moderate
     reliability of instructor evaluations?
 
 # Method
@@ -208,15 +207,11 @@ and one standard deviation above average [@cohen2003].
 
 ### RQ 4
 
-Finally, we will add the standard deviation of the fairness ratings to
-the equation from RQ 3 as a fixed effect. The variability in fairness
-ratings will be calculated in the same way as the mean fairness, which
-is only for the instructor and semester time difference evaluations that
-were used to calculate the reliability estimate. This variable
+Finally, we will examine the average standard deviation of fairness ratings as a moderator of with time to predict reliability. This variable
 represents the variability in perceived fairness in grading from student
 evaluations, where small numbers indicate relative agreement on the
 rating of fairness and larger values indicate a wide range of fairness
-ratings.
+ratings. The variability in fairness ratings will be calculated in the same way as the mean fairness, which is only for the instructor and semester time difference evaluations that were used to calculate the reliability estimate. This research question will assessed the same way as research question three. 
 
 # Results
 
@@ -645,7 +640,7 @@ The confidence interval for the effect of semester difference predicting
 reliability DID/DID NOT cross zero, *b* = `r apa_num(coef.rq2[2 , 1])`,
 95% CI [`r apa_num(ci.rq2$fixed[2,1])`, `r apa_num(ci.rq2$fixed[2,3])`],
 $R^2$ =
-`r apa_num(as.numeric(r.squaredGLMM(rq2.model)[1]), gt1 = FALSE)`. WILL
+`r suppressWarnings(apa_num(as.numeric(r.squaredGLMM(rq2.model)[1]), gt1 = FALSE))`. WILL
 INTERPRET THIS VALUE. As shown in \@ref(fig:figure2), WILL INTERPRET
 THIS FINAL GRAPH. [A negative slope implies that reliability decreases
 over time, while a positive slopes implies reliability increases over
@@ -664,7 +659,12 @@ ggplot(save_rel, aes(semester_diff, rel)) +
 ## RQ 3
 
 ```{r rq3-nlme}
-rq3.model <- lme(rel ~ semester_diff*avg_fair, 
+# center the variables
+save_rel$avg_fair_center <- scale(save_rel$avg_fair, scale = FALSE)
+save_rel$avg_fair_low <- save_rel$avg_fair_center + sd(save_rel$avg_fair_center, na.rm = T)
+save_rel$avg_fair_high <- save_rel$avg_fair_center - sd(save_rel$avg_fair_center, na.rm = T)
+
+rq3.model <- lme(rel ~ semester_diff*avg_fair_center, 
                  data = save_rel,
                  random = list(~1|instructor_code.x), 
                  method = "ML", 
@@ -673,19 +673,67 @@ rq3.model <- lme(rel ~ semester_diff*avg_fair,
 
 coef.rq3 <- summary(rq3.model)$tTable
 ci.rq3 <- intervals(rq3.model)
+
+rq3.model.low <- lme(rel ~ semester_diff*avg_fair_low, 
+                 data = save_rel,
+                 random = list(~1|instructor_code.x), 
+                 method = "ML", 
+                 na.action = "na.omit",
+                 control = lmeControl(opt = "optim"))
+coef.rq3.low <- summary(rq3.model.low)$tTable
+
+rq3.model.high <- lme(rel ~ semester_diff*avg_fair_high, 
+                 data = save_rel,
+                 random = list(~1|instructor_code.x), 
+                 method = "ML", 
+                 na.action = "na.omit",
+                 control = lmeControl(opt = "optim"))
+coef.rq3.high <- summary(rq3.model.high)$tTable
 ```
 
 The confidence interval for the interaction of semester time difference
 and average fairness DID/DID NOT cross zero, *b* =
 `r apa_num(coef.rq3[4,1])`, 95% CI [`r apa_num(ci.rq3$fixed[4, 1])`,
 `r apa_num(ci.rq3$fixed[4, 3])`], $R^2$ =
-`r apa_num(as.numeric(r.squaredGLMM(rq3.model)[1]), gt1 = FALSE)`. WILL
+`r suppressWarnings(apa_num(as.numeric(r.squaredGLMM(rq3.model)[1]), gt1 = FALSE))`. WILL
 INTERPRET THIS VALUE, RUN SIMPLE SLOPES IF SIGNIFICANT.
+
+An example of the results from simple slopes graphically, \@ref(fig:figure3). 
+
+```{r figure3, include = TRUE, fig.cap="Example simple slope depiction for low, average, and high fairness scores used to moderate the relationship between semester time and reliability estimates."}
+save_rel$fake_avg <- ifelse(
+  abs(save_rel$avg_fair_center) < sd(save_rel$avg_fair_center), 
+  "Average", 
+  ifelse(
+    save_rel$avg_fair_center > sd(save_rel$avg_fair_center), "High", 
+    "Low"
+  )
+)
+
+save_rel$predict_rel <- predict(rq3.model)
+
+ggplot(save_rel, aes(predict_rel, rel)) + 
+  geom_point(alpha = .1) + 
+  theme_classic() + 
+  xlab("Predicted Reliability") + 
+  ylab("Actual Reliability") + 
+  geom_abline(intercept = coef.rq3[1,1], slope = coef.rq3[3,1], color= "red", 
+                 linetype= "dashed", linewidth = 1.5) + 
+    geom_abline(intercept = coef.rq3.low[1,1], slope = coef.rq3.low[3,1], color= "green", 
+                 linetype= "dotted", linewidth = 1.5) + 
+    geom_abline(intercept = coef.rq3.high[1,1], slope = coef.rq3.high[3,1], color= "blue", 
+                 linetype= "dashed", linewidth = 1.5)
+```
 
 ## RQ 4
 
 ```{r rq4-nlme}
-rq4.model <- lme(rel ~ semester_diff*avg_fair + std_fair, 
+# center the variables
+save_rel$std_fair_center <- scale(save_rel$std_fair, scale = FALSE)
+save_rel$std_fair_low <- save_rel$std_fair_center + sd(save_rel$std_fair_center, na.rm = T)
+save_rel$std_fair_high <- save_rel$std_fair_center - sd(save_rel$std_fair_center, na.rm = T)
+
+rq4.model <- lme(rel ~ semester_diff*std_fair_center, 
                  data = save_rel,
                  random = list(~1|instructor_code.x), 
                  method = "ML", 
@@ -694,17 +742,49 @@ rq4.model <- lme(rel ~ semester_diff*avg_fair + std_fair,
 
 coef.rq4 <- summary(rq4.model)$tTable
 ci.rq4 <- intervals(rq4.model)
+
+rq4.model.low <- lme(rel ~ semester_diff*std_fair_low, 
+                 data = save_rel,
+                 random = list(~1|instructor_code.x), 
+                 method = "ML", 
+                 na.action = "na.omit",
+                 control = lmeControl(opt = "optim"))
+coef.rq4.low <- summary(rq4.model.low)$tTable
+
+rq4.model.high <- lme(rel ~ semester_diff*std_fair_high, 
+                 data = save_rel,
+                 random = list(~1|instructor_code.x), 
+                 method = "ML", 
+                 na.action = "na.omit",
+                 control = lmeControl(opt = "optim"))
+coef.rq4.high <- summary(rq4.model.high)$tTable
 ```
 
-The confidence interval for the addition of the variability of fairness
-DID/DID NOT cross zero, *b* = `r apa_num(coef.rq4[5,1])`, 95% CI
-[`r apa_num(ci.rq4$fixed[5, 1])`, `r apa_num(ci.rq4$fixed[5, 3])`],
+The confidence interval for the interaction of variability of fairness and semester time difference DID/DID NOT cross zero, *b* = `r apa_num(coef.rq4[4,1])`, 95% CI
+[`r apa_num(ci.rq4$fixed[4, 1])`, `r apa_num(ci.rq4$fixed[4, 3])`],
 $R^2$ =
-`r apa_num(as.numeric(r.squaredGLMM(rq4.model)[1]), gt1 = FALSE)`. WILL
+`r suppressWarnings(apa_num(as.numeric(r.squaredGLMM(rq4.model)[1]), gt1 = FALSE))`. WILL
 INTERPRET THIS VALUE. [A positive value indicates that increasing
 variability in fairness indicates higher reliability over time, while a
 negative value indicates that reliability decreases with increasing
-variability in fairness over time].
+variability in fairness over time]. The graph below shows the potential interaction of variability of fairness and semester time, \@ref(fig:figure4). 
+
+```{r figure4, include = TRUE, fig.cap="Example simple slope depiction for low, average, and high fairness variability used to moderate the relationship between semester time and reliability estimates."}
+save_rel$predict_rel_2 <- predict(rq4.model)
+
+ggplot(save_rel, aes(predict_rel_2, rel)) + 
+  geom_point(alpha = .1) + 
+  theme_classic() + 
+  xlab("Predicted Reliability") + 
+  ylab("Actual Reliability") + 
+  geom_abline(intercept = coef.rq4[1,1], slope = coef.rq4[3,1], color= "red", 
+                 linetype= "dashed", linewidth = 1.5) + 
+    geom_abline(intercept = coef.rq4.low[1,1], slope = coef.rq4.low[3,1], color= "green", 
+                 linetype= "dotted", linewidth = 1.5) + 
+    geom_abline(intercept = coef.rq4.high[1,1], slope = coef.rq4.high[3,1], color= "blue", 
+                 linetype= "dashed", linewidth = 1.5)
+```
+
 
 # Discussion
 
