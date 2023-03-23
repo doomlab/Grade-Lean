@@ -161,7 +161,7 @@ in the results. However, this variable will be excluded if the models do
 not converge. The dependent variable and predictors varied based on the
 research question, and these are described with each analysis below.
 
-### RQ 1
+### RQ 1 (look at MLM random intercept)
 
 In this research question, we will examine the reliability of instructor
 evaluations on the overall rating and separately on the fairness rating.
@@ -203,7 +203,7 @@ the average perceived fairness of grading at the time of ratings. If
 this interaction effect's coefficient does not include zero, we will
 perform a simple slopes analysis to examine the effects of instructors
 who are rated at average fairness, one standard deviation below average,
-and one standard deviation above average [@cohen2003].
+and one standard deviation above average [@cohen2003]. EXPLAIN SIMPLE SLOPES MORE MAYBE WHAT IS THE SMALLEST EFFECT OF INTEREST MAYBE ONLY WITH EFFECT SIZE 
 
 ### RQ 4
 
@@ -524,10 +524,10 @@ Each individual evaluation was compared to every other evaluation
 resulting in `r nrow(longrel)` total comparisons. Eight combinations of
 ratings were examined using instructor (same, different), course (same,
 different), and semester (same, different) on both the overall and
-fairness evaluation ratings separately. One rating was used to predict
+fairness evaluation ratings separately. *****One rating was used to predict
 the comparison rating (i.e., question 1 was used to predict a comparison
 question 1) and the number of ratings per question were used as fixed
-effects covariates. The instructor(s) were used as a random intercept to
+effects covariates*****. The instructor(s) were used as a random intercept to
 control for correlated error and overall average rating per instructor.
 The effects were then standardized using the *parameters* package
 [@lüdecke2023].
@@ -785,6 +785,8 @@ ggplot(save_rel, aes(predict_rel_2, rel)) +
                  linetype= "dashed", linewidth = 1.5)
 ```
 
+
+- figure out the x axis for graphs 3 and 4 - figure out if you can make it time on the x axis (check out Nick's paper)
 
 # Discussion
 
