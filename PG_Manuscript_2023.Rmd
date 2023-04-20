@@ -699,21 +699,11 @@ INTERPRET THIS VALUE, RUN SIMPLE SLOPES IF SIGNIFICANT.
 An example of the results from simple slopes graphically, \@ref(fig:figure3). 
 
 ```{r figure3, include = TRUE, fig.cap="Example simple slope depiction for low, average, and high fairness scores used to moderate the relationship between semester time and reliability estimates."}
-save_rel$fake_avg <- ifelse(
-  abs(save_rel$avg_fair_center) < sd(save_rel$avg_fair_center), 
-  "Average", 
-  ifelse(
-    save_rel$avg_fair_center > sd(save_rel$avg_fair_center), "High", 
-    "Low"
-  )
-)
-
-save_rel$predict_rel <- predict(rq3.model)
 
 ggplot(save_rel, aes(z_semester_diff, rel)) + 
   geom_point(alpha = .1) + 
   theme_classic() + 
-  xlab("Semester Difference") + 
+  xlab("Centered Semester Difference") + 
   ylab("Reliability") + 
   geom_abline(intercept = coef.rq3[1,1], slope = coef.rq3[3,1], color= "red", 
                  linetype= "dashed", linewidth = 1.5) + 
@@ -721,7 +711,8 @@ ggplot(save_rel, aes(z_semester_diff, rel)) +
                  linetype= "dotted", linewidth = 1.5) + 
     geom_abline(intercept = coef.rq3.high[1,1], slope = coef.rq3.high[3,1], color= "blue", 
                  linetype= "dashed", linewidth = 1.5) + 
-  scale_x_continuous(breaks = c(-25, 0, 25, 50), labels = c(0, 25, 50, 75))
+  geom_vline(xintercept = 0) + 
+  theme(axis.line.y = element_blank())
 ```
 
 ## RQ 4
@@ -769,12 +760,11 @@ negative value indicates that reliability decreases with increasing
 variability in fairness over time]. The graph below shows the potential interaction of variability of fairness and semester time, \@ref(fig:figure4). 
 
 ```{r figure4, include = TRUE, fig.cap="Example simple slope depiction for low, average, and high fairness variability used to moderate the relationship between semester time and reliability estimates."}
-save_rel$predict_rel_2 <- predict(rq4.model)
 
 ggplot(save_rel, aes(z_semester_diff, rel)) + 
   geom_point(alpha = .1) + 
   theme_classic() + 
-  xlab("Semester Difference") + 
+  xlab("Centered Semester Difference") + 
   ylab("Reliability") + 
   geom_abline(intercept = coef.rq4[1,1], slope = coef.rq4[3,1], color= "red", 
                  linetype= "dashed", linewidth = 1.5) + 
@@ -782,7 +772,8 @@ ggplot(save_rel, aes(z_semester_diff, rel)) +
                  linetype= "dotted", linewidth = 1.5) + 
     geom_abline(intercept = coef.rq4.high[1,1], slope = coef.rq4.high[3,1], color= "blue", 
                  linetype= "dashed", linewidth = 1.5) + 
-  scale_x_continuous(breaks = c(-25, 0, 25, 50), labels = c(0, 25, 50, 75))
+  geom_vline(xintercept = 0) + 
+  theme(axis.line.y = element_blank())
 ```
 
 # Discussion
