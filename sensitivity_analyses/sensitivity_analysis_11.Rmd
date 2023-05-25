@@ -1,0 +1,327 @@
+---
+title: "Sensitivity Analysis N = 11"
+author: "Erin M. Buchanan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Libraries
+
+```{r analysis-preferences, message = F}
+# Seed for random number generation
+set.seed(89432289)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed, echo = FALSE, include = FALSE)
+library(rio)
+library(dplyr)
+library(nlme)
+library(effectsize)
+library(ggplot2)
+library(ppcor)
+library(MuMIn)
+library(flextable)
+```
+
+## Data
+
+```{r import-data, echo = T, include = T}
+# please note the data is deidentified but timing and course number is accurate
+DF <- import("../data/final_evals.csv")
+
+DF_sample <- DF %>% 
+  filter(People >= 11)
+```
+
+## Data Screening
+
+```{r datascreening, include = FALSE}
+random <- rchisq(nrow(DF_sample), 7)
+output <- lm(random ~ ., data = DF_sample %>% dplyr::select(People, Q1AVG, Q4AVG))
+standardized <- rstudent(output)
+fitvalues <- scale(output$fitted.values)
+
+#linear
+{qqnorm(standardized)
+abline(0,1)}
+
+#multivariate normality
+hist(standardized, breaks=15)
+
+#homogeneity and homoscedasticity
+{plot(fitvalues, standardized) 
+abline(0,0)
+abline(v = 0)}
+```
+
+## RQ 1
+
+```{r rq1-nlme}
+# let's see if twitter can help here - yes! @smartin2018 for the win!
+
+# create unique id
+DF_sample$evalid <- 1:nrow(DF_sample)
+
+# create every pairwise combination 
+combns <- t(combn(DF_sample$evalid,2))
+
+# create a dataframe to hold that information, remove other frame for the love of space
+longrel <- data.frame(evalid=combns[,1],evalid2=combns[,2]); rm(combns)
+
+# add person 1 information back to dataframe
+templong <- merge(longrel, DF_sample, by = "evalid")
+colnames(templong)[1:2] <- c("evalid1", "evalid")
+
+# add person 2 information back to the dataframe, remove other frame for the love of space
+longrel <- merge(templong, DF_sample, by = "evalid")
+rm(templong)
+
+# create factors
+longrel$instructormatch <- as.numeric(longrel$instructor_code.x == longrel$instructor_code.y)
+longrel$semestermatch <- as.numeric(longrel$semester_count.x == longrel$semester_count.y)
+longrel$coursematch <- as.numeric(longrel$new_course.x == longrel$new_course.y)
+
+#look at the contingency table
+#table(longrel$instructormatch, longrel$semestermatch, longrel$coursematch)
+
+# dataframe to put stuff in ----
+betarel <- matrix(NA, nrow = 2*2*2*2, ncol = 4+3)
+
+# going to let these overwrite each other so memory isn't bonkers
+# semester, course, instructor
+## same same same ----
+relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y),
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq1)
+betarel[1 , ] <- c(1,1,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq4)
+betarel[2 , ] <- c(1,1,1,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## same same different ----
+relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq1)
+betarel[3 , ] <- c(1,1,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq4)
+betarel[4 , ] <- c(1,1,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## same different same ----
+relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq1)
+betarel[5 , ] <- c(1,0,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq4)
+betarel[6 , ] <- c(1,0,1,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## same different different ----
+relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq1)
+betarel[7 , ] <- c(1,0,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 1 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq4)
+betarel[8 , ] <- c(1,0,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## different different different ----
+relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq1)
+betarel[9 , ] <- c(0,0,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq4)
+betarel[10 , ] <- c(0,0,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## different same different ----
+relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq1)
+betarel[11 , ] <- c(0,1,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 0, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq4)
+betarel[12 , ] <- c(0,1,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## different different same ----
+relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq1)
+betarel[13 , ] <- c(0,0,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 0 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq4)
+betarel[14 , ] <- c(0,0,1,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+## different same same ----
+relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq1)
+betarel[15 , ] <- c(0,1,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq1)
+
+relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+           data = longrel[ longrel$semestermatch == 0 & 
+                             longrel$coursematch == 1 & 
+                             longrel$instructormatch == 1, ], 
+           method = "ML", 
+           na.action = "na.omit",
+           random = list(~1|instructor_code.x, ~1|instructor_code.y), 
+           control = lmeControl(opt = "optim"))
+temp <- standardize_parameters(relq4)
+betarel[16 , ] <- c(0,1,1,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
+rm(relq4)
+
+betarel <- as.data.frame(betarel)
+colnames(betarel) <- c("Semester", "Course", "Instructor", "Question",
+                      "b", "CI_Low", "CI_High")
+```
+
+```{r figure1, include = TRUE, fig.cap= "Reliability estimates for instructor, course, and semester combinations."}
+betarel$b <- as.numeric(betarel$b)
+betarel$CI_Low <- as.numeric(betarel$CI_Low)
+betarel$CI_High <- as.numeric(betarel$CI_High)
+betarel$Semester_nice <- factor(betarel$Semester, 
+                           levels = c(0,1),
+                           labels = c("Different", "Same"))
+betarel$Instructor_nice <- factor(betarel$Instructor, 
+                           levels = c(0,1),
+                           labels = c("Different Instructor", "Same Instructor"))
+betarel$Course_nice <- factor(betarel$Course, 
+                           levels = c(0,1),
+                           labels = c("Different Course", "Same Course"))
+
+write.csv(betarel, "../output/beta_values_rq1_n11.csv", row.names = F)
+
+flextable(betarel)
+
+ggplot(betarel, aes(Semester_nice, b, color = Course_nice)) + 
+  geom_point() + 
+  geom_errorbar(aes(ymin = CI_Low, ymax = CI_High), width = 0.2) + 
+  theme_classic() + 
+  facet_grid(Question~Instructor_nice) + 
+  ylab("Reliability") + 
+  xlab("Semester Match") + 
+  scale_color_discrete(name = "Course Match")
+
+ggsave("../output/beta_graph_n11.png")
+```
