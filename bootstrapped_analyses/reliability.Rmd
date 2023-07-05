@@ -243,7 +243,7 @@ The complete anonymized dataset and other information can be found
 online at <https://osf.io/k7zh2>. This page also includes the manuscript
 written inline with the statistical analysis with the *papaja* package
 [@aust2022] for interested researchers/reviewers who wish to recreate
-these analyses. The bootstrapped versions of analyses and robustness analysis 
+these analyses. The bootstrapped versions of analyses and sensitivity analysis 
 can be found online on our OSF page with a summary of results. 
 
 ## Descriptive Statistics
@@ -545,7 +545,9 @@ course, and different semesters was greater than zero and usually
 overlapped in confidence interval with same instructor, same semester,
 and different courses. Interestingly, the same instructor with different courses and semesters showed a non-zero negative relationship, indicating that ratings generally were lower for later semesters in different courses. 
 
-For different instructors, we found positive non-zero reliablities when they were at least calculated on the same semester or course. These values were very close to zero, generally in the .01 to .05 range. Last, the reliabilities that were calculated on different courses, semesters, and instructors include zero in their confidence intervals. Exact values can be found in the online supplemental document with the robustness analysis in csv format. Robustness analyses revealed the same pattern and strength of results for evaluation reliabilities when sample size for evaluations was considered at *n* = 10, 11, 12, 13, and 14. 
+For different instructors, we found positive non-zero reliablities when they were at least calculated on the same semester or course. These values were very close to zero, generally in the .01 to .05 range. Last, the reliabilities that were calculated on different courses, semesters, and instructors include zero in their confidence intervals. Exact values can be found in the online supplemental document with the robustness analysis. 
+
+ROBUSTNESS REVEALED: 
 
 ```{r figure1, include = TRUE, fig.cap= "Reliability estimates for instructor, course, and semester combinations."}
 betarel$b <- as.numeric(betarel$b)

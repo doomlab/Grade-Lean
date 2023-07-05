@@ -1,0 +1,104 @@
+---
+title: "Bootstrapped Descriptives"
+author: "Erin M. Buchanan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Seed for random number generation
+set.seed(89432289)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed, include = FALSE)
+library(rio)
+library(dplyr)
+library(nlme)
+library(effectsize)
+library(ggplot2)
+library(ppcor)
+library(MuMIn)
+library(papaja)
+
+num_boots <- 1000
+```
+
+## Data Source
+
+```{r import-data}
+# please note the data is deidentified but timing and course number is accurate
+DF <- import("../data/final_evals.csv")
+
+# we will only use courses with at least 15 ratings ... look at the paper that may be reliable (2013)
+DF_sample <- DF %>% 
+  filter(People >= 15)
+
+# for this pre-reg we will randomly sample 20 percent of instructors 
+# random_sample <- sample(unique(DF_sample$instructor_code), 
+#                         size = round(length(unique(DF_sample$instructor_code)) * .30),
+#                         replace = FALSE)
+# 
+# DF_sample <- DF_sample %>% 
+#   filter(instructor_code %in% random_sample)
+```
+
+## Descriptive Statistics
+
+`r nrow(DF_sample)` evaluations included at least 15 student evaluations
+for analysis. Table \@ref(tab:table1) portrays the descriptive
+statistics for each course level including the total number of
+evaluations, unique instructors, unique course numbers, and average
+scores for the two rating items. Students additionally projected their
+course grade for each class (*A* = 5, *B* = 4, *C* = 3, *D* = 2, *F* =
+1), and the average for this item is included for reference. Overall,
+`r length(unique(DF_sample$instructor_code))` unique instructors and
+`r length(unique(DF_sample$new_course))` unique courses were included in
+the analyses below across `r max(DF_sample$semester_count) + 1`
+semesters.
+
+```{r table1, results = 'asis', include = TRUE}
+save_descriptives <- list()
+
+for (i in 1:num_boots){
+  
+  DF_boot <- DF_sample %>% 
+    slice_sample(n = nrow(DF_sample), replace = TRUE)
+  
+  save_descriptives[[i]] <- DF_boot %>% 
+  group_by(course_level) %>% 
+  summarize(totaln = n(), 
+            num_instruct = length(unique(instructor_code)),
+            num_courses = length(unique(new_course)),
+            avg_people = apa_num(mean(People, na.rm = T)), 
+            avgq1 = apa_num(mean(Q1AVG, na.rm = T)), 
+            avgsd1 = apa_num(sd(Q1AVG, na.rm = T)), 
+            avgq4 = apa_num(mean(Q4AVG, na.rm = T)),
+            avgsd4 = apa_num(sd(Q4AVG, na.rm = T)),
+            avgq15 = apa_num(mean(Q15AVG, na.rm = T)), 
+            avgsd15 = apa_num(sd(Q15AVG, na.rm = T))) %>% 
+  arrange(desc(course_level))
+  
+}
+
+temp <- bind_rows(save_descriptives) %>% 
+  mutate(course_level = factor(course_level, 
+                               levels = c("undergraduate",
+                                          "mixed", 
+                                          "masters"))) %>% 
+  group_by(course_level) %>% 
+  mutate(across(totaln:avgsd15, as.numeric)) %>% 
+  summarize(across(totaln:avgsd15, mean),
+            across(totaln:avgsd15, apa_num)) %>% 
+  t() %>% 
+  as.data.frame() %>% 
+  slice(-1)
+
+temp$stat <- c("N Total", "N Instructors", "N Courses",
+               "Average N Ratings", "Average Overall", 
+               "SD Overall", "Average Fairness", 
+               "SD Fairness", "Average Grade", "SD Grade")
+apa_table(temp[ , c(4, 1:3)], 
+          caption = "Bootstrapped Descriptive Statistics of Included Courses", 
+            row.names = FALSE, 
+            col.names = c("Statistic", "Undergraduate", "Mixed", "Master's"))
+```
+

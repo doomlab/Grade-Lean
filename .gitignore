@@ -1,4 +1,5 @@
 no sync/
+no_sync/
 *_files/
 
 ~$*.docx

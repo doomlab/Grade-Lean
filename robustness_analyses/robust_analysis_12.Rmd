@@ -1,5 +1,5 @@
 ---
-title: "Sensitivity Analysis N = 14"
+title: "Robustness Analysis N = 12"
 author: "Erin M. Buchanan"
 date: "`r Sys.Date()`"
 output: html_document
@@ -32,7 +32,7 @@ library(flextable)
 DF <- import("../data/final_evals.csv")
 
 DF_sample <- DF %>% 
-  filter(People >= 14)
+  filter(People >= 12)
 ```
 
 ## Data Screening
@@ -310,7 +310,7 @@ betarel$Course_nice <- factor(betarel$Course,
                            levels = c(0,1),
                            labels = c("Different Course", "Same Course"))
 
-write.csv(betarel, "../output/beta_values_rq1_n14.csv", row.names = F)
+write.csv(betarel, "../output/beta_values_rq1_n12_robust.csv", row.names = F)
 
 flextable(betarel)
 
@@ -323,5 +323,5 @@ ggplot(betarel, aes(Semester_nice, b, color = Course_nice)) +
   xlab("Semester Match") + 
   scale_color_discrete(name = "Course Match")
 
-ggsave("../output/beta_graph_n14.png")
+ggsave("../output/beta_graph_n12_robust.png")
 ```
