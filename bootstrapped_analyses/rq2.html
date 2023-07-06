@@ -13,7 +13,7 @@
 
 <meta name="date" content="2023-07-05" />
 
-<title>Bootstrapped Descriptives</title>
+<title>Bootstrapped RQ2</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,7 +350,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Bootstrapped Descriptives</h1>
+<h1 class="title toc-ignore">Bootstrapped RQ2</h1>
 <h4 class="author">Erin M. Buchanan</h4>
 <h4 class="date">2023-07-05</h4>
 
@@ -407,139 +407,106 @@ DF_sample &lt;- DF %&gt;%
 # DF_sample &lt;- DF_sample %&gt;% 
 #   filter(instructor_code %in% random_sample)</code></pre>
 </div>
-<div id="descriptive-statistics" class="section level2">
-<h2>Descriptive Statistics</h2>
-<p>3214 evaluations included at least 15 student evaluations for
-analysis. Table @ref(tab:table1) portrays the descriptive statistics for
-each course level including the total number of evaluations, unique
-instructors, unique course numbers, and average scores for the two
-rating items. Students additionally projected their course grade for
-each class (<em>A</em> = 5, <em>B</em> = 4, <em>C</em> = 3, <em>D</em> =
-2, <em>F</em> = 1), and the average for this item is included for
-reference. Overall, 231 unique instructors and 70 unique courses were
-included in the analyses below across 94 semesters.</p>
-<pre class="r"><code>save_descriptives &lt;- list()
+<div id="rq-1-data-set-up" class="section level2">
+<h2>RQ 1 Data Set Up</h2>
+<pre class="r"><code>save_betas &lt;- list()
+
+# create matched dataframe
+# let&#39;s see if twitter can help here - yes! @smartin2018 for the win!
+
+# create unique id
+DF_sample$evalid &lt;- 1:nrow(DF_sample)
+
+# create every pairwise combination 
+combns &lt;- t(combn(DF_sample$evalid,2))
+
+# create a dataframe to hold that information, remove other frame for the love of space
+longrel &lt;- data.frame(evalid=combns[,1],evalid2=combns[,2]); rm(combns)
+
+# add person 1 information back to dataframe
+templong &lt;- merge(longrel, DF_sample, by = &quot;evalid&quot;)
+colnames(templong)[1:2] &lt;- c(&quot;evalid1&quot;, &quot;evalid&quot;)
+
+# add person 2 information back to the dataframe, remove other frame for the love of space
+longrel &lt;- merge(templong, DF_sample, by = &quot;evalid&quot;)
+rm(templong)
+
+# create factors
+longrel$instructormatch &lt;- as.numeric(longrel$instructor_code.x == longrel$instructor_code.y)
+longrel$semestermatch &lt;- as.numeric(longrel$semester_count.x == longrel$semester_count.y)
+longrel$coursematch &lt;- as.numeric(longrel$new_course.x == longrel$new_course.y)</code></pre>
+</div>
+<div id="rq-2" class="section level2">
+<h2>RQ 2</h2>
+<pre class="r"><code># filter to only matches
+long_match &lt;- longrel %&gt;% 
+  filter(coursematch == 1) %&gt;% 
+  filter(instructormatch == 1) %&gt;% 
+  dplyr::select(instructor_code.x, semester_count.x, People.x, Q1AVG.x, Q4AVG.x, 
+         instructor_code.y, semester_count.y, People.y, Q1AVG.y, Q4AVG.y) %&gt;% 
+  mutate(semester_diff = round(semester_count.y - semester_count.x))
+
+# figure out the number each person has and need at least 10
+long_summary &lt;- long_match %&gt;% 
+  group_by(instructor_code.x, semester_diff) %&gt;% 
+  summarize(total_n = n(), .groups = &quot;keep&quot;, 
+            avg_fair = mean(c(Q4AVG.x, Q4AVG.y), na.rm = T), 
+            std_fair = sd(c(Q4AVG.x, Q4AVG.y), na.rm = T)) %&gt;% 
+  filter(total_n &gt;= 10) %&gt;% 
+  mutate(code = paste0(instructor_code.x, semester_diff))
+
+long_match$code &lt;- paste0(long_match$instructor_code.x, long_match$semester_diff)
+
+save_rel &lt;- data.frame(
+  code = 1:nrow(long_summary), 
+  rel = 1:nrow(long_summary)
+)
+
+for (i in 1:nrow(long_summary)){
+  temp &lt;- long_match %&gt;% 
+    filter(code %in% long_summary$code[i]) %&gt;% 
+    dplyr::select(Q1AVG.x, Q1AVG.y, People.x, People.y) %&gt;% 
+    pcor()
+  save_rel$code[i] &lt;- long_summary$code[i]
+  save_rel$rel[i] &lt;- temp$estimate[2, 1]
+}
+
+save_rel &lt;- save_rel %&gt;% 
+  left_join(long_summary %&gt;% dplyr::select(code, instructor_code.x, semester_diff, avg_fair, std_fair) %&gt;% unique(), by = &quot;code&quot;)</code></pre>
+<pre class="r"><code>save_results &lt;- list()
+save_R2 &lt;- list()
+save_coef &lt;- list()
+save_ciL &lt;- list()
+save_ciH &lt;- list()
 
 for (i in 1:num_boots){
   
-  DF_boot &lt;- DF_sample %&gt;% 
-    slice_sample(n = nrow(DF_sample), replace = TRUE)
-  
-  save_descriptives[[i]] &lt;- DF_boot %&gt;% 
-  group_by(course_level) %&gt;% 
-  summarize(totaln = n(), 
-            num_instruct = length(unique(instructor_code)),
-            num_courses = length(unique(new_course)),
-            avg_people = apa_num(mean(People, na.rm = T)), 
-            avgq1 = apa_num(mean(Q1AVG, na.rm = T)), 
-            avgsd1 = apa_num(sd(Q1AVG, na.rm = T)), 
-            avgq4 = apa_num(mean(Q4AVG, na.rm = T)),
-            avgsd4 = apa_num(sd(Q4AVG, na.rm = T)),
-            avgq15 = apa_num(mean(Q15AVG, na.rm = T)), 
-            avgsd15 = apa_num(sd(Q15AVG, na.rm = T))) %&gt;% 
-  arrange(desc(course_level))
-  
-}
+  DF_boot &lt;- save_rel %&gt;% 
+     slice_sample(n = nrow(save_rel), replace = TRUE)
+    
 
-temp &lt;- bind_rows(save_descriptives) %&gt;% 
-  mutate(course_level = factor(course_level, 
-                               levels = c(&quot;undergraduate&quot;,
-                                          &quot;mixed&quot;, 
-                                          &quot;masters&quot;))) %&gt;% 
-  group_by(course_level) %&gt;% 
-  mutate(across(totaln:avgsd15, as.numeric)) %&gt;% 
-  summarize(across(totaln:avgsd15, mean),
-            across(totaln:avgsd15, apa_num)) %&gt;% 
-  t() %&gt;% 
-  as.data.frame() %&gt;% 
-  slice(-1)
+  save_results[[i]] &lt;- lme(rel ~ semester_diff, 
+                   data = DF_boot,
+                   random = list(~1|instructor_code.x), 
+                   method = &quot;ML&quot;, 
+                   na.action = &quot;na.omit&quot;,
+                   control = lmeControl(opt = &quot;optim&quot;))
+  save_R2[[i]] &lt;- r.squaredGLMM(save_results[[i]])[1]
+  save_coef[[i]] &lt;- summary(save_results[[i]])$tTable[2, 1]
+  save_ciL[[i]] &lt;- intervals(save_results[[i]])$fixed[2,1]
+  save_ciH[[i]] &lt;- intervals(save_results[[i]])$fixed[2,3]
 
-temp$stat &lt;- c(&quot;N Total&quot;, &quot;N Instructors&quot;, &quot;N Courses&quot;,
-               &quot;Average N Ratings&quot;, &quot;Average Overall&quot;, 
-               &quot;SD Overall&quot;, &quot;Average Fairness&quot;, 
-               &quot;SD Fairness&quot;, &quot;Average Grade&quot;, &quot;SD Grade&quot;)
-apa_table(temp[ , c(4, 1:3)], 
-          caption = &quot;Bootstrapped Descriptive Statistics of Included Courses&quot;, 
-            row.names = FALSE, 
-            col.names = c(&quot;Statistic&quot;, &quot;Undergraduate&quot;, &quot;Mixed&quot;, &quot;Master&#39;s&quot;))</code></pre>
-<caption>
-(#tab:table1)
-</caption>
-<div custom-style="Table Caption">
-<em>Bootstrapped Descriptive Statistics of Included Courses</em>
-</div>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Statistic</th>
-<th align="left">Undergraduate</th>
-<th align="left">Mixed</th>
-<th align="left">Master’s</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">N Total</td>
-<td align="left">2,898.09</td>
-<td align="left">274.23</td>
-<td align="left">41.68</td>
-</tr>
-<tr class="even">
-<td align="left">N Instructors</td>
-<td align="left">199.67</td>
-<td align="left">34.87</td>
-<td align="left">8.66</td>
-</tr>
-<tr class="odd">
-<td align="left">N Courses</td>
-<td align="left">38.17</td>
-<td align="left">19.08</td>
-<td align="left">7.01</td>
-</tr>
-<tr class="even">
-<td align="left">Average N Ratings</td>
-<td align="left">34.40</td>
-<td align="left">21.16</td>
-<td align="left">21.11</td>
-</tr>
-<tr class="odd">
-<td align="left">Average Overall</td>
-<td align="left">3.94</td>
-<td align="left">4.01</td>
-<td align="left">3.73</td>
-</tr>
-<tr class="even">
-<td align="left">SD Overall</td>
-<td align="left">0.55</td>
-<td align="left">0.59</td>
-<td align="left">0.66</td>
-</tr>
-<tr class="odd">
-<td align="left">Average Fairness</td>
-<td align="left">4.46</td>
-<td align="left">4.50</td>
-<td align="left">4.19</td>
-</tr>
-<tr class="even">
-<td align="left">SD Fairness</td>
-<td align="left">0.34</td>
-<td align="left">0.38</td>
-<td align="left">0.53</td>
-</tr>
-<tr class="odd">
-<td align="left">Average Grade</td>
-<td align="left">4.26</td>
-<td align="left">4.52</td>
-<td align="left">4.40</td>
-</tr>
-<tr class="even">
-<td align="left">SD Grade</td>
-<td align="left">0.33</td>
-<td align="left">0.27</td>
-<td align="left">0.33</td>
-</tr>
-</tbody>
-</table>
+}</code></pre>
+<pre><code>## Warning: &#39;r.squaredGLMM&#39; now calculates a revised statistic. See the help page.</code></pre>
+<pre class="r"><code>R2_boot &lt;- mean(unlist(save_R2))
+coef_boot &lt;- mean(unlist(save_coef))
+ciL_boot &lt;- mean(unlist(save_ciL))
+ciH_boot &lt;- mean(unlist(save_ciH))</code></pre>
+<p>The confidence interval for the effect of semester difference
+predicting reliability did not cross zero, <em>b</em> = -0.004, 95% CI
+[-0.005, -0.003], <span class="math inline">\(R^2\)</span> = .04. The
+coefficient, while small, represents a small effect of time on the
+reliability of instructor ratings.</p>
 </div>
 
 

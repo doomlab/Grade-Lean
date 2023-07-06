@@ -5,11 +5,11 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
 # Seed for random number generation
 set.seed(89432289)
-knitr::opts_chunk$set(cache.extra = knitr::rand_seed, include = FALSE)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 library(rio)
 library(dplyr)
 library(nlme)

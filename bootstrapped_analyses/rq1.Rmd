@@ -1,15 +1,15 @@
 ---
-title: "Bootstrapped Descriptives"
+title: "Bootstrapped RQ1"
 author: "Erin M. Buchanan"
 date: "`r Sys.Date()`"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
 # Seed for random number generation
 set.seed(89432289)
-knitr::opts_chunk$set(cache.extra = knitr::rand_seed, include = FALSE)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 library(rio)
 library(dplyr)
 library(nlme)
@@ -19,7 +19,7 @@ library(ppcor)
 library(MuMIn)
 library(papaja)
 
-num_boots <- 10
+num_boots <- 3
 ```
 
 ## Data Source
@@ -43,35 +43,41 @@ DF_sample <- DF %>%
 
 ## RQ 1
 
+During testing, we determined that bootstrapping this analysis would take several weeks of computation time. Therefore, we did not bootstrap this analysis. 
+
 ```{r rq1-nlme}
 save_betas <- list()
 
+# create matched dataframe
+# let's see if twitter can help here - yes! @smartin2018 for the win!
+
+# create unique id
+DF_sample$evalid <- 1:nrow(DF_sample)
+
+# create every pairwise combination 
+combns <- t(combn(DF_sample$evalid,2))
+
+# create a dataframe to hold that information, remove other frame for the love of space
+longrel <- data.frame(evalid=combns[,1],evalid2=combns[,2]); rm(combns)
+
+# add person 1 information back to dataframe
+templong <- merge(longrel, DF_sample, by = "evalid")
+colnames(templong)[1:2] <- c("evalid1", "evalid")
+
+# add person 2 information back to the dataframe, remove other frame for the love of space
+longrel <- merge(templong, DF_sample, by = "evalid")
+rm(templong)
+
+# create factors
+longrel$instructormatch <- as.numeric(longrel$instructor_code.x == longrel$instructor_code.y)
+longrel$semestermatch <- as.numeric(longrel$semester_count.x == longrel$semester_count.y)
+longrel$coursematch <- as.numeric(longrel$new_course.x == longrel$new_course.y)
+
+# boot strap the longrel
 for (i in 1:num_boots){
-   DF_boot <- DF_sample %>% 
-    slice_sample(n = nrow(DF_sample), replace = TRUE)
-  # let's see if twitter can help here - yes! @smartin2018 for the win!
-  
-  # create unique id
-  DF_boot$evalid <- 1:nrow(DF_boot)
-  
-  # create every pairwise combination 
-  combns <- t(combn(DF_boot$evalid,2))
-  
-  # create a dataframe to hold that information, remove other frame for the love of space
-  longrel <- data.frame(evalid=combns[,1],evalid2=combns[,2]); rm(combns)
-  
-  # add person 1 information back to dataframe
-  templong <- merge(longrel, DF_boot, by = "evalid")
-  colnames(templong)[1:2] <- c("evalid1", "evalid")
-  
-  # add person 2 information back to the dataframe, remove other frame for the love of space
-  longrel <- merge(templong, DF_boot, by = "evalid")
-  rm(templong)
-  
-  # create factors
-  longrel$instructormatch <- as.numeric(longrel$instructor_code.x == longrel$instructor_code.y)
-  longrel$semestermatch <- as.numeric(longrel$semester_count.x == longrel$semester_count.y)
-  longrel$coursematch <- as.numeric(longrel$new_course.x == longrel$new_course.y)
+   DF_boot <- longrel %>% 
+     group_by(instructormatch, semestermatch, coursematch) %>% 
+     slice_sample(n = nrow(longrel), replace = TRUE)
   
   #look at the contingency table
   #table(longrel$instructormatch, longrel$semestermatch, longrel$coursematch)
@@ -82,10 +88,12 @@ for (i in 1:num_boots){
   # going to let these overwrite each other so memory isn't bonkers
   # semester, course, instructor
   ## same same same ----
-  relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 1 & 
-                               longrel$coursematch == 1 & 
-                               longrel$instructormatch == 1, ], 
+  tryCatch(                       
+  expr = {                      
+    relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 1 & 
+                               DF_boot$coursematch == 1 & 
+                               DF_boot$instructormatch == 1, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y),
@@ -93,11 +101,17 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq1)
   betarel[1 , ] <- c(1,1,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq1)
+  },
+  error = function(e){
+    betarel[1 , ] <- c(1,1,1,"Overall", NA, NA, NA)
+  })
   
-  relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 1 & 
-                               longrel$coursematch == 1 & 
-                               longrel$instructormatch == 1, ], 
+    tryCatch(                       
+  expr = {                      
+    relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 1 & 
+                               DF_boot$coursematch == 1 & 
+                               DF_boot$instructormatch == 1, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -105,12 +119,18 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq4)
   betarel[2 , ] <- c(1,1,1,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq4)
+  },
+  error = function(e){
+    betarel[1 , ] <- c(1,1,1,"Fair", NA, NA, NA)
+  })
   
   ## same same different ----
-  relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 1 & 
-                               longrel$coursematch == 1 & 
-                               longrel$instructormatch == 0, ], 
+  tryCatch(                       
+  expr = {                      
+      relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 1 & 
+                               DF_boot$coursematch == 1 & 
+                               DF_boot$instructormatch == 0, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -118,11 +138,17 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq1)
   betarel[3 , ] <- c(1,1,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq1)
+  },
+  error = function(e){
+    betarel[3 , ] <- c(1,1,0,"Overall", NA, NA, NA)
+  })
   
-  relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 1 & 
-                               longrel$coursematch == 1 & 
-                               longrel$instructormatch == 0, ], 
+  tryCatch(                       
+  expr = {                      
+    relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 1 & 
+                               DF_boot$coursematch == 1 & 
+                               DF_boot$instructormatch == 0, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -130,12 +156,22 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq4)
   betarel[4 , ] <- c(1,1,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq4)
+  },
+  error = function(e){
+    betarel[4 , ] <- c(1,1,0,"Fair", NA, NA, NA)
+  })
+  
+
+  
+  
   
   ## same different same ----
-  relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 1 & 
-                               longrel$coursematch == 0 & 
-                               longrel$instructormatch == 1, ], 
+  tryCatch(                       
+  expr = {                      
+      relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 1 & 
+                               DF_boot$coursematch == 0 & 
+                               DF_boot$instructormatch == 1, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -143,11 +179,17 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq1)
   betarel[5 , ] <- c(1,0,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq1)
+  },
+  error = function(e){
+    betarel[5 , ] <- c(1,0,1,"Overall", NA, NA, NA)
+  })
   
-  relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 1 & 
-                               longrel$coursematch == 0 & 
-                               longrel$instructormatch == 1, ], 
+  tryCatch(                       
+  expr = {                      
+    relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 1 & 
+                               DF_boot$coursematch == 0 & 
+                               DF_boot$instructormatch == 1, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -155,12 +197,18 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq4)
   betarel[6 , ] <- c(1,0,1,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq4)
+  },
+  error = function(e){
+    betarel[6 , ] <- c(1,0,1,"Fair", NA, NA, NA)
+  })
   
   ## same different different ----
-  relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 1 & 
-                               longrel$coursematch == 0 & 
-                               longrel$instructormatch == 0, ], 
+  tryCatch(                       
+  expr = {                      
+      relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 1 & 
+                               DF_boot$coursematch == 0 & 
+                               DF_boot$instructormatch == 0, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -168,11 +216,17 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq1)
   betarel[7 , ] <- c(1,0,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq1)
+  },
+  error = function(e){
+    betarel[7 , ] <- c(1,0,0,"Overall", NA, NA, NA)
+  })
   
-  relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 1 & 
-                               longrel$coursematch == 0 & 
-                               longrel$instructormatch == 0, ], 
+  tryCatch(                       
+  expr = {                      
+    relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 1 & 
+                               DF_boot$coursematch == 0 & 
+                               DF_boot$instructormatch == 0, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -180,12 +234,18 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq4)
   betarel[8 , ] <- c(1,0,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq4)
+  },
+  error = function(e){
+    betarel[8 , ] <- c(1,0,0,"Fair", NA, NA, NA)
+  })
   
   ## different different different ----
-  relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 0 & 
-                               longrel$coursematch == 0 & 
-                               longrel$instructormatch == 0, ], 
+  tryCatch(                       
+  expr = {                      
+    relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 0 & 
+                               DF_boot$coursematch == 0 & 
+                               DF_boot$instructormatch == 0, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -193,11 +253,17 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq1)
   betarel[9 , ] <- c(0,0,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq1)
+  },
+  error = function(e){
+    betarel[9 , ] <- c(0,0,0,"Overall", NA, NA, NA)
+  })
   
-  relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 0 & 
-                               longrel$coursematch == 0 & 
-                               longrel$instructormatch == 0, ], 
+  tryCatch(                       
+  expr = {                      
+    relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 0 & 
+                               DF_boot$coursematch == 0 & 
+                               DF_boot$instructormatch == 0, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -205,12 +271,18 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq4)
   betarel[10 , ] <- c(0,0,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq4)
+  },
+  error = function(e){
+    betarel[10 , ] <- c(0,0,0,"Fair", NA, NA, NA)
+  })
   
   ## different same different ----
-  relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 0 & 
-                               longrel$coursematch == 1 & 
-                               longrel$instructormatch == 0, ], 
+  tryCatch(                       
+  expr = {                      
+    relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 0 & 
+                               DF_boot$coursematch == 1 & 
+                               DF_boot$instructormatch == 0, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -218,11 +290,17 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq1)
   betarel[11 , ] <- c(0,1,0,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq1)
+  },
+  error = function(e){
+    betarel[11 , ] <- c(0,1,0,"Overall", NA, NA, NA)
+  })
   
-  relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 0 & 
-                               longrel$coursematch == 1 & 
-                               longrel$instructormatch == 0, ], 
+  tryCatch(                       
+  expr = {                      
+    relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 0 & 
+                               DF_boot$coursematch == 1 & 
+                               DF_boot$instructormatch == 0, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -230,12 +308,18 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq4)
   betarel[12 , ] <- c(0,1,0,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq4)
+  },
+  error = function(e){
+    betarel[12 , ] <- c(0,1,0,"Fair", NA, NA, NA)
+  })
   
   ## different different same ----
-  relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 0 & 
-                               longrel$coursematch == 0 & 
-                               longrel$instructormatch == 1, ], 
+  tryCatch(                       
+  expr = {                      
+      relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 0 & 
+                               DF_boot$coursematch == 0 & 
+                               DF_boot$instructormatch == 1, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -243,11 +327,17 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq1)
   betarel[13 , ] <- c(0,0,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq1)
+  },
+  error = function(e){
+    betarel[13 , ] <- c(0,0,1,"Overall", NA, NA, NA)
+    })
   
-  relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 0 & 
-                               longrel$coursematch == 0 & 
-                               longrel$instructormatch == 1, ], 
+  tryCatch(                       
+  expr = {                      
+    relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 0 & 
+                               DF_boot$coursematch == 0 & 
+                               DF_boot$instructormatch == 1, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -255,12 +345,18 @@ for (i in 1:num_boots){
   temp <- standardize_parameters(relq4)
   betarel[14 , ] <- c(0,0,1,"Fair", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq4)
+  },
+  error = function(e){
+    betarel[14 , ] <- c(0,0,1,"Fair", NA, NA, NA)
+  })
   
   ## different same same ----
-  relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 0 & 
-                               longrel$coursematch == 1 & 
-                               longrel$instructormatch == 1, ], 
+  tryCatch(                       
+  expr = {                      
+     relq1 <- lme(Q1AVG.y ~ Q1AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 0 & 
+                               DF_boot$coursematch == 1 & 
+                               DF_boot$instructormatch == 1, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -269,10 +365,17 @@ for (i in 1:num_boots){
   betarel[15 , ] <- c(0,1,1,"Overall", temp$Std_Coefficient[2], temp$CI_low[2], temp$CI_high[2])
   rm(relq1)
   
-  relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
-             data = longrel[ longrel$semestermatch == 0 & 
-                               longrel$coursematch == 1 & 
-                               longrel$instructormatch == 1, ], 
+  },
+  error = function(e){
+    betarel[15 , ] <- c(0,1,1,"Overall", NA, NA, NA)
+  })
+  
+  tryCatch(                       
+  expr = {                      
+      relq4 <- lme(Q4AVG.y ~ Q4AVG.x + People.x + People.y, 
+             data = DF_boot[ DF_boot$semestermatch == 0 & 
+                               DF_boot$coursematch == 1 & 
+                               DF_boot$instructormatch == 1, ], 
              method = "ML", 
              na.action = "na.omit",
              random = list(~1|instructor_code.x, ~1|instructor_code.y), 
@@ -284,9 +387,13 @@ for (i in 1:num_boots){
   betarel <- as.data.frame(betarel)
   colnames(betarel) <- c("Semester", "Course", "Instructor", "Question",
                         "b", "CI_Low", "CI_High")
+  },
+  error = function(e){
+    betarel[16 , ] <- c(0,1,1,"Fair", NA, NA, NA)
+  })
+
   save_betas[[i]] <- betarel
 }
-
 ```
 
 ## Figure 1

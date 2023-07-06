@@ -244,7 +244,7 @@ online at <https://osf.io/k7zh2>. This page also includes the manuscript
 written inline with the statistical analysis with the *papaja* package
 [@aust2022] for interested researchers/reviewers who wish to recreate
 these analyses. The bootstrapped versions of analyses and robustness analysis 
-can be found online on our OSF page with a summary of results. 
+can be found online on our OSF page with a summary of results. We originally planned to bootstrap all analyses; however, the compute time for research question 1 was extremely long due to the size and complexity of the multilevel models, and therefore, we did not bootstrap that research question. 
 
 ## Descriptive Statistics
 

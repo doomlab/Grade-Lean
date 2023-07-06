@@ -1,0 +1,172 @@
+---
+title: "Bootstrapped RQ3"
+author: "Erin M. Buchanan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+# Seed for random number generation
+set.seed(89432289)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+library(rio)
+library(dplyr)
+library(nlme)
+library(effectsize)
+library(ggplot2)
+library(ppcor)
+library(MuMIn)
+library(papaja)
+
+num_boots <- 1000
+```
+
+## Data Source
+
+```{r import-data}
+# please note the data is deidentified but timing and course number is accurate
+DF <- import("../data/final_evals.csv")
+
+# we will only use courses with at least 15 ratings ... look at the paper that may be reliable (2013)
+DF_sample <- DF %>% 
+  filter(People >= 15)
+
+# for this pre-reg we will randomly sample 20 percent of instructors 
+# random_sample <- sample(unique(DF_sample$instructor_code), 
+#                         size = round(length(unique(DF_sample$instructor_code)) * .30),
+#                         replace = FALSE)
+# 
+# DF_sample <- DF_sample %>% 
+#   filter(instructor_code %in% random_sample)
+```
+
+## RQ 1 Data Set Up
+
+```{r rq1-nlme}
+# create matched dataframe
+# let's see if twitter can help here - yes! @smartin2018 for the win!
+
+# create unique id
+DF_sample$evalid <- 1:nrow(DF_sample)
+
+# create every pairwise combination 
+combns <- t(combn(DF_sample$evalid,2))
+
+# create a dataframe to hold that information, remove other frame for the love of space
+longrel <- data.frame(evalid=combns[,1],evalid2=combns[,2]); rm(combns)
+
+# add person 1 information back to dataframe
+templong <- merge(longrel, DF_sample, by = "evalid")
+colnames(templong)[1:2] <- c("evalid1", "evalid")
+
+# add person 2 information back to the dataframe, remove other frame for the love of space
+longrel <- merge(templong, DF_sample, by = "evalid")
+rm(templong)
+
+# create factors
+longrel$instructormatch <- as.numeric(longrel$instructor_code.x == longrel$instructor_code.y)
+longrel$semestermatch <- as.numeric(longrel$semester_count.x == longrel$semester_count.y)
+longrel$coursematch <- as.numeric(longrel$new_course.x == longrel$new_course.y)
+```
+
+## RQ 2 Set Up
+
+```{r rq2-setup, warning = FALSE}
+# filter to only matches
+long_match <- longrel %>% 
+  filter(coursematch == 1) %>% 
+  filter(instructormatch == 1) %>% 
+  dplyr::select(instructor_code.x, semester_count.x, People.x, Q1AVG.x, Q4AVG.x, 
+         instructor_code.y, semester_count.y, People.y, Q1AVG.y, Q4AVG.y) %>% 
+  mutate(semester_diff = round(semester_count.y - semester_count.x))
+
+# figure out the number each person has and need at least 10
+long_summary <- long_match %>% 
+  group_by(instructor_code.x, semester_diff) %>% 
+  summarize(total_n = n(), .groups = "keep", 
+            avg_fair = mean(c(Q4AVG.x, Q4AVG.y), na.rm = T), 
+            std_fair = sd(c(Q4AVG.x, Q4AVG.y), na.rm = T)) %>% 
+  filter(total_n >= 10) %>% 
+  mutate(code = paste0(instructor_code.x, semester_diff))
+
+long_match$code <- paste0(long_match$instructor_code.x, long_match$semester_diff)
+
+save_rel <- data.frame(
+  code = 1:nrow(long_summary), 
+  rel = 1:nrow(long_summary)
+)
+
+for (i in 1:nrow(long_summary)){
+  temp <- long_match %>% 
+    filter(code %in% long_summary$code[i]) %>% 
+    dplyr::select(Q1AVG.x, Q1AVG.y, People.x, People.y) %>% 
+    pcor()
+  save_rel$code[i] <- long_summary$code[i]
+  save_rel$rel[i] <- temp$estimate[2, 1]
+}
+
+save_rel <- save_rel %>% 
+  left_join(long_summary %>% dplyr::select(code, instructor_code.x, semester_diff, avg_fair, std_fair) %>% unique(), by = "code")
+```
+
+## RQ 3
+
+```{r rq3-nlme}
+# center the variables
+save_rel$avg_fair_center <- scale(save_rel$avg_fair, scale = FALSE)
+save_rel$avg_fair_low <- save_rel$avg_fair_center + sd(save_rel$avg_fair_center, na.rm = T)
+save_rel$avg_fair_high <- save_rel$avg_fair_center - sd(save_rel$avg_fair_center, na.rm = T)
+save_rel$z_semester_diff <- scale(save_rel$semester_diff, scale = FALSE)
+
+save_results <- list()
+save_R2 <- list()
+save_coef <- list()
+save_ciL <- list()
+save_ciH <- list()
+save_coef2 <- list()
+save_ciL2 <- list()
+save_ciH2 <- list()
+
+for (i in 1:num_boots){
+  
+  DF_boot <- save_rel %>% 
+    slice_sample(n = nrow(save_rel), replace = TRUE)
+    
+
+  save_results[[i]] <- lme(rel ~ z_semester_diff*avg_fair_center, 
+                 data = DF_boot,
+                 random = list(~1|instructor_code.x), 
+                 method = "ML", 
+                 na.action = "na.omit",
+                 control = lmeControl(opt = "optim"))
+
+  save_R2[[i]] <- r.squaredGLMM(save_results[[i]])[1]
+  save_coef[[i]] <- summary(save_results[[i]])$tTable[4,1]
+  save_ciL[[i]] <- intervals(save_results[[i]])$fixed[4,1]
+  save_ciH[[i]] <- intervals(save_results[[i]])$fixed[4,3]
+  
+  save_coef2[[i]] <- summary(save_results[[i]])$tTable[3,1]
+  save_ciL2[[i]] <- intervals(save_results[[i]])$fixed[3,1]
+  save_ciH2[[i]] <- intervals(save_results[[i]])$fixed[3,3]
+
+}
+
+R2_boot <- mean(unlist(save_R2))
+coef_boot <- mean(unlist(save_coef))
+ciL_boot <- mean(unlist(save_ciL))
+ciH_boot <- mean(unlist(save_ciH))
+
+coef_boot2 <- mean(unlist(save_coef2))
+ciL_boot2 <- mean(unlist(save_ciL2))
+ciH_boot2 <- mean(unlist(save_ciH2))
+
+```
+
+The confidence interval for the interaction of semester time difference
+and average fairness did cross zero, *b* =
+`r apa_num(coef_boot, digits = 3)`, 95% CI [`r apa_num(ciL_boot, digits = 3)`,
+`r apa_num(ciH_boot, digits = 3)`], $R^2$ =
+`r suppressWarnings(apa_num(R2_boot, gt1 = FALSE))`. Therefore, there was no effect of the interaction of average fairness with semester differences in predicting reliability. Similarly, average fairness did not predict reliability overall, *b* =
+`r apa_num(coef_boot2, digits = 3)`, 95% CI [`r apa_num(ciL_boot2, digits = 3)`,
+`r apa_num(ciH_boot2, digits = 3)`]. 
