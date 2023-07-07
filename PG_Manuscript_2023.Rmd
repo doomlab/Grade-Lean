@@ -44,6 +44,7 @@ classoption       : "man"
 output            : papaja::apa6_docx
 editor_options: 
   chunk_output_type: inline
+bibliography: references.bib
 ---
 
 ```{r setup, include = FALSE}
@@ -64,13 +65,176 @@ library(ppcor)
 library(MuMIn)
 ```
 
-The following was pre-registered: https://osf.io/czb4f
+In the United States, college and university professors are evaluated to
+varying degrees on research productivity, service, and teaching
+effectiveness. These dimensions are often used for high-stakes
+administration decisions (e.g., hiring, retention, promotion, pay, and
+tenure; Hornstein, 2017; Stark & Freishtat, 2014; Spooren et al., 2013;
+Stoebe, 2020). Depending on the institution, a major failure of one
+these areas could jeopardize a professors' position within the
+department; thus, evaluating research, service, and teaching is of the
+utmost importance. Focusing on evaluating educator on teaching
+effectiveness; however, is both difficult and costly. Indeed, the vast
+majority of the 9,000 professors polled by the American Association of
+University Professors shared that teaching needs to be taken as
+seriously as research and service (Flaherty, 2015).
+
+Teaching effectiveness can be defined as the degree to which student
+achievement is facilitated (i.e., how much have students learned in a
+particular course; Cohen, 1981). Additionally, the assessment of this
+construct often comes from the students and their evaluations goes by
+many names with some student assessments focusing on the instructor
+(e.g., "Student Opinion of Instruction", "Student Evaluations of
+Teaching", "Students Opinion of Teaching Effectiveness", "Students
+Evaluation of Faculty"); further, other measurements focus on the course
+(e.g., "Overall Course Ratings", "Instruction Rating"; Cohen, 1981;
+Flaherty, 2020). Both reliability and validity need to be demonstrated
+for a measurement tool to have utility. If high-stakes decisions are to
+be made regarding administration decisions, then the natural question
+arises: are students' evaluation of the course and/or instructor
+reliable and valid measures of teaching effectiveness? Validity Sheehan
+(1975) reviewed the literature and listed several factors of bias that
+exist within the student level (e.g., Student's sex, class, age, GPA);
+class-level (e.g., subject matter, class size, if the course was
+required); and instructor-level (e.g., sex of the instructor and
+interaction with sex of the student, academic rank of the professor).
+Fifty years ago, serious concerns were raised if students' assessments
+provided useful information to decide on personnel decisions. Important
+to note, Cohen (1981) is an often-cited work with the most optimistic
+estimate that ratings of instruction are moderately related to student
+achievement; however, the meta-analysis, others, and literature reviews
+of the topic have undergone serious criticism (e.g., Stroebe, 2018; Uttl
+et al. 2017). Fifty years later; these concerns remain (e.g., Boring et
+al., 2016; Dunn et al., 2016; Hornstein, 2017; Uttl et al. 2017). The
+sources of bias listed by Streehan (1975) have been replicated and/or
+extended in length. Systemic reviews and recent studies underscore that
+sexism (e.g., MacNell et al., 2014; Mitchell & Martin, 2018), racism
+(e.g. Smith & Hawkins, 2011), and general bias pervades students'
+evaluations of traditional courses and possibly exist for online ones as
+well (e.g., Heffernan, 2021; Rovai et al., 2006; Sullivan et al., 2013;
+Zheng et al., 2023). Individual factors may also yield some influence,
+including instructors' cultural background (e.g., Fan et al., 2019),
+attractiveness (e.g., Felton et al., 2008; Wright, 2008), position
+ranking (e.g., Johnson et al., 2013), and students' expected grade from
+the course (e.g., Chen et al., 2017; Crumbly et al., 2001; Marks, 2000).
+Others suggest biasing factors of students' ratings include the volume
+of the instructor's voice and how legible their instructor's writing is
+(Becker et al., 2012) Stroebe (2018) underscores the possible danger of
+an incentive system that is tied to student ratings; instructors may be
+then incentivized to be a less effective teacher (e.g., grade leniently,
+choose to teach courses based off student interest) rather than
+challenge students critically. What if we steel manned students' ratings
+and assumed ideal conditions? Recent computational simulation work that
+assumes student ratings are valid, are unbiased, and employ the
+optimistic inter-student reliability estimates of instructor's
+effectiveness. In other words, ideal assumptions -- find that 'known'
+high quality instructors may be at the lowest percentile of student
+ratings and vice-versa. One of the most commonly used proposed solutions
+is that using multiple evaluations of teaching effectiveness (e.g.,
+subject-matter sit-ins on lecture, peer reviews of course curriculums)
+may be the solution (e.g., Benton & Young, 2018; Berk, 2018; Esarey &
+Valdes, 2020; Kornell & Hausman, 2016); however, the cost of
+implementing a more accurate multi-pronged approach may be more than
+most universities can afford to pay. With all critiques of students'
+ratings, it is one of the most affordable measurements of teacher
+effectiveness in both time and money. The utility of students' ratings
+may extend out so far as to aid other students when choosing which
+classes to pursue and with whom (e.g., Stankiewicz, 2015);
+unfortunately, even if instructors believe such ratings to be an
+inappropriate, it may influence their self-efficacy as an educator
+regardless (Boswell, 2016). Reliability Past investigations and reviews
+utilizing large samples concluded student ratings are reliable and
+stable (e.g., Arubayi, 1987; Marsh & Roche, 1997). More recently, a
+review found that students' ratings within the same class tend to be
+internally consistent (when teaching effectiveness was assessed through
+several items), reliable across students within the same class, and
+reliable across the same instructor across multiple courses (Benton &
+Cashin, 2014). Benton and Ryalls (2016) argue that calls for the
+complete removal students' voices from the process is the wrong course
+of action. Both pay careful attention -- and rebuttal - common arguments
+against the removal of students' ratings. Arguments made in defense of
+student ratings (while not necessarily using them for administrative
+decisions) are rooted in empirical studies and concrete recommendations
+for the utility of such ratings are put forth to readers that do not
+involve administrative decisions (Benton & Ryalls, 2016). Of note,
+certain arguments debunk certain points against student ratings. Hedged
+within a section titled "flagrantly false claims" and relevant to the
+current study: SRI [Student Ratings of Instructions] Are Unreliable
+largely based off the previously mentioned review (Benton & Ryalls,
+2016). These claims regarding reliability are not new. Others shared
+similar thoughts that student ratings are highly reliable decades ago
+(e.g., Costin et al., 1971; Marsh, 1987; Overall & Marsh, 1980; Theall,
+2003); however, we re-iterate these reviews have received extensive
+critiques (e.g., Stroebe, 2018; Uttl, et al. 2017). The question of
+reliability may need to be further investigated before making such
+strong claims. Perceived fairness Extant research tends to confirm that
+instructor evaluations are influenced by students' grades, possibly
+pressuring some instructors into reducing the rigor of their course for
+the sake of attaining higher evaluation ratings (Greenwald & Gillmore,
+1997; Marks, 2000). However, as pointed out by Wright (2008), students'
+expectations of their final grades may not affect ratings nearly as much
+as their perceived fairness of the grading process. Professors who are
+consistent, representative, accurate, unbiased, and correctable in their
+grading may receive high evaluation ratings regardless of how much a
+student learns or what his/her final grade turns out to be (Horan et
+al., 2010; Leventhal, 1980). Thus, grades may predict evaluation ratings
+only so much as students perceive their grade and the processes by which
+they were determined as fair (Tata, 1999). Additionally, the different
+facets leading into a final grade's calculation may play on each other
+as students consider fairness in their evaluations. For example, Tripp
+and colleagues (2019) found that students' perceived fairness of their
+instructors' grading processes affected their perceived fairness of
+their assigned grade, which then translated to their evaluation ratings
+of teacher effectiveness. Perceived fairness of the course workload and
+difficulty may also be inversely related to perceived fairness of the
+grading process as a challenging professor may be thought of as less
+fair (Marks, 2000). Access to grading criteria, frequency of feedback,
+and proactive instruction are other aspects of grading known to
+explicitly affect perceived fairness (Pepper & Pathak, 2008); in turn,
+the fairness of these aspects must be factored in as well. Taken
+together, students' perceived fairness of grading may be more akin to
+comprehensive assessments of the instructor rather than face-value
+judgements of their grade. Though these interactions are notable, what
+they bode regarding the reliability and validity of measures of
+instructor effectiveness is relatively unknown. It is obvious that
+perceived fairness of grading is an integral part of these measures.
+However, given how intrinsic perceived fairness is to one's instructor,
+interruptions in the continuity of student evaluation opinions may be
+more apparent in assessments of different instructors rather than
+between course types and/or across semesters. Moreover, the capacity of
+perceived fairness to measure teacher effectiveness may prove to be
+entirely irrelevant. If "outstanding" instructors in the eyes of
+students are those who consistently award good grades to all, their
+evaluations may yield little actual insight into their effectiveness as
+teachers. The current study The current study is similar in scope to
+recent work (e.g., Boring et al., 2016; Fan et al., 2019) in its
+calibration of teacher evaluations collected over an extensive period.
+Boring and colleagues' (2016) investigation on both French instructors
+and U.S. teaching assistants' gender ranged across five years;
+similarly, Fan and peers (2019) investigated the topic across seven.
+Their utilization of multi-sections has been described as the gold
+standard for researching students' ratings. Thus, we aimed to follow
+their lead by analyzing the reliability of students' ratings provided
+the same or different instructor, course type, and/or semester in
+addition to testing reliability over time. In doing this, we sought to
+explore the following research questions: 1) What is the reliability of
+instructor evaluations? 2) Are instructor evaluations reliable across
+time? 3) Is the average level of perceived fairness of the grading in
+the course a moderator of reliability in instructor evaluations? 4) Does
+the average variability in instructor fairness rating moderate
+reliability of instructor evaluations?
+
+(Highlight: Amount of courses (6 vs, \# of students, duration (5 year
+time frame vs ) our focus (gender vs on time and fairness)
+
+The following was pre-registered: <https://osf.io/czb4f>
 
 Exploratory Research Questions:
 
 1)  What is the reliability of instructor evaluations?
 2)  Are instructor evaluations reliable across time?
-3)  Is the average level of perceived fairness of the grading in the course a moderator of reliability in instructor evaluations?
+3)  Is the average level of perceived fairness of the grading in the
+    course a moderator of reliability in instructor evaluations?
 4)  Does the average variability in instructor fairness rating moderate
     reliability of instructor evaluations?
 
@@ -111,6 +275,8 @@ last several years of evaluations, online versions of these forms were
 used with faculty encouraged to give students time to complete them in
 class while they were outside the classroom.
 
+Written with papaja [@aust2022]
+
 The questionnaire given to students can be found at
 <https://osf.io/4sphx>. These items were presented with a five-point
 scale from 1 (*strongly disagree*) to 5 (*strongly agree*). For this
@@ -124,20 +290,20 @@ included.
 ## Planned Analyses
 
 The evaluations were filtered for those with at least fifteen student
-ratings for the course [@rantanen2012]. We performed a robustness
-check for the first research question on the data when the sample size
-is at least *n* = 10 up to *n* = 14 (i.e., on all evaluations with at
-least 10 ratings, then at least 11 ratings, etc.) to determine if the
-reliability estimates are stable at lower sample sizes. We first
-screened the dataset (two evaluation questions, sample size for course)
-for accuracy errors, linearity, normality, and homoscedasticity. The
-data is assumed to not have traditional "outliers", as these evaluations
-represent true averages from student evaluations. If the linearity
-assumption fails, we considered potential nonparametric models to
-address non-linearity. Deviations from normality were noted as the
-large sample size should provide robustness for any violations of
-normality. If data appears to be heteroscedastic, we used
-bootstrapping to provide estimates and confidence intervals.
+ratings for the course [@rantanen2012]. We performed a robustness check
+for the first research question on the data when the sample size is at
+least *n* = 10 up to *n* = 14 (i.e., on all evaluations with at least 10
+ratings, then at least 11 ratings, etc.) to determine if the reliability
+estimates are stable at lower sample sizes. We first screened the
+dataset (two evaluation questions, sample size for course) for accuracy
+errors, linearity, normality, and homoscedasticity. The data is assumed
+to not have traditional "outliers", as these evaluations represent true
+averages from student evaluations. If the linearity assumption fails, we
+considered potential nonparametric models to address non-linearity.
+Deviations from normality were noted as the large sample size should
+provide robustness for any violations of normality. If data appears to
+be heteroscedastic, we used bootstrapping to provide estimates and
+confidence intervals.
 
 This data was considered structured by instructor; therefore, all
 analyses below were coded in *R* using the *nlme* package
@@ -157,17 +323,17 @@ in the results. However, this variable was excluded if the models did
 not converge. The dependent variable and predictors varied based on the
 research question, and these are described with each analysis below.
 
-### RQ 1 
+### RQ 1
 
 In this research question, we examined the reliability of instructor
 evaluations on the overall rating and separately on the fairness rating.
 We calculated eight types of reliability using course (same or
 different) by instructor (same or different) by semester (same or
-different). The dependent variable was the first question average
-with a predictor of the comparison question average, and both sample
-sizes (first sample size, comparison sample size). Instructor code was used 
-as the random intercept for both ratings (i.e., two instructor
-random intercepts, first and comparison). The value of interest was the
+different). The dependent variable was the first question average with a
+predictor of the comparison question average, and both sample sizes
+(first sample size, comparison sample size). Instructor code was used as
+the random intercept for both ratings (i.e., two instructor random
+intercepts, first and comparison). The value of interest was the
 standardized regression coefficient for the fixed effect of question
 from this model. Given that the large sample size will likely produce
 "significant" *p*-values, we used the 95% CI to determine which
@@ -176,17 +342,16 @@ estimates to each other.
 
 ### RQ 2
 
-We used the reliability for the same instructor and course
-calculated as described in RQ1 at each time point difference between
-semesters. For example, the same semester would create a time difference
-of 0. The next semester (Spring to Summer, Summer to Fall, Fall to
-Spring) would create a time difference of 1. We used the time
-difference as a fixed effect to predict reliability for the overall
-question only with a random intercept of instructor. We used the
-coefficient of time difference and its confidence interval to determine
-if there was a linear change over time. Finally, we plotted the changes
-over time to examine if this effect was non-linear in nature and discuss
-implications of the graph.
+We used the reliability for the same instructor and course calculated as
+described in RQ1 at each time point difference between semesters. For
+example, the same semester would create a time difference of 0. The next
+semester (Spring to Summer, Summer to Fall, Fall to Spring) would create
+a time difference of 1. We used the time difference as a fixed effect to
+predict reliability for the overall question only with a random
+intercept of instructor. We used the coefficient of time difference and
+its confidence interval to determine if there was a linear change over
+time. Finally, we plotted the changes over time to examine if this
+effect was non-linear in nature and discuss implications of the graph.
 
 ### RQ 3
 
@@ -196,22 +361,23 @@ reliability. Fairness was calculated as the average of the fairness
 question for all courses involved in the reliability calculation for
 that instructor and time difference. Therefore, this rating represented
 the average perceived fairness of grading at the time of ratings. If
-this interaction effect's coefficient does not include zero, we performed a 
-simple slopes analysis to examine the effects of instructors
-who were rated at average fairness, one standard deviation below average,
-and one standard deviation above average [@cohen2003]. 
+this interaction effect's coefficient does not include zero, we
+performed a simple slopes analysis to examine the effects of instructors
+who were rated at average fairness, one standard deviation below
+average, and one standard deviation above average [@cohen2003].
 
 ### RQ 4
 
-Finally, we examined the average standard deviation of fairness ratings as a 
-moderator of with time to predict reliability. This variable
-represented the variability in perceived fairness in grading from student
-evaluations, where small numbers indicated relative agreement on the
-rating of fairness and larger values indicated a wide range of fairness
-ratings. The variability in fairness ratings was calculated in the same way 
-as the mean fairness, which was only for the instructor and semester time 
-difference evaluations that were used to calculate the reliability estimate. 
-This research question was assessed the same way as research question three. 
+Finally, we examined the average standard deviation of fairness ratings
+as a moderator of with time to predict reliability. This variable
+represented the variability in perceived fairness in grading from
+student evaluations, where small numbers indicated relative agreement on
+the rating of fairness and larger values indicated a wide range of
+fairness ratings. The variability in fairness ratings was calculated in
+the same way as the mean fairness, which was only for the instructor and
+semester time difference evaluations that were used to calculate the
+reliability estimate. This research question was assessed the same way
+as research question three.
 
 # Results
 
@@ -238,13 +404,17 @@ abline(v = 0)}
 
 The overall dataset was screened for normality, linearity, homogeneity,
 and homoscedasticity using procedures from @tabachnick2019. Data
-generally met assumptions with a slight skew and some heterogeneity. 
-The complete anonymized dataset and other information can be found
-online at <https://osf.io/k7zh2>. This page also includes the manuscript
-written inline with the statistical analysis with the *papaja* package
+generally met assumptions with a slight skew and some heterogeneity. The
+complete anonymized dataset and other information can be found online at
+<https://osf.io/k7zh2>. This page also includes the manuscript written
+inline with the statistical analysis with the *papaja* package
 [@aust2022] for interested researchers/reviewers who wish to recreate
-these analyses. The bootstrapped versions of analyses and robustness analysis 
-can be found online on our OSF page with a summary of results. We originally planned to bootstrap all analyses; however, the compute time for research question 1 was extremely long due to the size and complexity of the multilevel models, and therefore, we did not bootstrap that research question. 
+these analyses. The bootstrapped versions of analyses and robustness
+analysis can be found online on our OSF page with a summary of results.
+We originally planned to bootstrap all analyses; however, the compute
+time for research question 1 was extremely long due to the size and
+complexity of the multilevel models, and therefore, we did not bootstrap
+that research question.
 
 ## Descriptive Statistics
 
@@ -534,18 +704,41 @@ Each individual evaluation was compared to every other evaluation
 resulting in `r nrow(longrel)` total comparisons. Eight combinations of
 ratings were examined using instructor (same, different), course (same,
 different), and semester (same, different) on both the overall and
-fairness evaluation ratings separately. One of the individual ratings was used to predict the comparison rating (i.e., question 1 was used to predict a comparison question 1 for the same instructor, different instructor, same semester, different semester, etc.), and the number of ratings (i.e., rating sample size) per question were used as fixed-effects covariates. The instructor(s) were used as a random intercept to
-control for correlated error and overall average rating per instructor.
-The effects were then standardized using the *parameters* package
-[@lüdecke2023]. The data was sorted by year and semester such that "predictor" was always an earlier semester predicting a later semester's scores, except in cases of the the same semester comparisons. Therefore, positive standardized scores indicate that scores tend to go up over time, while negative scores indicate that scores tend to go down over time. 
+fairness evaluation ratings separately. One of the individual ratings
+was used to predict the comparison rating (i.e., question 1 was used to
+predict a comparison question 1 for the same instructor, different
+instructor, same semester, different semester, etc.), and the number of
+ratings (i.e., rating sample size) per question were used as
+fixed-effects covariates. The instructor(s) were used as a random
+intercept to control for correlated error and overall average rating per
+instructor. The effects were then standardized using the *parameters*
+package [@lüdecke2023]. The data was sorted by year and semester such
+that "predictor" was always an earlier semester predicting a later
+semester's scores, except in cases of the the same semester comparisons.
+Therefore, positive standardized scores indicate that scores tend to go
+up over time, while negative scores indicate that scores tend to go down
+over time.
 
 As shown in \@ref(fig:figure1), reliability was highest when calculated
-on the same instructor in the same semester and within the same course for both overall rating and fairness. This reliability was followed by the same instructor, same semester, and different courses. Next, the reliability for same instructor, same
-course, and different semesters was greater than zero and usually
-overlapped in confidence interval with same instructor, same semester,
-and different courses. Interestingly, the same instructor with different courses and semesters showed a non-zero negative relationship, indicating that ratings generally were lower for later semesters in different courses. 
+on the same instructor in the same semester and within the same course
+for both overall rating and fairness. This reliability was followed by
+the same instructor, same semester, and different courses. Next, the
+reliability for same instructor, same course, and different semesters
+was greater than zero and usually overlapped in confidence interval with
+same instructor, same semester, and different courses. Interestingly,
+the same instructor with different courses and semesters showed a
+non-zero negative relationship, indicating that ratings generally were
+lower for later semesters in different courses.
 
-For different instructors, we found positive non-zero reliablities when they were at least calculated on the same semester or course. These values were very close to zero, generally in the .01 to .05 range. Last, the reliabilities that were calculated on different courses, semesters, and instructors include zero in their confidence intervals. Exact values can be found in the online supplemental document with the robustness analysis in csv format. Robustness analyses revealed the same pattern and strength of results for evaluation reliabilities when sample size for evaluations was considered at *n* = 10, 11, 12, 13, and 14. 
+For different instructors, we found positive non-zero reliablities when
+they were at least calculated on the same semester or course. These
+values were very close to zero, generally in the .01 to .05 range. Last,
+the reliabilities that were calculated on different courses, semesters,
+and instructors include zero in their confidence intervals. Exact values
+can be found in the online supplemental document with the robustness
+analysis in csv format. Robustness analyses revealed the same pattern
+and strength of results for evaluation reliabilities when sample size
+for evaluations was considered at *n* = 10, 11, 12, 13, and 14.
 
 ```{r figure1, include = TRUE, fig.cap= "Reliability estimates for instructor, course, and semester combinations."}
 betarel$b <- as.numeric(betarel$b)
@@ -644,10 +837,14 @@ ci.rq2 <- intervals(rq2.model)
 ```
 
 The confidence interval for the effect of semester difference predicting
-reliability did not cross zero, *b* = `r apa_num(coef.rq2[2 , 1], digits = 3)`,
-95% CI [`r apa_num(ci.rq2$fixed[2,1], digits = 3)`, `r apa_num(ci.rq2$fixed[2,3], digits = 3)`],
-$R^2$ =
-`r suppressWarnings(apa_num(as.numeric(r.squaredGLMM(rq2.model)[1]), gt1 = FALSE))`. The coefficient, while small, represents a small effect of time on the reliability of instructor ratings. As shown in \@ref(fig:figure2), reliability appears to decrease across time. 
+reliability did not cross zero, *b* =
+`r apa_num(coef.rq2[2 , 1], digits = 3)`, 95% CI
+[`r apa_num(ci.rq2$fixed[2,1], digits = 3)`,
+`r apa_num(ci.rq2$fixed[2,3], digits = 3)`], $R^2$ =
+`r suppressWarnings(apa_num(as.numeric(r.squaredGLMM(rq2.model)[1]), gt1 = FALSE))`.
+The coefficient, while small, represents a small effect of time on the
+reliability of instructor ratings. As shown in \@ref(fig:figure2),
+reliability appears to decrease across time.
 
 ```{r figure2, include = TRUE, fig.cap = "Reliability estimates for same instructor and course across time.", message = F}
 ggplot(save_rel, aes(semester_diff, rel)) + 
@@ -698,11 +895,16 @@ coef.rq3.high <- summary(rq3.model.high)$tTable
 
 The confidence interval for the interaction of semester time difference
 and average fairness did cross zero, *b* =
-`r apa_num(coef.rq3[4,1], digits = 3)`, 95% CI [`r apa_num(ci.rq3$fixed[4, 1], digits = 3)`,
+`r apa_num(coef.rq3[4,1], digits = 3)`, 95% CI
+[`r apa_num(ci.rq3$fixed[4, 1], digits = 3)`,
 `r apa_num(ci.rq3$fixed[4, 3], digits = 3)`], $R^2$ =
-`r suppressWarnings(apa_num(as.numeric(r.squaredGLMM(rq3.model)[1]), gt1 = FALSE))`. Therefore, there was no effect of the interaction of average fairness with semester differences in predicting reliability. Similarly, average fairness did not predict reliability overall, *b* =
-`r apa_num(coef.rq3[3,1], digits = 3)`, 95% CI [`r apa_num(ci.rq3$fixed[3, 1], digits = 3)`,
-`r apa_num(ci.rq3$fixed[3, 3], digits = 3)`]. 
+`r suppressWarnings(apa_num(as.numeric(r.squaredGLMM(rq3.model)[1]), gt1 = FALSE))`.
+Therefore, there was no effect of the interaction of average fairness
+with semester differences in predicting reliability. Similarly, average
+fairness did not predict reliability overall, *b* =
+`r apa_num(coef.rq3[3,1], digits = 3)`, 95% CI
+[`r apa_num(ci.rq3$fixed[3, 1], digits = 3)`,
+`r apa_num(ci.rq3$fixed[3, 3], digits = 3)`].
 
 ```{r figure3, eval = FALSE, message = FALSE, include = TRUE, fig.cap="Example simple slope depiction for low, average, and high fairness scores used to moderate the relationship between semester time and reliability estimates."}
 
@@ -758,12 +960,16 @@ rq4.model.high <- lme(rel ~ z_semester_diff*std_fair_high,
 coef.rq4.high <- summary(rq4.model.high)$tTable
 ```
 
-The confidence interval for the interaction of variability of fairness and semester time difference did cross zero, *b* = `r apa_num(coef.rq4[4,1], digits = 3)`, 95% CI
-[`r apa_num(ci.rq4$fixed[4, 1], digits = 3)`, `r apa_num(ci.rq4$fixed[4, 3], digits = 3)`],
-$R^2$ =
-`r suppressWarnings(apa_num(as.numeric(r.squaredGLMM(rq4.model)[1]), gt1 = FALSE))`. The variability of fairness also did not predict reliability overall, *b* =
-`r apa_num(coef.rq4[3,1], digits = 3)`, 95% CI [`r apa_num(ci.rq4$fixed[3, 1], digits = 3)`,
-`r apa_num(ci.rq4$fixed[3, 3], digits = 3)`]. 
+The confidence interval for the interaction of variability of fairness
+and semester time difference did cross zero, *b* =
+`r apa_num(coef.rq4[4,1], digits = 3)`, 95% CI
+[`r apa_num(ci.rq4$fixed[4, 1], digits = 3)`,
+`r apa_num(ci.rq4$fixed[4, 3], digits = 3)`], $R^2$ =
+`r suppressWarnings(apa_num(as.numeric(r.squaredGLMM(rq4.model)[1]), gt1 = FALSE))`.
+The variability of fairness also did not predict reliability overall,
+*b* = `r apa_num(coef.rq4[3,1], digits = 3)`, 95% CI
+[`r apa_num(ci.rq4$fixed[3, 1], digits = 3)`,
+`r apa_num(ci.rq4$fixed[3, 3], digits = 3)`].
 
 ```{r figure4, eval = FALSE, message = FALSE, include = TRUE, fig.cap="Example simple slope depiction for low, average, and high fairness variability used to moderate the relationship between semester time and reliability estimates."}
 
@@ -786,28 +992,27 @@ ggsave("output/figure4.png")
 
 # Discussion
 
-- Summarize the results
+-   Summarize the results
 
 ## What Should I Do with This Information
 
-- Don't expect to be reliable across other classes
-- Don't expect to be reliable over long period of time, people change, students change, etc. 
+-   Don't expect to be reliable across other classes
+-   Don't expect to be reliable over long period of time, people change,
+    students change, etc.
 
 ## Strengths
 
-- a crap ton of data
-- over a long period of time
-- robust results 
+-   a crap ton of data
+-   over a long period of time
+-   robust results
 
 ## Limitations
 
-- one item versus many
-- evaluations don't mean what we want them to mean
-- one uni means maybe not generalizable 
+-   one item versus many
+-   evaluations don't mean what we want them to mean
+-   one uni means maybe not generalizable
 
 ## Future Work
-
-
 
 \newpage
 
