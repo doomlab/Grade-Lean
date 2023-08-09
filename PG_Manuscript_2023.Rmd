@@ -26,11 +26,11 @@ affiliation:
   - id            : "2"
     institution   : "University of Alabama"
 authornote: |
-  TBA
+   
 abstract: |
-  TBA
+  Student evaluations of teaching are regularly used within college classroom to gauge effectiveness of instruction, provide evidence for administrative decision making, and inform instructors of course feedback. The validity of teaching evaluations is often questioned, as they appear to be influenced by outside of teaching factors such as gender, race/ethnicity, grading, previous student achievement, and more. However, teaching evaluations do appear to be a reliable measure, often showing strong correlations for an instructor. In this study, we investigate over 30 years of teaching evaluations to determine the reliability of teaching evaluations across course, instructor, and time. Generally, instructors teaching the same course within the same semester showed the highest reliability estimates, with lower estimates for the same course in different semesters. The reliability of instructor's evaluations showed a small decrease over time. Finally, we investigated the impact of a validity measurement (perceived fairness) on reliability and found no evidence that this variable influence reliability estimates.
   
-keywords          : "keywords"
+keywords          : "reliability, teaching effectiveness, fairness, grading, evaluations"
 floatsintext      : no
 linenumbers       : yes
 draft             : no
@@ -39,10 +39,26 @@ figurelist        : no
 tablelist         : no
 footnotelist      : no
 classoption       : "man"
-output            : papaja::apa6_docx
+output            : papaja::apa6_pdf
 editor_options: 
   chunk_output_type: inline
 bibliography: references.bib
+header-includes:
+  - |
+    \makeatletter
+    \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-1em}%
+      {\normalfont\normalsize\bfseries\typesectitle}}
+    
+    \renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+      {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+      {-\z@\relax}%
+      {\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+    \makeatother
+
+csl               : "`r system.file('rmd', 'apa7.csl', package = 'papaja')`"
+documentclass     : "apa7"
 ---
 
 ```{r setup, include = FALSE}
@@ -111,41 +127,38 @@ evaluations of teaching are likely unrelated to learning [@uttl2017].
 @boring2016 estimate that the bias in student evaluations are unable to
 be fixed due to the complex interaction of factors within evaluations.
 
-Systemic reviews and recent studies underscore that sexism (e.g.,
-MacNell et al., 2014; Mitchell & Martin, 2018), racism (e.g. Smith &
-Hawkins, 2011), and general bias pervades students' evaluations of
-traditional courses and possibly exist for online ones as well (e.g.,
-Heffernan, 2021; Rovai et al., 2006; Sullivan et al., 2013; Zheng et
-al., 2023). Individual factors may also yield some influence, including
-instructors' cultural background (e.g., Fan et al., 2019),
-attractiveness (e.g., Felton et al., 2008; Wright, 2008), position
-ranking (e.g., Johnson et al., 2013), and students' expected grade from
-the course (e.g., Chen et al., 2017; Crumbly et al., 2001; Marks, 2000).
-Others suggest biasing factors of students' ratings include the volume
-of the instructor's voice and how legible their instructor's writing is
-(Becker et al., 2012). Stroebe (2018) underscores the possible danger of
-an incentive system that is tied to student ratings; instructors may be
-then incentivized to be a less effective teacher (e.g., grade leniently,
-choose to teach courses based off student interest) rather than
-challenge students critically.
+Systemic reviews and recent studies underscore that sexism
+[@macnell2015; @mitchell2018], racism [@smith2011], and general bias
+pervades students' evaluations of traditional courses and possibly exist
+for online ones as well [@heffernan2022; @rovai2006; @zheng2023] !!
+Sullivan et al., 2013 !!. Individual factors may also yield some
+influence, including instructors' cultural background [@fan2019],
+attractiveness [@felton2008] !!Wright, 2008!!, position ranking
+[@johnson2013], and students' expected grade from the course [@chen2017;
+@crumbley2001; @marks2000]. Others suggest biasing factors of students'
+ratings include the volume of the instructor's voice and how legible
+their instructor's writing is [!! Becker et al., 2012 !!]. !!Stroebe
+(2018)!! underscores the possible danger of an incentive system that is
+tied to student ratings; instructors may be then incentivized to be a
+less effective teacher (e.g., grade leniently, choose to teach courses
+based off student interest) rather than challenge students critically.
 
 One of the most commonly proposed solutions is to use multiple
-evaluations of teaching effectiveness (e.g., subject-matter sit-ins on
-lecture, peer reviews of course curriculum, Benton & Young, 2018; Berk,
-2018; Esarey & Valdes, 2020; Kornell & Hausman, 2016). However, the cost
-of implementing a more accurate multi-pronged approach may be more than
-universities can afford, especially given tight budgets and current
-instructor expectations. The current zeitgeist is often to continue
-using student evaluations of teaching as the most affordable solution in
-terms of both time and money. Students' ratings may show some utility at
-indicating to other students which classes to pursue and with whom
-(e.g., Stankiewicz, 2015), and unfortunately, even if instructors
-believe such ratings to be an inappropriate, it may influence their
-self-efficacy as an educator regardless (Boswell, 2016). While student
-evaluations are often considered non-valid measurements of teaching
-effectiveness, others argue that calls for the complete removal
-students' voices from the process is potentially the wrong course of
-action (Benton and Ryalls (2016)).
+evaluations of teaching effectiveness [e.g., subject-matter sit-ins on
+lecture, peer reviews of course curriculum [@benton2018; @berk2018;
+@esarey2020; @kornell2016]. However, the cost of implementing a more
+accurate multi-pronged approach may be more than universities can
+afford, especially given tight budgets and current instructor
+expectations. The current zeitgeist is often to continue using student
+evaluations of teaching as the most affordable solution in terms of both
+time and money. Students' ratings may show some utility at indicating to
+other students which classes to pursue and with whom [!! Stankiewicz,
+2015 !!], and unfortunately, even if instructors believe such ratings to
+be an inappropriate, it may influence their self-efficacy as an educator
+regardless [@boswell2016]. While student evaluations are often
+considered non-valid measurements of teaching effectiveness, others
+argue that calls for the complete removal students' voices from the
+process is potentially the wrong course of action [@benton2016].
 
 ## Perceived fairness 
 
@@ -154,47 +167,46 @@ grading within the course (which will be called perceived fairness).
 Extant research tends to confirm that instructor evaluations are
 influenced by students' grades, possibly pressuring some instructors
 into reducing the rigor of their course for the sake of attaining higher
-evaluation ratings (Greenwald & Gillmore, 1997; Marks, 2000). However,
-as pointed out by Wright (2008), students' expectations of their final
-grades may not affect ratings nearly as much as their perceived fairness
-of the grading process. Professors who are consistent, representative,
+evaluation ratings [@greenwald1997; @marks2000]. However, as pointed out
+by !!Wright (2008)!!, students' expectations of their final grades may
+not affect ratings nearly as much as their perceived fairness of the
+grading process. Professors who are consistent, representative,
 accurate, unbiased, and correctable in their grading may receive high
 evaluation ratings regardless of how much a student learns or what
-his/her final grade turns out to be (Horan et al., 2010; Leventhal,
-1980). Thus, grades may predict evaluation ratings only so much as
-students perceive their grade and the processes by which they were
-determined as fair (Tata, 1999).
+his/her final grade turns out to be [@horan2010; @leventhal1980]. Thus,
+grades may predict evaluation ratings only so much as students perceive
+their grade and the processes by which they were determined as fair
+[@tata1999].
 
 Additionally, the different facets leading into a final grade's
 calculation may play on each other as students consider fairness in
-their evaluations. For example, Tripp and colleagues (2019) found that
-students' perceived fairness of their instructors' grading processes
-affected their perceived fairness of their assigned grade, which then
-translated to their evaluation ratings of teacher effectiveness.
-Perceived fairness of the course workload and difficulty may also be
-inversely related to perceived fairness of the grading process as a
-challenging professor may be thought of as less fair (Marks, 2000).
-Access to grading criteria, frequency of feedback, and proactive
-instruction are other aspects of grading known to explicitly affect
-perceived fairness (Pepper & Pathak, 2008); in turn, the fairness of
-these aspects must be factored in as well. Taken together, students'
-perceived fairness of grading may be more akin to comprehensive
-assessments of the instructor rather than face-value judgments of their
-grade.
+their evaluations. For example, @tripp2019 found that students'
+perceived fairness of their instructors' grading processes affected
+their perceived fairness of their assigned grade, which then translated
+to their evaluation ratings of teacher effectiveness. Perceived fairness
+of the course workload and difficulty may also be inversely related to
+perceived fairness of the grading process as a challenging professor may
+be thought of as less fair [@marks2000]. Access to grading criteria,
+frequency of feedback, and proactive instruction are other aspects of
+grading known to explicitly affect perceived fairness [@pepper2008]; in
+turn, the fairness of these aspects must be factored in as well. Taken
+together, students' perceived fairness of grading may be more akin to
+comprehensive assessments of the instructor rather than face-value
+judgments of their grade.
 
 ## Reliability 
 
 Past investigations utilizing large samples concluded student ratings
-are reliable and stable (e.g., Arubayi, 1987; Marsh & Roche, 1997). More
-recently, a review found that students' ratings within the same class
-tend to be internally consistent when teaching effectiveness was
-assessed through several items, reliable across students within the same
-class, and reliable across the same instructor across multiple courses
-(Benton & Cashin, 2014). Students who rated a retrospectively rated a
-course one to three years after the course showed high correlations with
-their previous course ratings [@overall1980]. Results from studies that
-tease apart variance in ratings due to instructor, course, and student
-factors indicate that each is an essential source of variance, which can
+are reliable and stable [@arubayi1987; @marsh1997]. More recently, a
+review found that students' ratings within the same class tend to be
+internally consistent when teaching effectiveness was assessed through
+several items, reliable across students within the same class, and
+reliable across the same instructor across multiple courses
+[@benton2014]. Students who rated a retrospectively rated a course one
+to three years after the course showed high correlations with their
+previous course ratings [@overall1980]. Results from studies that tease
+apart variance in ratings due to instructor, course, and student factors
+indicate that each is an essential source of variance, which can
 influence the reliability of instruction evaluation [@feistauer2017]. In
 general, research appears to support the reliability of student
 evaluations of teaching, yet, only a few studies have examined this
@@ -205,19 +217,18 @@ examine reliability patterns over 30 years of evaluations.
 
 ## The current study 
 
-The current study is similar in scope to recent work (e.g., Boring et
-al., 2016; Fan et al., 2019) in its calibration of teacher evaluations
-collected over an extensive period. Boring and colleagues' (2016)
-investigation on both French instructors and U.S. teaching assistants'
-gender ranged across five years; similarly, Fan and peers (2019)
-investigated the topic across seven. Their utilization of multi-sections
-has been described as the gold standard for researching students'
-ratings. Thus, we aimed to follow their lead by analyzing the
-reliability of students' ratings provided the same or different
-instructor, course type, and/or semester in addition to testing
-reliability over more than 30 years of data. We examined the impact of a
-potential validity variable on the reliability of ratings using
-perceived fairness of grading. Therefore, we sought to explore the
+The current study is similar in scope to recent work [@boring2016;
+@fan2019] in its calibration of teacher evaluations collected over an
+extensive period. @boring2016's investigation on both French instructors
+and U.S. teaching assistants' gender ranged across five years;
+similarly, @fan2019's investigated the topic across seven. Their
+utilization of multi-sections has been described as the gold standard
+for researching students' ratings. Thus, we aimed to follow their lead
+by analyzing the reliability of students' ratings provided the same or
+different instructor, course type, and/or semester in addition to
+testing reliability over more than 30 years of data. We examined the
+impact of a potential validity variable on the reliability of ratings
+using perceived fairness of grading. Therefore, we sought to explore the
 following research questions:
 
 Exploratory Research Questions:
@@ -235,8 +246,7 @@ our Open Science Framework page at: <https://osf.io/k7zh2/> or GitHub:
 <https://github.com/doomlab/Grade-Lean>. This manuscript was written
 with the *R* packages *papaja* [@aust2022], *rio* [@becker2021], *dplyr*
 [@R-dplyr], *nlme* [@pinheiro2017], *ggplot2* [@R-ggplot2], *MuMIn*
-[@barton2020], *ppcor* [@kim2015], and *effectsize*
-[@ben-shachar(mattansb)2023].
+[@barton2020], *ppcor* [@kim2015], and *effectsize* [@ben-shachar2023].
 
 
 
@@ -730,7 +740,7 @@ the same instructor with different courses and semesters showed a
 non-zero negative relationship, indicating that ratings generally were
 lower for later semesters in different courses.
 
-For different instructors, we found positive non-zero reliablities when
+For different instructors, we found positive non-zero readabilities when
 they were at least calculated on the same semester or course. These
 values were very close to zero, generally in the .01 to .05 range. Last,
 the reliabilities that were calculated on different courses, semesters,
@@ -992,27 +1002,69 @@ ggsave("output/figure4.png")
 
 # Discussion
 
--   Summarize the results
+This investigation measured student evaluation of teaching's reliability
+by calculating the reliability of evaluations across instructors,
+semesters, and courses. In our first question, we showed that
+evaluations of the same instructor within the same course and same
+semester were the most reliable, followed by different courses and
+different semesters. We extended previous meta-analyses on reliability
+to show that reliability appears to slightly, but significantly,
+decrease over time --- a new finding in comparison to the work of
+@marsh2007. Last, we explored the relationship of a variable that
+potentially impacts the validity of student evaluations of teaching:
+perceived fairness in grading. Perceived fairness did not appear to
+impact reliability scores, nor did it interact with time to predict
+reliability scores. While variability in perceived fairness is found
+across and within instructor ratings, this variability also did not
+impact reliability information.
 
-## What Should I Do with This Information
+This study extends previous work with several new strengths [@marsh2007;
+@benton2014; @benton2016; @zhao2011]. The data included in this
+manuscript represents over 30 years of teaching evaluations and was
+analyzed for reliability within and across courses, semesters, and
+instructors; thus, providing new insights into the expected level of
+reliability in different calculation scenarios. Sensitivity and
+bootstrapped analyses show that these results are robust even with a
+smaller number of evaluations used, supporting and extending work by
+@rantanen2012. Last, we investigated the impact of validity variables on
+reliability, not just the overall validity of evaluations based on
+various potential biases.
 
--   Don't expect to be reliable across other classes
--   Don't expect to be reliable over long period of time, people change,
-    students change, etc.
+Given these results, what should instructors and administrators do with
+student evaluations of teaching? @benton2018 provide a comprehensive
+checklist of ways to assess teaching and interpret evaluations in light
+of the long history of validity questions for student evaluations of
+teaching. Here, we add that it is important to understand that
+reliability will vary by course and semester as instructor variability
+is usually expected. It is tempting to think that the same instructor
+teaching the same course should reliably get the same evaluations;
+however, we should consider that instructors will grow and change over
+time, which may contribute to lessened reliability across time (in
+addition to other known biases, such as age). Further, facets of the
+different courses taught likely contribute to the lessened reliability
+between courses taught by the same instructor (i.e., required statistics
+courses versus elective courses). As @benton2018 describes, the
+evaluation procedure should be useful, and it may not be fruitful to
+compare different years or even courses, and evaluations should be
+contextualized to the course and semester they were received in.
 
-## Strengths
-
--   a crap ton of data
--   over a long period of time
--   robust results
-
-## Limitations
-
--   one item versus many
--   evaluations don't mean what we want them to mean
--   one uni means maybe not generalizable
-
-## Future Work
+While this study provides valuable evidence about evaluation
+reliability, the study only includes one department of evaluation
+scores, and the descriptive statistics suggest these evaluations are
+often at ceiling on a 1 to 5 Likert type scale. Evaluations are always
+biased by the students who are in class or fill out the online survey
+--- information about missing student perceptions are never recorded.
+The concerns about the validity of evaluations are still relevant, and
+it may be that reliability is interesting but not altogether useful if
+the scores are not valid representations of teaching effectiveness. As
+universities struggle to balance demands of higher education cost and
+student enrollment, teaching effectiveness may be a critical target for
+administrators to ensure student engagement and retention. These results
+suggest that student evaluations of teaching can be reliable indicators
+of teaching effectiveness, but likely only within the same courses and
+semester. Thus, a multifaceted approach to assesing instructor
+effectiveness and improvement is a more appropriate measurement tool for
+long-term evaluations of instruction [@benton2018].
 
 \newpage
 
