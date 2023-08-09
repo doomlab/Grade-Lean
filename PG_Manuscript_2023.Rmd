@@ -52,7 +52,7 @@ library("papaja")
 ```{r analysis-preferences}
 # Seed for random number generation
 set.seed(89432289)
-knitr::opts_chunk$set(cache.extra = knitr::rand_seed, echo = FALSE, include = FALSE, cache = TRUE)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed, echo = FALSE, include = FALSE, cache = TRUE, cache.lazy = FALSE)
 library(rio)
 library(dplyr)
 library(nlme)
@@ -66,7 +66,7 @@ In the United States, college and university professors are evaluated to
 varying degrees on research productivity, service, and teaching
 effectiveness. These dimensions are often used for high-stakes
 administration decisions [e.g., hiring, retention, promotion, pay, and
-tenure; @hornstein2017; @freishtat2014; @spooren2013] !!stoebe, 2020!!.
+tenure, @freishtat2014; @hornstein2017; @spooren2013] !!stoebe, 2020!!.
 Depending on the institution, a major failure of one these areas could
 jeopardize a professors' position within the department; thus,
 evaluating research, service, and teaching is of the utmost importance.
@@ -98,7 +98,7 @@ of teaching effectiveness?
 
 ## Validity 
 
-@sheehan1975 review of the literature nearly 50 years ago indicated
+@sheehan1975's review of the literature nearly 50 years ago indicated
 multiple factors of bias that likely exist within student evaluations:
 1) student demographics: gender, class, age, previous achievement, 2)
 class type: subject matter, size, degree requirements, and 3)
@@ -235,7 +235,8 @@ our Open Science Framework page at: <https://osf.io/k7zh2/> or GitHub:
 <https://github.com/doomlab/Grade-Lean>. This manuscript was written
 with the *R* packages *papaja* [@aust2022], *rio* [@becker2021], *dplyr*
 [@R-dplyr], *nlme* [@pinheiro2017], *ggplot2* [@R-ggplot2], *MuMIn*
-[@barton2020], and *effectsize* [@].
+[@barton2020], *ppcor* [@kim2015], and *effectsize*
+[@ben-shachar(mattansb)2023].
 
 
 
