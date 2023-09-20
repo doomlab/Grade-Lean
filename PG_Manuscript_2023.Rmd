@@ -78,11 +78,26 @@ library(ppcor)
 library(MuMIn)
 ```
 
+```{r eval = F}
+library(trackdown)
+# initial set up 
+# upload_file(file = "PG_Manuscript_2023.Rmd",
+#       gfile = "grade_lean_trackdown")
+# from google 
+download_file(file = "PG_Manuscript_2023.Rmd",
+              gfile = "grade_lean_trackdown")
+# to google
+update_file(file = "PG_Manuscript_2023.Rmd",
+            gfile = "grade_lean_trackdown",
+            rich_text = TRUE,
+            hide_code = TRUE)
+```
+
 In the United States, college and university professors are evaluated to
 varying degrees on research productivity, service, and teaching
 effectiveness. These dimensions are often used for high-stakes
 administration decisions [e.g., hiring, retention, promotion, pay, and
-tenure, @freishtat2014; @hornstein2017; @spooren2013] !!stoebe, 2020!!.
+tenure, @freishtat2014; @hornstein2017; @spooren2013; @stroebe2020].
 Depending on the institution, a major failure of one these areas could
 jeopardize a professors' position within the department; thus,
 evaluating research, service, and teaching is of the utmost importance.
@@ -90,8 +105,8 @@ Focusing on evaluating educators on teaching effectiveness, however, is
 both difficult and costly. Indeed, the vast majority of the 9,000
 professors polled by the American Association of University Professors
 shared that teaching needs to be taken as seriously as research and
-service (!!Flaherty, 2015!!). As students consider rising tutition
-costs, perceived quality education can improve student engagement and
+service [@flaherty]. As students consider rising tutition costs,
+perceived quality education can improve student engagement and
 retention.
 
 Teaching effectiveness can be defined as the degree to which student
@@ -101,47 +116,46 @@ effectiveness comes from students and their evaluations which may focus
 on the instructor or the course specifically [e.g., "Student Opinion of
 Instruction", "Student Evaluations of Teaching", "Students Opinion of
 Teaching Effectiveness", "Students Evaluation of Faculty", "Overall
-Course Ratings", "Instruction Rating"; @cohen1981]. !!Flaherty, 2020!!
-Often these are described as "quality" of an individual course
-[@marsh2007; @gillmore1978]. Teaching effectiveness measures are
-designed to tap into factors of teaching, such as communication,
-organization, instructor behavior, grading, and more [@hattie1996].
-Given teaching evaluations use in administrative decisions, both
-reliability and validity should be demonstrated for the measurement to
-have utility. Therefore, the natural question arises: are students'
-evaluation of the course and/or instructor reliable and valid measures
-of teaching effectiveness?
+Course Ratings", "Instruction Rating"; @cohen1981; @flahertya]. Often
+these are described as "quality" of an individual course [@marsh2007;
+@gillmore1978]. Teaching effectiveness measures are designed to tap into
+factors of teaching, such as communication, organization, instructor
+behavior, grading, and more [@hattie1996]. Given teaching evaluations
+use in administrative decisions, both reliability and validity should be
+demonstrated for the measurement to have utility. Therefore, the natural
+question arises: are students' evaluation of the course and/or
+instructor reliable and valid measures of teaching effectiveness?
 
-## Validity 
+## Validity
 
 @sheehan1975's review of the literature nearly 50 years ago indicated
 multiple factors of bias that likely exist within student evaluations:
 1) student demographics: gender, class, age, previous achievement, 2)
 class type: subject matter, size, degree requirements, and 3)
 instructor: gender, rank, gender-match to student. Even now, these
-concerns remain [@boring2016; @uttl2017; @hornstein2017] !! dunn et al.,
-2016!!. @cohen1981's early work on the relationship between student
-achievement and instruction rating indicated a potential moderate
-relationship; however, recent meta-analyses demonstrate that student
-evaluations of teaching are likely unrelated to learning [@uttl2017].
-@boring2016 estimate that the bias in student evaluations are unable to
-be fixed due to the complex interaction of factors within evaluations.
+concerns remain [@boring2016; @uttl2017; @hornstein2017; @dunn2014].
+@cohen1981's early work on the relationship between student achievement
+and instruction rating indicated a potential moderate relationship;
+however, recent meta-analyses demonstrate that student evaluations of
+teaching are likely unrelated to learning [@uttl2017]. @boring2016
+estimate that the bias in student evaluations are unable to be fixed due
+to the complex interaction of factors within evaluations.
 
 Systemic reviews and recent studies underscore that sexism
 [@macnell2015; @mitchell2018], racism [@smith2011], and general bias
 pervades students' evaluations of traditional courses and possibly exist
-for online ones as well [@heffernan2022; @rovai2006; @zheng2023] !!
-Sullivan et al., 2013 !!. Individual factors may also yield some
-influence, including instructors' cultural background [@fan2019],
-attractiveness [@felton2008] !!Wright, 2008!!, position ranking
-[@johnson2013], and students' expected grade from the course [@chen2017;
-@crumbley2001; @marks2000]. Others suggest biasing factors of students'
-ratings include the volume of the instructor's voice and how legible
-their instructor's writing is [!! Becker et al., 2012 !!]. !!Stroebe
-(2018)!! underscores the possible danger of an incentive system that is
-tied to student ratings; instructors may be then incentivized to be a
-less effective teacher (e.g., grade leniently, choose to teach courses
-based off student interest) rather than challenge students critically.
+for online ones as well [@heffernan2022; @rovai2006; @zheng2023;
+@osullivan2014]. Individual factors may also yield some influence,
+including instructors' cultural background [@fan2019], attractiveness
+[@felton2008; @wright2000], position ranking [@johnson2013], and
+students' expected grade from the course [@chen2017; @crumbley2001;
+@marks2000]. Others suggest biasing factors of students' ratings include
+the volume of the instructor's voice and how legible their instructor's
+writing is [@10.1080/00220485.2012.686826]. @stroebe2020 underscores the
+possible danger of an incentive system that is tied to student ratings;
+instructors may be then incentivized to be a less effective teacher
+(e.g., grade leniently, choose to teach courses based off student
+interest) rather than challenge students critically.
 
 One of the most commonly proposed solutions is to use multiple
 evaluations of teaching effectiveness [e.g., subject-matter sit-ins on
@@ -152,15 +166,15 @@ afford, especially given tight budgets and current instructor
 expectations. The current zeitgeist is often to continue using student
 evaluations of teaching as the most affordable solution in terms of both
 time and money. Students' ratings may show some utility at indicating to
-other students which classes to pursue and with whom [!! Stankiewicz,
-2015 !!], and unfortunately, even if instructors believe such ratings to
-be an inappropriate, it may influence their self-efficacy as an educator
+other students which classes to pursue and with whom [@ratings], and
+unfortunately, even if instructors believe such ratings to be an
+inappropriate, it may influence their self-efficacy as an educator
 regardless [@boswell2016]. While student evaluations are often
 considered non-valid measurements of teaching effectiveness, others
 argue that calls for the complete removal students' voices from the
 process is potentially the wrong course of action [@benton2016].
 
-## Perceived fairness 
+## Perceived fairness
 
 Our study focused on potential sources of validity bias using ratings of
 grading within the course (which will be called perceived fairness).
@@ -168,15 +182,14 @@ Extant research tends to confirm that instructor evaluations are
 influenced by students' grades, possibly pressuring some instructors
 into reducing the rigor of their course for the sake of attaining higher
 evaluation ratings [@greenwald1997; @marks2000]. However, as pointed out
-by !!Wright (2008)!!, students' expectations of their final grades may
-not affect ratings nearly as much as their perceived fairness of the
-grading process. Professors who are consistent, representative,
-accurate, unbiased, and correctable in their grading may receive high
-evaluation ratings regardless of how much a student learns or what
-his/her final grade turns out to be [@horan2010; @leventhal1980]. Thus,
-grades may predict evaluation ratings only so much as students perceive
-their grade and the processes by which they were determined as fair
-[@tata1999].
+by @wright2000, students' expectations of their final grades may not
+affect ratings nearly as much as their perceived fairness of the grading
+process. Professors who are consistent, representative, accurate,
+unbiased, and correctable in their grading may receive high evaluation
+ratings regardless of how much a student learns or what his/her final
+grade turns out to be [@horan2010; @leventhal1980]. Thus, grades may
+predict evaluation ratings only so much as students perceive their grade
+and the processes by which they were determined as fair [@tata1999].
 
 Additionally, the different facets leading into a final grade's
 calculation may play on each other as students consider fairness in
@@ -194,7 +207,7 @@ together, students' perceived fairness of grading may be more akin to
 comprehensive assessments of the instructor rather than face-value
 judgments of their grade.
 
-## Reliability 
+## Reliability
 
 Past investigations utilizing large samples concluded student ratings
 are reliable and stable [@arubayi1987; @marsh1997]. More recently, a
@@ -215,7 +228,7 @@ effectiveness appears to suggest that instructors have stable
 evaluations over time [@marsh2007], and our study extends this work to
 examine reliability patterns over 30 years of evaluations.
 
-## The current study 
+## The current study
 
 The current study is similar in scope to recent work [@boring2016;
 @fan2019] in its calibration of teacher evaluations collected over an
@@ -247,8 +260,6 @@ our Open Science Framework page at: <https://osf.io/k7zh2/> or GitHub:
 with the *R* packages *papaja* [@aust2022], *rio* [@becker2021], *dplyr*
 [@R-dplyr], *nlme* [@pinheiro2017], *ggplot2* [@R-ggplot2], *MuMIn*
 [@barton2020], *ppcor* [@kim2015], and *effectsize* [@ben-shachar2023].
-
-
 
 # Method
 
