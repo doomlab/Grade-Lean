@@ -87,7 +87,7 @@ download_file(file = "PG_Manuscript_2023.Rmd",
               gfile = "grade_lean_trackdown")
 # to google
 update_file(file = "PG_Manuscript_2023.Rmd",
-            gfile = "grade_lean_trackdown"
+            gfile = "grade_lean_trackdown",
             rich_text = TRUE,
             hide_code = TRUE)
 ```
@@ -141,32 +141,31 @@ attractiveness [@felton2008; @wright2000], position ranking
 [@johnson2013], and students' expected grade from the course [@chen2017;
 @crumbley2001; @marks2000]. Biasing factors may even include the volume
 of the instructor's voice and how legible their instructor's writing is
-[@10.1080/00220485.2012.686826]. Concerningly, @stroebe2020 also
-highlights the danger of an incentive system tied to student ratings; in
-other words, instructors may be incentivized to be a less effective
-teacher (e.g., grade leniently, choose to teach courses based on student
-interest, etc.) rather than challenge students critically to boost their
-SET ratings. Concerns of bias have not dissipated over time
-[@boring2016; @uttl2017; @hornstein2017; @dunn2014]. Recent
-meta-analyses suggest SETs may be entirely unrelated to material learned
-[@uttl2017] and their biasing aspects cannot be altered due to the
-complex interaction of factors included in their calculation
-@boring2016. While students' ratings may show some utility in indicating
-to other students which classes to pursue and with which professor
-[@ratings], this usefulness may come at the cost of the professor's
-self-efficacy [@boswell2016]. While SETs are conceptually valuable
-towards gaining insight on teacher effectiveness or course quality, the
-many outstanding issues suggest they may not be valid measures. Even so,
-some researchers argue that the complete removal of SETs from
-administrative consideration is the wrong course of action
-[@benton2016]. A more appropriate solution may be to utilize multiple
-measures of teaching effectiveness simultaneously [e.g., subject-matter
-experts sit-in on lecture, peer reviews of course curriculum
-@benton2018; @berk2018; @esarey2020; @kornell2016]. However, the cost of
-implementing a more accurate, multi-pronged approach may be unrealistic
-given a university's budget and expectations of the instructor.
-Institutions may then opt to continue using SETs regardless of their
-validity.
+[@becker2012]. Concerningly, @stroebe2020 also highlights the danger of
+an incentive system tied to student ratings; in other words, instructors
+may be incentivized to be a less effective teacher (e.g., grade
+leniently, choose to teach courses based on student interest, etc.)
+rather than challenge students critically to boost their SET ratings.
+Concerns of bias have not dissipated over time [@boring2016; @uttl2017;
+@hornstein2017; @dunn2014]. Recent meta-analyses suggest SETs may be
+entirely unrelated to material learned [@uttl2017] and their biasing
+aspects cannot be altered due to the complex interaction of factors
+included in their calculation @boring2016. While students' ratings may
+show some utility in indicating to other students which classes to
+pursue and with which professor [@ratings], this usefulness may come at
+the cost of the professor's self-efficacy [@boswell2016]. While SETs are
+conceptually valuable towards gaining insight on teacher effectiveness
+or course quality, the many outstanding issues suggest they may not be
+valid measures. Even so, some researchers argue that the complete
+removal of SETs from administrative consideration is the wrong course of
+action [@benton2016]. A more appropriate solution may be to utilize
+multiple measures of teaching effectiveness simultaneously [e.g.,
+subject-matter experts sit-in on lecture, peer reviews of course
+curriculum @benton2018; @berk2018; @esarey2020; @kornell2016]. However,
+the cost of implementing a more accurate, multi-pronged approach may be
+unrealistic given a university's budget and expectations of the
+instructor. Institutions may then opt to continue using SETs regardless
+of their validity.
 
 ## Perceived fairness
 
