@@ -1,4 +1,4 @@
-# Grade-Lean
+# Reliability of Evaluations of Instruction 
 A paper focusing on the variables impacting evaluations for instructors.
 
 ## Bootstrapped Analyses
