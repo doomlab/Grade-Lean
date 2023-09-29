@@ -1,6 +1,6 @@
 ---
-title             : "The Reliability of Instructor Evaluations"
-shorttitle        : "RELIABILITY EVALUATIONS"
+title             : "The Reliability of Student Evaluations of Teaching"
+shorttitle        : "SET Reliability"
 author: 
   - name          : "Erin M. Buchanan"
     affiliation   : "1"
@@ -39,7 +39,7 @@ figurelist        : no
 tablelist         : no
 footnotelist      : no
 classoption       : "man"
-output            : papaja::apa6_pdf
+output            : papaja::apa6_docx
 editor_options: 
   chunk_output_type: inline
 bibliography: references.bib
