@@ -326,7 +326,7 @@ intercept models are regression models on repeated data that structure
 the data by a specified variable, which was instructor in this analysis.
 Therefore, each instructor's average rating score was allowed to vary
 within the analysis, as ratings would be expected to be different from
-instructor to instructor. In each of the analyses described below, the
+instructor to instructor. See Figure \@ref(fig:fig-regression) for a visual depiction of the analysis. In each of the analyses described below, the
 number of students providing ratings for the course was included as a
 control variable to even out differences in course size as an influence
 in the results. However, this variable was excluded if the models did
@@ -348,7 +348,11 @@ standardized regression coefficient for the fixed effect of question
 from this model. Given that the large sample size will likely produce
 "significant" *p*-values, we used the 95% CI to determine which
 reliability values were larger than zero and to compare reliability
-estimates to each other.
+estimates to each other. 
+
+```{r fig-regression, fig.cap = "An example of Research Question 1 including random intercepts for instructor. Each instructor shows a different overall course average score where the regression line crosses the y-intercept. The idea behind using random intercepts is that instructors naturally vary in their overall average scores for evaluations based on skill and confounding factors such as age, gender, or course taught. This analysis controls for those differences to examine the pattern of reliability regardless of those facets."}
+knitr::include_graphics("includes/random_intercept.png")
+```
 
 ### RQ 2
 
