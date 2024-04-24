@@ -1,5 +1,5 @@
 ---
-title             : "The Reliability of Instructor Evaluations"
+title             : "The Reliability of Psychology Instructor's Evaluations"
 shorttitle        : "RELIABILITY EVALUATIONS"
 author: 
   - name          : "Erin M. Buchanan"
@@ -28,7 +28,19 @@ affiliation:
 authornote: |
    
 abstract: |
-  Student evaluations of teaching are regularly used within college classrooms to gauge effectiveness of instruction, provide evidence for administrative decision making, and inform instructors of course feedback. The validity of teaching evaluations is often questioned, as they appear to be influenced by outside of teaching factors such as gender, race/ethnicity, grading, previous student achievement, and more. Teaching evaluations are thought to be a reliable measure but few studies have explored their reliability over time. In this study, we investigate over 30 years of teaching evaluations to determine the reliability of teaching evaluations across course, instructor, and time. Generally, instructors teaching the same course multiple times within the same semester showed the highest reliability estimates, with lower reliability estimates for the same course taught in different semesters. The reliability of instructor's evaluations showed a small decrease over time. Finally, we investigated the impact of a validity measurement (perceived fairness) on reliability and found no evidence that this variable influenced reliability estimates.
+  Background: Student evaluations of teaching are regularly used within college classrooms to gauge effectiveness of instruction, provide evidence for administrative decision making, and inform instructors of course feedback. Teaching evaluations are thought to be a reliable measure, but few studies have explored their reliability over time. 
+  
+  Objective: We investigate over 30 years of teaching evaluations to determine the reliability of teaching evaluations across course, instructor, and time. 
+  
+  Method: A large dataset of student evaluations of teaching was examined for reliability of evaluations within the same or different semester, course, and instructor. We then used these estimates to determine the stability of reliability estimates over time and tried to predict reliability using student ratings of instructor fairness. 
+  
+  Results: Instructors teaching the same course multiple times within the same semester showed the highest reliability estimates. The reliability of instructor’s evaluations showed a small decrease over time. We found the impact of a validity measurement on reliability.
+  
+  Conclusion: Student evaluations of teaching appear reliable for instructors teaching the same courses within the semester, with decreasing reliability across time. 
+  
+  Teaching Implications: Evaluations should be carefully considered given the context of the semester received and potentially paired with other measures of teaching effectiveness. 
+
+
   
 keywords          : "reliability, teaching effectiveness, fairness, grading, evaluations"
 floatsintext      : no
@@ -195,11 +207,11 @@ students, student expectations, teaching pedagogy, grading practices,
 and university administrative decisions change and evolve over time.
 
 We believe the current study contributes to the literature in several
-ways. When compared to the next largest study on SETs [@fan2019],we collected and analyzed three decades worth of data between 1987 and 2018 within an American population (vs seven years from 2010 - 2016 from an Australian population). Second, we investigated psychology instructors and their courses specifically focusing on teaching of psychology (vs academic disciplines in general). Last, our dataset is publically available online following best open science practices [@wilkinson2016]. We believe this openness will provide value to psychology educators
+ways. When compared to the next largest study on SETs [@fan2019],we collected and analyzed three decades worth of data between 1987 and 2018 within an American population (vs seven years from 2010 - 2016 from an Australian population). Second, we investigated psychology instructors and their courses specifically focusing on teaching of psychology (vs academic disciplines in general). Last, our dataset is publicly available online following best open science practices [@wilkinson2016]. We believe this openness will provide value to psychology educators
 overall, and SET researchers specifically, by allowing future analyses to
 explore the richness of this extensive dataset.
 
-We aimed to analyze the reliability of students’ ratings provided the *same* or *different* (i) instructor, (ii) course type, and/or (iii) semester of enrollment. This separation is paired with testing reliability over more than 30 years of data, extending previous work into new areas. We examined the impact of a potential validity variable on the reliability of ratings using perceived fairness of grading.Therefore, we sought to explore the
+We aimed to analyze the reliability of students' ratings provided the *same* or *different* (i) instructor, (ii) course type, and/or (iii) semester of enrollment. This separation is paired with testing reliability over more than 30 years of data, extending previous work into new areas. We examined the impact of a potential validity variable on the reliability of ratings using perceived fairness of grading.Therefore, we sought to explore the
 following research questions:
 
 1)  What is the reliability of student evaluations?
@@ -256,8 +268,8 @@ average sample size after moving online was 15.17 (*SD* = 25.51).^[Only
 a few semesters of online evaluation data are present in this dataset.]
 Courses generally ranged from 10 to 30 for undergraduate courses with
 the exception of introduction to psychology which was converted into a
-large scale 300 person format. Graduate courses enrollment depended on
-the size of the program, but was generally 5 to 10 students.
+large scale 300-person format. Graduate courses enrollment depended on
+the size of the program but was generally 5 to 10 students.
 
 ### SET Questionnaire
 
@@ -324,7 +336,7 @@ mathematically find an answer). The criterion variable and predictors
 varied based on the research question, and these are described with each
 analysis below.
 
-### RQ 1
+### Research Question 1
 
 In this research question, we examined the reliability of student
 evaluations on the overall rating and separately on the fairness rating.
@@ -369,14 +381,14 @@ correlations indicate that scores above .40 are considered fair
 higher than non-match conditions and above .40 indicate reliability for
 instructor SET ratings.
 
-### RQ 2
+### Research Question 2
 
 We used the reliability values for the same instructor, same course, and
 both same/different semesters calculated as described in RQ1 at each
 time point difference between semesters. For example, the same semester
 would create a time difference of 0. The next semester (Spring to
 Summer, Summer to Fall, Fall to Spring) would create a time difference
-of 1. We used the time difference as a independent variable (i.e. fixed
+of 1. We used the time difference as a predictor variable (i.e., fixed
 effect) to predict reliability for the overall rating of the course
 question.^[The formula was reliability \~ time difference for that
 reliability calculation with a random intercept for instructor.] We
@@ -386,7 +398,7 @@ confidence interval does not include zero, this change was more than
 chance). Finally, we plotted the changes over time to examine if this
 effect was non-linear in nature and discussed implications of the graph.
 
-### RQ 3
+### Research Question 3
 
 Using the analysis from RQ 2, we then added the average rating for the
 fairness question as the moderator with time to predict
@@ -408,7 +420,7 @@ standard deviation below average (i.e., instructors who are perceived
 below normal fairness), and one standard deviation above average [i.e.,
 instructors who are perceived above normal fairness, @cohen2003].
 
-### RQ 4
+### Research Question 4
 
 Finally, we examined the average standard deviation of fairness ratings
 as a moderator of time to predict reliability^[The formula was
@@ -502,7 +514,7 @@ apa_table(temp[ , c(4, 1:3)],
             col.names = c("Statistic", "Undergraduate", "Mixed", "Master's"))
 ```
 
-## RQ 1
+## Research Question 1
 
 ```{r rq1-nlme}
 # let's see if twitter can help here - yes! @smartin2018 for the win!
@@ -789,7 +801,7 @@ ggplot(betarel, aes(Semester_nice, b, color = Course_nice)) +
 ggsave("output/figure1.png")
 ```
 
-## RQ 2
+## Research Question 2
 
 ```{r rq2-setup, warning = FALSE}
 # filter to only matches
@@ -868,7 +880,7 @@ ggplot(save_rel, aes(semester_diff, rel)) +
 ggsave("output/figure2.png")
 ```
 
-## RQ 3
+## Research Question 3
 
 ```{r rq3-nlme}
 # center the variables
@@ -930,7 +942,7 @@ ggplot(save_rel, aes(z_semester_diff, rel)) +
 ggsave("output/figure3.png")
 ```
 
-## RQ 4
+## Research Question 4
 
 ```{r rq4-nlme}
 # center the variables
