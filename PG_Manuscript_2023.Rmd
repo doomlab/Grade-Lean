@@ -1,5 +1,5 @@
 ---
-title             : "The Reliability of Psychology Instructor's Evaluations"
+title             : "The Reliability of Student Evaluations of Teaching"
 shorttitle        : "RELIABILITY EVALUATIONS"
 author: 
   - name          : "Erin M. Buchanan"
@@ -104,7 +104,7 @@ update_file(file = "PG_Manuscript_2023.Rmd",
             hide_code = TRUE)
 ```
 
-In the United States, college and university psychology professors are
+In the United States, college and university professors are
 evaluated to varying degrees on research productivity, service, and
 teaching effectiveness. These dimensions are often used for high-stakes
 administration decisions, including hiring, retention, promotion, pay,
@@ -130,7 +130,7 @@ these metrics are described as evaluating the quality of the individual
 or course [@marsh2007; @gillmore1978] by gauging multiple facets of teaching, such as an instructor's proficiency in communication, organization, presentation, and grading [@hattie1996]. 
 
 
-Given the use of SETs in administrative decisions, both the reliability and validity of these measures should be demonstrated to ensure their utility. Psychology instructors, in particular, have both a vested interest and skill set to evaluate the quality of measurement. Psychologists are trained to varying degrees to evaluate and assess measurement through their training in psychometrics [@apataskforceonpsychologicalassessmentandevaluationguidelines]. If these evaluations are used to make high-stakes decisions that will alter a professors' career and standing within the workplace, it is important to be skeptical and scrutinize the decision metrics used. We are not the first to explore if SETs are reliable and valid measures of teaching effectiveness, but our approach makes a unique contribution by analyzing over 30 years of SET data to address this question in a more compelling way.
+Given the use of SETs in administrative decisions, both the reliability and validity of these measures should be demonstrated to ensure their utility. Instructors, in particular, have both a vested interest and skill set to evaluate the quality of measurement. If these evaluations are used to make high-stakes decisions that will alter a professors' career and standing within the workplace, it is important to be skeptical and scrutinize the decision metrics used. We are not the first to explore if SETs are reliable and valid measures of teaching effectiveness, but our approach makes a unique contribution by analyzing over 30 years of SET data to address this question in a more compelling way.
 
 ## Reliability
 
@@ -189,7 +189,7 @@ university's budget and expectations of the instructor. Instead, we may be able 
 
 ## Perceived Fairness
 
-Extant research broadly supports that SETs are influenced by students grades. Intriguingly as pointed out by @wright2000, students' expectations of their final grades may not affect their SET ratings nearly as much as their perceived fairness of their grades or the grading process that produced them. For this reason, some psychology instructors may feel pressured into reducing the rigor of their course for the sake of attaining higher SET ratings [@greenwald1997; @marks2000]. However, professors who are consistent, accurate, unbiased, and correctable in their grading may receive high SET ratings regardless of how much a student learns or what his/her final grade turns out to be [@horan2010; @leventhal1980]. Students' grades may predict their SETs only so much as students perceive the grading processes as fair [@tata1999].
+Extant research broadly supports that SETs are influenced by students grades. Intriguingly as pointed out by @wright2000, students' expectations of their final grades may not affect their SET ratings nearly as much as their perceived fairness of their grades or the grading process that produced them. For this reason, some instructors may feel pressured into reducing the rigor of their course for the sake of attaining higher SET ratings [@greenwald1997; @marks2000]. However, professors who are consistent, accurate, unbiased, and correctable in their grading may receive high SET ratings regardless of how much a student learns or what his/her final grade turns out to be [@horan2010; @leventhal1980]. Students' grades may predict their SETs only so much as students perceive the grading processes as fair [@tata1999].
 
 Students' perceptions of fairness may be more akin to comprehensive assessments of the instructor rather than face-value judgments of their expected grade. Perceived fairness may also play a multifactorial role in its influence on SETs. @tripp2019 found that students' perceived fairness of their instructors' grading processes affected their perceived fairness of their assigned grade, which then related to instructors' SETs. Additionally, *perceived fairness of the course* workload and difficulty may be inversely related to *perceived fairness of the grading process* as a challenging professor may be thought of as less fair [@marks2000]. Access to grading criteria, frequency of feedback, and proactive instruction are other aspects of grading thought to explicitly affect perceived fairness [@pepper2008]. Therefore, the perceived fairness of those aspects must also be considered when determining the impact of perceived fairness on SET ratings, especially when different professors teach the same course or teach multiple courses in the same semester. The validity and reliability of SETs may then partially hinge on the consistency of students' perceptions of fairness.
 
@@ -207,7 +207,7 @@ students, student expectations, teaching pedagogy, grading practices,
 and university administrative decisions change and evolve over time.
 
 We believe the current study contributes to the literature in several
-ways. When compared to the next largest study on SETs [@fan2019],we collected and analyzed three decades worth of data between 1987 and 2018 within an American population (vs seven years from 2010 - 2016 from an Australian population). Second, we investigated psychology instructors and their courses specifically focusing on teaching of psychology (vs academic disciplines in general). Last, our dataset is publicly available online following best open science practices [@wilkinson2016]. We believe this openness will provide value to psychology educators
+ways. When compared to the next largest study on SETs [@fan2019],we collected and analyzed three decades worth of data between 1987 and 2018 within an American population (vs seven years from 2010 - 2016 from an Australian population). Our dataset is publicly available online following best open science practices [@wilkinson2016]. We believe this openness will provide value to educators
 overall, and SET researchers specifically, by allowing future analyses to
 explore the richness of this extensive dataset.
 
@@ -1005,7 +1005,7 @@ ggsave("output/figure4.png")
 
 ## Interpreting the Results
 
-This investigation measured the reliability of SETs by calculating the reliability of evaluations across psychology instructors, semesters, and courses. Our first research question asked what the reliability of SETs was given the instructor, course, or semester. Our data showed that SETs of the same instructor within the same course and same semester were the most reliable [*r*s \~ .50 --- 75th percentile of known psychology correlations; @lovakov2021], followed by those collected from students enrolled in the same course, with the same instructor, but in different semesters (*r*s \~ .12 --- 25th percentile of known psychology correlations). Given previous suggestions on test-retest reliability, our results suggest that only the same instructor, course, and semester combinations would be considered fair reliability [@cicchetti1994; @fleiss2011].
+This investigation measured the reliability of SETs by calculating the reliability of evaluations across instructors, semesters, and courses. Our first research question asked what the reliability of SETs was given the instructor, course, or semester. Our data showed that SETs of the same instructor within the same course and same semester were the most reliable [*r*s \~ .50 --- 75th percentile of known correlations; @lovakov2021], followed by those collected from students enrolled in the same course, with the same instructor, but in different semesters (*r*s \~ .12 --- 25th percentile of known correlations). Given previous suggestions on test-retest reliability, our results suggest that only the same instructor, course, and semester combinations would be considered fair reliability [@cicchetti1994; @fleiss2011].
 
 Our second question investigated if instructors' SETs
 became more reliable with increasing years of teaching experience;
@@ -1042,7 +1042,7 @@ Further, we investigated the impact of validity variables on
 reliability, not just the overall validity of SETs based on various
 potential biases.
 
-## What should psychology instructors and administrators do with SETs?
+## What should instructors and administrators do with SETs?
 
 @benton2018 provide a comprehensive checklist of ways to assess teaching and interpret evaluations considering the long history of validity questions for SETs. Here, we add that it is important to understand that reliability will vary by course and semester as instructor variability is usually expected. It is tempting to think that the same instructor teaching the same course should reliably get the same SET ratings; however, we should consider that instructors will grow and change over time, which may contribute to lessened reliability across time along with impeding biases. Potentially, as suggested by a reviewer, reliability could decrease over time as instructors try new course formats and take risks with course material. Further, facets of the different courses taught likely contribute to the lessened reliability between courses taught by the same instructor (e.g., required statistics courses versus elective courses). As @benton2018.^[Variables such as race, age, and gender were not available in our
 dataset to ensure anonymity.]
@@ -1050,7 +1050,7 @@ dataset to ensure anonymity.]
 These considerations are of special importance given the recent and
 growing adoption of alternative grading practices. As some professors
 and institutions move away from traditional grading structures, the
-criteria by which students evaluate their psychology instructors may
+criteria by which students evaluate their instructors may
 also shift. To this point, ungrading is a burgeoning alternative
 approach to learning that emphasizes intrinsic motivation and equity on
 the part of students and focuses on the priorities of the instructor on
