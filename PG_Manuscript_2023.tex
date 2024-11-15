@@ -38,15 +38,17 @@
 \usepackage{xcolor}
 \usepackage{graphicx}
 \makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-% Scale images if necessary, so that they will not overflow the page
-% margins by default, and it is still possible to overwrite the defaults
-% using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
 % Set default figure placement to htbp
-\makeatletter
 \def\fps@figure{htbp}
 \makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
@@ -54,14 +56,28 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 % Make \paragraph and \subparagraph free-standing
+\makeatletter
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
-  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
-  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
+\makeatother
 % definitions for citeproc citations
 \NewDocumentCommand\citeproctext{}{}
 \NewDocumentCommand\citeproc{mm}{%
@@ -104,6 +120,9 @@
 % get rid of language-specific shorthands (see #6817):
 \let\LanguageShortHands\languageshorthands
 \def\languageshorthands#1{}
+\ifLuaTeX
+  \usepackage[english]{selnolig} % disable illegal ligatures
+\fi
 % Manuscript styling
 \usepackage{upgreek}
 \captionsetup{font=singlespacing,justification=justified}
@@ -191,9 +210,6 @@
   {\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
 \makeatother
 
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -223,31 +239,13 @@ Correspondence concerning this article should be addressed to Erin M. Buchanan, 
 \affiliation{\vspace{0.5cm}\textsuperscript{1} Harrisburg University of Science and Technology\\\textsuperscript{2} University of Alabama}
 
 \abstract{%
-Background: Student evaluations of teaching are regularly used within college classrooms to gauge effectiveness of instruction, provide evidence for administrative decision making, and inform instructors of course feedback. Teaching evaluations are thought to be a reliable measure, but few studies have explored their reliability over time.
-
-Objective: We investigate over 30 years of teaching evaluations to determine the reliability of teaching evaluations across course, instructor, and time.
-
-Method: A large dataset of student evaluations of teaching was examined for reliability of evaluations within the same or different semester, course, and instructor. We then used these estimates to determine the stability of reliability estimates over time and tried to predict reliability using student ratings of instructor fairness.
-
-Results: Instructors teaching the same course multiple times within the same semester showed the highest reliability estimates. The reliability of instructor's evaluations showed a small decrease over time. We found the impact of a validity measurement on reliability.
-
-Conclusion: Student evaluations of teaching appear reliable for instructors teaching the same courses within the semester, with decreasing reliability across time.
-
-Teaching Implications: Evaluations should be carefully considered given the context of the semester received and potentially paired with other measures of teaching effectiveness.
+Student evaluations of teaching are regularly used within college classrooms to gauge effectiveness of instruction, provide evidence for administrative decision making, and inform instructors of course feedback. Teaching evaluations are thought to be a reliable measure, but few studies have explored their reliability over time. We investigated over 30 years of teaching evaluations to determine the reliability of teaching evaluations across course, instructor, and time. We used these estimates to determine the stability of reliability estimates over time and tried to predict reliability using student ratings of instructor fairness. Instructors teaching the same course multiple times within the same semester showed the highest reliability estimates. The reliability of instructor's evaluations showed a small decrease over time. Evaluations should be carefully considered given the context of the semester received and potentially paired with other measures of teaching effectiveness.
 }
 
 
 
 \begin{document}
 \maketitle
-
-\begin{verbatim}
-## Warning: package 'rio' was built under R version 4.3.3
-\end{verbatim}
-
-\begin{verbatim}
-## Warning: package 'effectsize' was built under R version 4.3.3
-\end{verbatim}
 
 In the United States, college and university professors are
 evaluated to varying degrees on research productivity, service, and
@@ -682,7 +680,7 @@ was considered at \emph{n} = 10, 11, 12, 13, and 14.
 
 \begin{figure}
 \centering
-\includegraphics{PG_Manuscript_2023_files/figure-latex/figure1-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{PG_Manuscript_2023_files/figure-latex/figure1-1.pdf}}
 \caption{\label{fig:figure1}Reliability estimates for instructor, course, and semester combinations.}
 \end{figure}
 
@@ -713,7 +711,7 @@ reliability of instructor ratings. As shown in Figure
 
 \begin{figure}
 \centering
-\includegraphics{PG_Manuscript_2023_files/figure-latex/figure2-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{PG_Manuscript_2023_files/figure-latex/figure2-1.pdf}}
 \caption{\label{fig:figure2}Reliability estimates for same instructor and course across time.}
 \end{figure}
 

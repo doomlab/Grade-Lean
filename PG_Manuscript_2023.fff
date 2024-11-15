@@ -9,7 +9,7 @@
 \ifnextchar[{\eatarg}{}
 
 \centering
-\includegraphics{PG_Manuscript_2023_files/figure-latex/figure1-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{PG_Manuscript_2023_files/figure-latex/figure1-1.pdf}}
 \caption{\label{fig:figure1}Reliability estimates for instructor, course, and semester combinations.}
 \end{figure*}
 \efloatseparator
@@ -18,6 +18,6 @@
 \ifnextchar[{\eatarg}{}
 
 \centering
-\includegraphics{PG_Manuscript_2023_files/figure-latex/figure2-1.pdf}
+\pandocbounded{\includegraphics[keepaspectratio]{PG_Manuscript_2023_files/figure-latex/figure2-1.pdf}}
 \caption{\label{fig:figure2}Reliability estimates for same instructor and course across time.}
 \end{figure*}
