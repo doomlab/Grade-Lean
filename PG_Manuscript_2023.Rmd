@@ -28,30 +28,18 @@ affiliation:
 authornote: |
    
 abstract: |
-  Background: Student evaluations of teaching are regularly used within college classrooms to gauge effectiveness of instruction, provide evidence for administrative decision making, and inform instructors of course feedback. Teaching evaluations are thought to be a reliable measure, but few studies have explored their reliability over time. 
-  
-  Objective: We investigate over 30 years of teaching evaluations to determine the reliability of teaching evaluations across course, instructor, and time. 
-  
-  Method: A large dataset of student evaluations of teaching was examined for reliability of evaluations within the same or different semester, course, and instructor. We then used these estimates to determine the stability of reliability estimates over time and tried to predict reliability using student ratings of instructor fairness. 
-  
-  Results: Instructors teaching the same course multiple times within the same semester showed the highest reliability estimates. The reliability of instructor’s evaluations showed a small decrease over time. We found the impact of a validity measurement on reliability.
-  
-  Conclusion: Student evaluations of teaching appear reliable for instructors teaching the same courses within the semester, with decreasing reliability across time. 
-  
-  Teaching Implications: Evaluations should be carefully considered given the context of the semester received and potentially paired with other measures of teaching effectiveness. 
-
-
-  
-keywords          : "reliability, teaching effectiveness, fairness, grading, evaluations"
-floatsintext      : no
-linenumbers       : yes
-draft             : no
-mask              : no
-figurelist        : no
-tablelist         : no
-footnotelist      : no
-classoption       : "man"
-output            : papaja::apa6_pdf
+  Student evaluations of teaching are regularly used within college classrooms to gauge effectiveness of instruction, provide evidence for administrative decision making, and inform instructors of course feedback. Teaching evaluations are thought to be a reliable measure, but few studies have explored their reliability over time. We investigated over 30 years of teaching evaluations to determine the reliability of teaching evaluations across course, instructor, and time. We used these estimates to determine the stability of reliability estimates over time and tried to predict reliability using student ratings of instructor fairness. Instructors teaching the same course multiple times within the same semester showed the highest reliability estimates. The reliability of instructor’s evaluations showed a small decrease over time. Evaluations should be carefully considered given the context of the semester received and potentially paired with other measures of teaching effectiveness.
+   
+keywords: "reliability, teaching effectiveness, fairness, grading, evaluations"
+floatsintext: no
+linenumbers: yes
+draft: no
+mask: no
+figurelist: no
+tablelist: no
+footnotelist: no
+classoption: "man"
+output: papaja::apa6_pdf
 editor_options: 
   chunk_output_type: inline
 bibliography: references.bib
@@ -68,18 +56,15 @@ header-includes:
       {-\z@\relax}%
       {\normalfont\normalsize\bfseries\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
     \makeatother
-csl               : "`r system.file('rmd', 'apa7.csl', package = 'papaja')`"
-documentclass     : "apa7"
+csl: "`r system.file('rmd', 'apa7.csl', package = 'papaja')`"
+documentclass: "apa7"
 ---
 
-```{r setup, include = FALSE}
-library("papaja")
-```
-
-```{r analysis-preferences}
+```{r analysis-preferences, echo = FALSE, message = FALSE}
 # Seed for random number generation
 set.seed(89432289)
 knitr::opts_chunk$set(cache.extra = knitr::rand_seed, echo = FALSE, include = FALSE, cache = TRUE, cache.lazy = FALSE)
+library(papaja)
 library(rio)
 library(dplyr)
 library(nlme)
