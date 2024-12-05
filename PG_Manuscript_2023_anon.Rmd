@@ -76,6 +76,7 @@ library(MuMIn)
 
 ```{r eval = F}
 library(trackdown)
+source("~/GitHub/files/google_creds.R")
 # initial set up 
 # upload_file(file = "PG_Manuscript_2023.Rmd",
 #       gfile = "grade_lean_trackdown")
