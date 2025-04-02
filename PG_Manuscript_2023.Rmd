@@ -85,14 +85,14 @@ download_file(file = "PG_Manuscript_2023.Rmd",
               gfile = "grade_lean_trackdown")
 # to google
 update_file(file = "PG_Manuscript_2023.Rmd",
-            gfile = "grade_lean_trackdown",
+            gfile = "SET Reliability/grade_lean_trackdown",
             rich_text = TRUE,
             hide_code = TRUE)
 ```
 
-In the United States, college and university professors are
-evaluated to varying degrees on research productivity, service, and
-teaching effectiveness. These dimensions are often used for high-stakes
+In the United States, college and university professors are evaluated to
+varying degrees on research productivity, service, and teaching
+effectiveness. These dimensions are often used for high-stakes
 administration decisions, including hiring, retention, promotion, pay,
 and tenure [@freishtat2014; @hornstein2017; @spooren2013; @stroebe2020].
 Depending on the institution, a major failure of one of these evaluative
@@ -113,10 +113,21 @@ course itself [e.g., "Student Opinion of Instruction", "Students Opinion
 of Teaching Effectiveness", "Students Evaluation of Faculty", "Overall
 Course Ratings", "Instruction Rating", @cohen1981; @flahertya]. Often
 these metrics are described as evaluating the quality of the individual
-or course [@marsh2007; @gillmore1978] by gauging multiple facets of teaching, such as an instructor's proficiency in communication, organization, presentation, and grading [@hattie1996]. 
+or course [@marsh2007; @gillmore1978] by gauging multiple facets of
+teaching, such as an instructor's proficiency in communication,
+organization, presentation, and grading [@hattie1996].
 
-
-Given the use of SETs in administrative decisions, both the reliability and validity of these measures should be demonstrated to ensure their utility. Instructors, in particular, have both a vested interest and skill set to evaluate the quality of measurement. If these evaluations are used to make high-stakes decisions that will alter a professors' career and standing within the workplace, it is important to be skeptical and scrutinize the decision metrics used. We are not the first to explore if SETs are reliable and valid measures of teaching effectiveness, but our approach makes a unique contribution by analyzing over 30 years of SET data to address this question in a more compelling way.
+Given the use of SETs in administrative decisions, both the reliability
+and validity of these measures should be demonstrated to ensure their
+utility. Instructors, in particular, have both a vested interest and
+skill set to evaluate the quality of measurement. If these evaluations
+are used to make high-stakes decisions that will alter a professors'
+career and standing within the workplace, it is important to be
+skeptical and scrutinize the decision metrics used. We are not the first
+to explore if SETs are reliable and valid measures of teaching
+effectiveness, but our approach makes a unique contribution by analyzing
+over 30 years of SET data to address this question in a more compelling
+way.
 
 ## Reliability
 
@@ -135,49 +146,96 @@ affects reliability among SETs in relation to perceived fairness
 specifically. Little research investigating the reliability of SETs has
 collected evaluations beyond two time points (e.g., two semesters or
 less). There are some notable exceptions of longer periods of data being
-collected for SETs in @boring2016, @marsh2007, and @fan2019 and, our study extends this work by examining the reliability patterns of 30 years of SET data with respect to various moderating influences that may affect both reliability and validity of SETs.
+collected for SETs in @boring2016, @marsh2007, and @fan2019 and, our
+study extends this work by examining the reliability patterns of 30
+years of SET data with respect to various moderating influences that may
+affect both reliability and validity of SETs.
 
 ## Validity
 
-Sheehan's [-@sheehan1975]  review of instructor evaluation literature found such measures contained multiple potentially biasing factors. These include (1) student demographics: gender, class, age,
-previous achievement, (2) class type: subject matter, size, degree
-requirements, and (3) instructor qualities: gender, rank, gender-match to
-student, etc. Decades later, studies still show that sexism
-[@macnell2015; @mitchell2018], racism [@smith2011], and biases in general
-pervade students' evaluations today in both traditional courses and
-possibly online ones as well [@heffernan2022; @rovai2006; @zheng2023;
+Sheehan's [-@sheehan1975] review of instructor evaluation literature
+found such measures contained multiple potentially biasing factors.
+These include (1) student demographics: gender, class, age, previous
+achievement, (2) class type: subject matter, size, degree requirements,
+and (3) instructor qualities: gender, rank, gender-match to student,
+etc. Decades later, studies still show that sexism [@macnell2015;
+@mitchell2018], racism [@smith2011], and biases in general pervade
+students' evaluations today in both traditional courses and possibly
+online ones as well [@heffernan2022; @rovai2006; @zheng2023;
 @osullivan2014]. Individual factors may also yield some influence on SET
 ratings, including instructors' cultural background [@fan2019],
 attractiveness [@felton2008; @wright2000], position ranking
 [@johnson2013], and students' expected grade from the course [@chen2017;
 @crumbley2001; @marks2000]. Biasing factors may even include the volume
 of the instructor's voice and how legible their instructor's writing is
-[@becker2012]. Concerningly, @stroebe2020 highlighted the danger of an incentive system tied to student ratings; specifically, instructors may be incentivized to be a less effective teacher (e.g., grade leniently, choose to teach courses based on student interest, etc.) rather than challenge students critically to boost their SET ratings.
+[@becker2012]. Concerningly, @stroebe2020 highlighted the danger of an
+incentive system tied to student ratings; specifically, instructors may
+be incentivized to be a less effective teacher (e.g., grade leniently,
+choose to teach courses based on student interest, etc.) rather than
+challenge students critically to boost their SET ratings.
 
-Concerns of bias raised decades ago have not dissipated over time [@boring2016; @uttl2017;
-@hornstein2017; @dunn2014]. Recent meta-analyses suggest SETs may be
-entirely unrelated to material learned [@uttl2017], and potentially
-biasing aspects cannot be altered due to their complex interactions
-[@boring2016]. While students' ratings may show some utility in
-indicating to their peers which classes to pursue and which professor to
-take [@ratings], this usefulness may come at the cost of the professor's
-self-efficacy [@boswell2016]. While SETs are conceptually valuable
-towards gaining insight on teacher effectiveness or course quality, the
-many outstanding issues suggest they may not be valid measures. Even so,
-some researchers argue that the complete removal of SETs from
-administrative consideration is the wrong course of action
-[@benton2016]. A more appropriate solution may be to utilize multiple
-measures of teaching effectiveness simultaneously [eclass observation by 
-another instructor of the same material, peer reviews of course curriculum @benton2018;
-@berk2018; @esarey2020; @kornell2016]. However, the cost of implementing
-a more accurate, multi-pronged approach may be unrealistic given a
-university's budget and expectations of the instructor. Instead, we may be able to potentially control for some biasing or moderating factors with additional items on the SET questionnaire, and our study explores the aspect of perceived fairness in grading.
+Concerns of bias raised decades ago have not dissipated over time
+[@boring2016; @uttl2017; @hornstein2017; @dunn2014]. Recent
+meta-analyses suggest SETs may be entirely unrelated to material learned
+[@uttl2017], and potentially biasing aspects cannot be altered due to
+their complex interactions [@boring2016]. Moreover, while students'
+ratings may show some utility in indicating to their peers which classes
+to pursue and which professor to take [@ratings], this usefulness may
+come at the cost of the professor's self-efficacy, mental health, and
+trust in the teaching evaluation process [@boswell2016; @lakeman2022;
+@lakeman2023]. As a result, some instructors believe SETs contribute to
+lower teaching quality and standards [@lakeman2023]. Thus, SETs may be
+conceptually valuable towards gaining insight on teacher effectiveness
+or course quality, but a a plethora of outstanding issues suggests they
+may not be valid measures. Even so, some researchers argue that the
+complete removal of SETs from administrative consideration is the wrong
+course of action [@benton2016]. A more appropriate solution may be to
+utilize multiple measures of teaching effectiveness simultaneously
+[class observation by another instructor of the same material, peer
+reviews of course curriculum @benton2018; @berk2018; @esarey2020;
+@kornell2016]. However, the cost of implementing a more accurate,
+multi-pronged approach may be unrealistic given a university's budget
+and expectations of the instructor. Instead, we may be able to
+potentially control for some biasing or moderating factors with
+additional items on the SET questionnaire, and our study explores the
+aspect of perceived fairness in grading.
 
 ## Perceived Fairness
 
-Extant research broadly supports that SETs are influenced by students grades. Intriguingly as pointed out by @wright2000, students' expectations of their final grades may not affect their SET ratings nearly as much as their perceived fairness of their grades or the grading process that produced them. For this reason, some instructors may feel pressured into reducing the rigor of their course for the sake of attaining higher SET ratings [@greenwald1997; @marks2000]. However, professors who are consistent, accurate, unbiased, and correctable in their grading may receive high SET ratings regardless of how much a student learns or what his/her final grade turns out to be [@horan2010; @leventhal1980]. Students' grades may predict their SETs only so much as students perceive the grading processes as fair [@tata1999].
+Extant research broadly supports that SETs are influenced by students’
+grades. Intriguingly, as pointed out by @wright2000, students'
+expectations of their final grades may not affect their SET ratings
+nearly as much as their perceived fairness of their grades or the
+grading process that produced them. Using SETs as their “voice,”
+students’ feedback may be influenced significantly by how they felt the
+grading process affected them and their final grade [@sullivan2024]. For
+this reason, some instructors may feel pressured into reducing the rigor
+of their course for the sake of attaining higher SET ratings
+[@greenwald1997; @marks2000]. However, professors who are consistent,
+accurate, unbiased, and correctable in their grading may receive high
+SET ratings regardless of how much a student learns or what his/her
+final grade turns out to be [@horan2010; @leventhal1980]. Ergo,
+students' grades may predict their SETs only so much as students
+perceive the grading processes as fair [@tata1999].
 
-Students' perceptions of fairness may be more akin to comprehensive assessments of the instructor rather than face-value judgments of their expected grade. Perceived fairness may also play a multifactorial role in its influence on SETs. @tripp2019 found that students' perceived fairness of their instructors' grading processes affected their perceived fairness of their assigned grade, which then related to instructors' SETs. Additionally, *perceived fairness of the course* workload and difficulty may be inversely related to *perceived fairness of the grading process* as a challenging professor may be thought of as less fair [@marks2000]. Access to grading criteria, frequency of feedback, and proactive instruction are other aspects of grading thought to explicitly affect perceived fairness [@pepper2008]. Therefore, the perceived fairness of those aspects must also be considered when determining the impact of perceived fairness on SET ratings, especially when different professors teach the same course or teach multiple courses in the same semester. The validity and reliability of SETs may then partially hinge on the consistency of students' perceptions of fairness.
+Students' perceptions of fairness may be more akin to comprehensive
+assessments of the instructor rather than face-value judgments of their
+expected grade. Perceived fairness may also play a multifactorial role
+in its influence on SETs. @tripp2019 found that students' perceived
+fairness of their instructors' grading processes affected their
+perceived fairness of their assigned grade, which then related to
+instructors' SETs. Additionally, *perceived fairness of the course*
+workload and difficulty may be inversely related to *perceived fairness
+of the grading process* as a challenging professor may be thought of as
+less fair [@marks2000]. Access to grading criteria, frequency of
+feedback, and proactive instruction are other aspects of grading thought
+to explicitly affect perceived fairness [@pepper2008]. Therefore, the
+perceived fairness of those aspects must also be considered when
+determining the impact of perceived fairness on SET ratings, especially
+when different professors teach the same course or teach multiple
+courses in the same semester. The validity and reliability of SETs may
+then partially hinge on the consistency of students' perceptions of
+fairness.
 
 ## The Current Study
 
@@ -193,27 +251,43 @@ students, student expectations, teaching pedagogy, grading practices,
 and university administrative decisions change and evolve over time.
 
 We believe the current study contributes to the literature in several
-ways. When compared to the next largest study on SETs [@fan2019],we collected and analyzed three decades worth of data between 1987 and 2018 within an American population (vs seven years from 2010 - 2016 from an Australian population). Our dataset is publicly available online following best open science practices [@wilkinson2016]. We believe this openness will provide value to educators
-overall, and SET researchers specifically, by allowing future analyses to
-explore the richness of this extensive dataset.
+ways. When compared to the next largest study on SETs [@fan2019], we
+collected and analyzed three decades worth of data between 1987 and 2018
+within an American population (vs seven years from 2010 - 2016 from an
+Australian population). Our dataset is publicly available online
+following best open science practices [@wilkinson2016]. We believe this
+openness will provide value to educators overall, and SET researchers
+specifically, by allowing future analyses to explore the richness of
+this extensive dataset.
 
-We aimed to analyze the reliability of students' ratings provided the *same* or *different* (i) instructor, (ii) course type, and/or (iii) semester of enrollment. This separation is paired with testing reliability over more than 30 years of data, extending previous work into new areas. We examined the impact of a potential validity variable on the reliability of ratings using perceived fairness of grading.Therefore, we sought to explore the
-following research questions:
+We aimed to analyze the reliability of students' ratings provided the
+*same* or *different* (i) instructor, (ii) course type, and/or (iii)
+semester of enrollment. This separation is paired with testing
+reliability over more than 30 years of data, extending previous work
+into new areas. We examined the impact of a potential validity variable
+on the reliability of ratings using perceived fairness of
+grading.Therefore, we sought to explore the following research
+questions:
 
 1)  What is the reliability of student evaluations?
 2)  Are student evaluations reliable across time?
 3)  Is the average level of perceived fairness of the grading in the
-    course a moderator of reliability in student evaluations over time?
+    course a moderator[\^Moderation indicates the interaction of
+    perceived fairness of grading and time would predict reliability
+    indicating different levels of fairness predict reliability in
+    varying strengths over time.] of reliability in student evaluations
+    over time?
 4)  Does the average variability in instructor fairness rating moderate
     reliability of student evaluations over time?
 
 The following was pre-registered as a secondary data analysis at:
-<https://osf.io/czb4f>. The manuscript, code, and data can be found on
-our Open Science Framework page at: <https://osf.io/k7zh2/> or GitHub:
-<https://github.com/doomlab/Grade-Lean>. This manuscript was written
-with the *R* packages *papaja* [@aust2022], *rio* [@becker2021], *dplyr*
-[@R-dplyr], *nlme* [@pinheiro2017], *ggplot2* [@R-ggplot2], *MuMIn*
-[@barton2020], *ppcor* [@kim2015], and *effectsize* [@ben-shachar2023].
+<https://osf.io/czb4f>. The materials, manuscript, code, and data can be
+found on our Open Science Framework page at: <https://osf.io/k7zh2/> or
+GitHub: <https://github.com/doomlab/Grade-Lean>. This manuscript was
+written with the *R* packages *papaja* [@aust2022], *rio* [@becker2021],
+*dplyr* [@R-dplyr], *nlme* [@pinheiro2017], *ggplot2* [@R-ggplot2],
+*MuMIn* [@barton2020], *ppcor* [@kim2015], and *effectsize*
+[@ben-shachar2023].
 
 # Method
 
@@ -250,26 +324,43 @@ last several years of evaluations, online versions of these forms were
 used with faculty encouraged to give students time to complete them in
 class while they were outside the classroom. The average sample size
 before moving online was 25.13 (*SD* = 25.45) students, while the
-average sample size after moving online was 15.17 (*SD* = 25.51).^[Only
-a few semesters of online evaluation data are present in this dataset.]
+average sample size after moving online was 15.17 (*SD* = 25.51).[^1]
 Courses generally ranged from 10 to 30 for undergraduate courses with
 the exception of introduction to psychology which was converted into a
 large scale 300-person format. Graduate courses enrollment depended on
 the size of the program but was generally 5 to 10 students.
 
+[^1]: Only a few semesters of online evaluation data are present in this
+    dataset.
+
 ### SET Questionnaire
 
 The questionnaire given to students can be found at
 <https://osf.io/4sphx>. These items were presented with a five-point
-scale from 1 (*strongly disagree*) to 5 (*strongly agree*). The ratings were averaged for each course across students, and the sample size for each rating was included.
+scale from 1 (*strongly disagree*) to 5 (*strongly agree*). The ratings
+were averaged for each course across students, and the sample size for
+each rating was included.
 
 ### Reliability
 
-The specific formula for reliability is described in planned analysis. The reliability scores were generally created by comparing the overall instructor evaluation question: "The overall quality of this course was among the top 20% of those I have taken." of each instructor to every other instructor, controlling for sample size of the ratings. The pairwise combination of instructors in the dataset allowed us to create reliability scores for the same or different combinations of instructor, course, and semester of enrollment. These values were created in Research Question 1 and used for the rest of the analyses. 
+The specific formula for reliability is described in planned analysis.
+The reliability scores were generally created by comparing the overall
+instructor evaluation question: "The overall quality of this course was
+among the top 20% of those I have taken." of each instructor to every
+other instructor, controlling for sample size of the ratings. The
+pairwise combination of instructors in the dataset allowed us to create
+reliability scores for the same or different combinations of instructor,
+course, and semester of enrollment. These values were created in
+Research Question 1 and used for the rest of the analyses.
 
 ### Fairness
 
-We used the question of "The instructor used fair and appropriate methods in the determination of grades." The average rating of fairness for each course was calculated, as well as the standard deviation of fairness to examine variability in perceptions of fairness (i.e., large standard deviations mean that students disagree on fairness, while smaller values indicate more agreement).
+We used the question of "The instructor used fair and appropriate
+methods in the determination of grades." The average rating of fairness
+for each course was calculated, as well as the standard deviation of
+fairness to examine variability in perceptions of fairness (i.e., large
+standard deviations mean that students disagree on fairness, while
+smaller values indicate more agreement).
 
 ## Planned Analyses
 
@@ -308,19 +399,20 @@ kept separate without averaging over these measurements, @gelman2006].
 Random intercept models are regression models on repeated data that
 structure the data by a specified variable, which was instructor in this
 analysis. Therefore, each instructor's overall average rating score was
-allowed to vary within the analysis, as ratings would be expected to differ from instructor to instructor. In traditional regression
-models, the intercept represents the grand mean of all of the data,
-which would ignore differences in instructor. By including this
-intercept, we were able to allow the intercept to vary by instructor,
-and then measure the impact of the independent variables on the ratings
-or reliability. Figure \@ref(fig:figure-random-explain) this analysis might look visually for research question 1. In each of
-the analyses described below, the number of students providing ratings
-for the course was included as a control variable to even out
-differences in course size as an influence in the results. This variable
-was planned to be excluded if the models did not converge (i.e., did not
-mathematically find an answer). The criterion variable and predictors
-varied based on the research question, and these are described with each
-analysis below.
+allowed to vary within the analysis, as ratings would be expected to
+differ from instructor to instructor. In traditional regression models,
+the intercept represents the grand mean of all of the data, which would
+ignore differences in instructor. By including this intercept, we were
+able to allow the intercept to vary by instructor, and then measure the
+impact of the independent variables on the ratings or reliability.
+Figure \@ref(fig:figure-random-explain) this analysis might look
+visually for research question 1. In each of the analyses described
+below, the number of students providing ratings for the course was
+included as a control variable to even out differences in course size as
+an influence in the results. This variable was planned to be excluded if
+the models did not converge (i.e., did not mathematically find an
+answer). The criterion variable and predictors varied based on the
+research question, and these are described with each analysis below.
 
 ### Research Question 1
 
@@ -333,16 +425,19 @@ Fall 2010, this combination would be considered same course, same
 instructor, and same semester. If we compare instructor 1's PSY 101 Fall
 2010 course to instructor 1's PSY 101 Spring 2011 course, this
 combination would be the same instructor, same course, and different
-semester. The criterion variable was the first question
-average for course 1 with a predictor of the comparison question average
-for course 2, and both sample sizes as control variables (first sample
-size course 1, comparison sample size course 2). Instructor code was
-used as the random intercept for both ratings (i.e., two instructor
-random intercepts, first course 1 instructor and comparison course 2
-instructor). The value of interest was the standardized regression coefficient for the fixed effect of the overall rating question from this model.^[The
-formula was question 1 average for course 1 \~ question 1 average for
-course 2 \+ sample size course 1 \+ sample size course 2 with a random
-intercept for instructor].
+semester. The criterion variable was the first question average for
+course 1 with a predictor of the comparison question average for course
+2, and both sample sizes as control variables (first sample size course
+1, comparison sample size course 2). Instructor code was used as the
+random intercept for both ratings (i.e., two instructor random
+intercepts, first course 1 instructor and comparison course 2
+instructor). The value of interest was the standardized regression
+coefficient for the fixed effect of the overall rating question from
+this model.[^2].
+
+[^2]: The formula was question 1 average for course 1 \~ question 1
+    average for course 2 + sample size course 1 + sample size course 2
+    with a random intercept for instructor
 
 The standardized regression coefficient was considered "reliability",
 much in the same way that test-retest reliability is calculated. For
@@ -350,11 +445,14 @@ each instructor by semester by course combination, the scores for each
 course are compared and the correlation, controlling for sample size is
 calculated. We considered these scores as our measure of reliability as
 they represent the match between instructor ratings for each SET
-question: instructors who get the same scores will have high correlations (i.e., higher reliability), while instructors with scores that vary a lot will have lower correlations (i.e., lower reliability). Given that the large sample size will likely produce
-"significant" *p*-values, we used the 95% confidence interval to
-determine which reliability values were larger than zero on the smaller
-end of the confidence interval and to compare reliability estimates to
-each other to see if their confidence intervals overlapped.
+question: instructors who get the same scores will have high
+correlations (i.e., higher reliability), while instructors with scores
+that vary a lot will have lower correlations (i.e., lower reliability).
+Given that the large sample size will likely produce "significant"
+*p*-values, we used the 95% confidence interval to determine which
+reliability values were larger than zero on the smaller end of the
+confidence interval and to compare reliability estimates to each other
+to see if their confidence intervals overlapped.
 
 For this question, we might expect that the mismatch in combinations
 (i.e., different courses, instructors, or semesters) should have lower
@@ -376,49 +474,62 @@ would create a time difference of 0. The next semester (Spring to
 Summer, Summer to Fall, Fall to Spring) would create a time difference
 of 1. We used the time difference as a predictor variable (i.e., fixed
 effect) to predict reliability for the overall rating of the course
-question.^[The formula was reliability \~ time difference for that
-reliability calculation with a random intercept for instructor.] We
-used the coefficient of time difference and its confidence interval to
-determine if there was a linear change over Time (i.e., if the
-confidence interval does not include zero, this change was more than
-chance). Finally, we plotted the changes over time to examine if this
-effect was non-linear in nature and discussed implications of the graph.
+question.[^3] We used the coefficient of time difference and its
+confidence interval to determine if there was a linear change over Time
+(i.e., if the confidence interval does not include zero, this change was
+more than chance). Finally, we plotted the changes over time to examine
+if this effect was non-linear in nature and discussed implications of
+the graph.
+
+[^3]: The formula was reliability \~ time difference for that
+    reliability calculation with a random intercept for instructor.
 
 ### Research Question 3
 
 Using the analysis from RQ 2, we then added the average rating for the
-fairness question as the moderator with time to predict
-reliability.^[The formula was reliability \~ standardized semester time
-difference $\times$ standardized average fairness scores with a random
-intercept for instructor.] Moderation implies an interaction of the
-change over time and the average fairness scores. For example, we might
-expect that instructors that are perceived as less fair show larger
-reliability change over time, while instructors who are perceived as
-fair do not show any change over time. Fairness was calculated as the
-average of the fairness question for all courses involved in the
-reliability calculation for that instructor and time difference.
-Therefore, this rating represented the average perceived fairness of
-grading at the time of ratings. If this interaction effect's coefficient
-did not include zero, we performed a simple slopes analysis to examine
-the effects of instructors who were rated at average fairness (i.e., the
-instructors who students perceive as the normal level of fairness), one
-standard deviation below average (i.e., instructors who are perceived
-below normal fairness), and one standard deviation above average [i.e.,
-instructors who are perceived above normal fairness, @cohen2003].
+fairness question as the moderator with time to predict reliability.[^4]
+Moderation implies an interaction of the change over time and the
+average fairness scores. For example, we might expect that instructors
+that are perceived as less fair show larger reliability change over
+time, while instructors who are perceived as fair do not show any change
+over time. Fairness was calculated as the average of the fairness
+question for all courses involved in the reliability calculation for
+that instructor and time difference. Therefore, this rating represented
+the average perceived fairness of grading at the time of ratings. If
+this interaction effect's coefficient did not include zero, we performed
+a simple slopes analysis to examine the effects of instructors who were
+rated at average fairness (i.e., the instructors who students perceive
+as the normal level of fairness), one standard deviation below average
+(i.e., instructors who are perceived below normal fairness), and one
+standard deviation above average [i.e., instructors who are perceived
+above normal fairness, @cohen2003].
+
+[^4]: The formula was reliability \~ standardized semester time
+    difference $\times$ standardized average fairness scores with a
+    random intercept for instructor.
 
 ### Research Question 4
 
 Finally, we examined the average standard deviation of fairness ratings
-as a moderator of time to predict reliability^[The formula was
-reliability \~ standardized semester time difference $\times$ standardized
-variability in fairness scores with a random intercept for instructor.]
-This variable represented the variability in perceived fairness in
-grading from student evaluations, where small numbers indicated relative
-agreement on the rating of fairness and larger values indicated a wide
-range of fairness ratings. The variability in fairness ratings was
-calculated in the same way as the mean fairness, which was only for the
-instructor and semester time difference evaluations that were used to
-calculate the reliability estimate. This research question was assessed the same way as RQ3. We may expect that instructors who vary a lot in their fairness scores (i.e., sometimes they are perceived as fair, other times not as fair, thus, higher standard deviations) would show a change in reliability scores over time because of their fluctuations in perceived fairness. However, instructors who are consistently rated as a certain level of fairness (i.e., no variability in fairness, low standard deviations) may see no change in reliability over time.
+as a moderator of time to predict reliability[^5] This variable
+represented the variability in perceived fairness in grading from
+student evaluations, where small numbers indicated relative agreement on
+the rating of fairness and larger values indicated a wide range of
+fairness ratings. The variability in fairness ratings was calculated in
+the same way as the mean fairness, which was only for the instructor and
+semester time difference evaluations that were used to calculate the
+reliability estimate. This research question was assessed the same way
+as RQ3. We may expect that instructors who vary a lot in their fairness
+scores (i.e., sometimes they are perceived as fair, other times not as
+fair, thus, higher standard deviations) would show a change in
+reliability scores over time because of their fluctuations in perceived
+fairness. However, instructors who are consistently rated as a certain
+level of fairness (i.e., no variability in fairness, low standard
+deviations) may see no change in reliability over time.
+
+[^5]: The formula was reliability \~ standardized semester time
+    difference $\times$ standardized variability in fairness scores with
+    a random intercept for instructor.
 
 # Results
 
@@ -726,13 +837,14 @@ question 1 for the same instructor, different instructor, same semester,
 different semester, etc.), and the number of ratings (i.e., rating
 sample size) per question were used as fixed-effects covariates. The
 instructor(s) were used as a random intercept to control for correlated
-error and overall average rating per instructor (see "Planned Analyses for a comprehensive explanation above). The effects were then standardized using
-the *parameters* package [@lüdecke2023]. The data was sorted by year and
-semester such that "predictor" was always an earlier semester predicting
-a later semester's scores, except in cases of the same semester
-comparisons. Therefore, positive standardized reliability scores
-indicate that scores tend to go up over time, while negative scores
-indicate that scores tend to go down over time.
+error and overall average rating per instructor (see "Planned Analyses
+for a comprehensive explanation above). The effects were then
+standardized using the *parameters* package [@lüdecke2023]. The data was
+sorted by year and semester such that "predictor" was always an earlier
+semester predicting a later semester's scores, except in cases of the
+same semester comparisons. Therefore, positive standardized reliability
+scores indicate that scores tend to go up over time, while negative
+scores indicate that scores tend to go down over time.
 
 As shown in Figure \@ref(fig:figure1), reliability was highest when
 calculated on the same instructor in the same semester and within the
@@ -991,16 +1103,27 @@ ggsave("output/figure4.png")
 
 ## Interpreting the Results
 
-This investigation measured the reliability of SETs by calculating the reliability of evaluations across instructors, semesters, and courses. Our first research question asked what the reliability of SETs was given the instructor, course, or semester. Our data showed that SETs of the same instructor within the same course and same semester were the most reliable [*r*s \~ .50 --- 75th percentile of known correlations; @lovakov2021], followed by those collected from students enrolled in the same course, with the same instructor, but in different semesters (*r*s \~ .12 --- 25th percentile of known correlations). Given previous suggestions on test-retest reliability, our results suggest that only the same instructor, course, and semester combinations would be considered fair reliability [@cicchetti1994; @fleiss2011].
+This investigation measured the reliability of SETs by calculating the
+reliability of evaluations across instructors, semesters, and courses.
+Our first research question asked what the reliability of SETs was given
+the instructor, course, or semester. Our data showed that SETs of the
+same instructor within the same course and same semester were the most
+reliable [*r*s \~ .50 --- 75th percentile of known correlations;
+@lovakov2021], followed by those collected from students enrolled in the
+same course, with the same instructor, but in different semesters (*r*s
+\~ .12 --- 25th percentile of known correlations). Given previous
+suggestions on test-retest reliability, our results suggest that only
+the same instructor, course, and semester combinations would be
+considered fair reliability [@cicchetti1994; @fleiss2011].
 
-Our second question investigated if instructors' SETs
-became more reliable with increasing years of teaching experience;
-stated simply, we explored if experience across time matters. We
-extended previous meta-analyses on reliability to show that reliability
-appears to slightly, but significantly, decrease over time --- a new
-finding in comparison to the work of @marsh2007. Given the small size of
-this effect, reliability would decrease approximately .06 points in the
-time normally designated for tenure and/or promotion (i.e., -.004 x 3
+Our second question investigated if instructors' SETs became more
+reliable with increasing years of teaching experience; stated simply, we
+explored if experience across time matters. We extended previous
+meta-analyses on reliability to show that reliability appears to
+slightly, but significantly, decrease over time --- a new finding in
+comparison to the work of @marsh2007. Given the small size of this
+effect, reliability would decrease approximately .06 points in the time
+normally designated for tenure and/or promotion (i.e., -.004 x 3
 semesters x 5 years). This small decrease may not impact the
 administrative process, but it is worth considering that decreases in
 reliability could be expected.
@@ -1020,7 +1143,8 @@ perceived fairness) when predicting the reliability of SETs.
 This study extends previous work with several new strengths [@marsh2007;
 @benton2014; @benton2016; @zhao2011]. The data included in this
 manuscript represents over 30 years of SETs and was analyzed for
-reliability within and across courses, semesters, and instructors, thus providing new insights into the expected level of reliability in
+reliability within and across courses, semesters, and instructors, thus
+providing new insights into the expected level of reliability in
 different calculation scenarios. Sensitivity and bootstrapped analyses
 show that these results are robust even with a smaller number of
 evaluations used, supporting and extending work by @rantanen2012.
@@ -1030,36 +1154,52 @@ potential biases.
 
 ## What should instructors and administrators do with SETs?
 
-@benton2018 provide a comprehensive checklist of ways to assess teaching and interpret evaluations considering the long history of validity questions for SETs. Here, we add that it is important to understand that reliability will vary by course and semester as instructor variability is usually expected. It is tempting to think that the same instructor teaching the same course should reliably get the same SET ratings; however, we should consider that instructors will grow and change over time, which may contribute to lessened reliability across time along with impeding biases. Potentially, as suggested by a reviewer, reliability could decrease over time as instructors try new course formats and take risks with course material. Further, facets of the different courses taught likely contribute to the lessened reliability between courses taught by the same instructor (e.g., required statistics courses versus elective courses). As @benton2018.^[Variables such as race, age, and gender were not available in our
-dataset to ensure anonymity.]
+@benton2018 provide a comprehensive checklist of ways to assess teaching
+and interpret evaluations considering the long history of validity
+questions for SETs. Here, we add that it is important to understand that
+reliability will vary by course and semester as instructor variability
+is usually expected. It is tempting to think that the same instructor
+teaching the same course should reliably get the same SET ratings;
+however, we should consider that instructors will grow and change over
+time, which may contribute to lessened reliability across time along
+with impeding biases. Potentially, as suggested by a reviewer,
+reliability could decrease over time as instructors try new course
+formats and take risks with course material. Further, facets of the
+different courses taught likely contribute to the lessened reliability
+between courses taught by the same instructor (e.g., required statistics
+courses versus elective courses). As @benton2018 describe, the evaluation procedure should be useful, and it may not be fruitful to compare different years or even courses. SETs should therefore be contextualized to the course and semester in which they were received. Further, previous research has shown the impact of instructor demographic variables on SETs and these variables could be investigated for their impact on reliability across time.[^6]
+
+[^6]: Variables such as race, age, and gender were not available in our
+    dataset to ensure anonymity.
 
 These considerations are of special importance given the recent and
 growing adoption of alternative grading practices. As some professors
 and institutions move away from traditional grading structures, the
-criteria by which students evaluate their instructors may
-also shift. To this point, ungrading is a burgeoning alternative
-approach to learning that emphasizes intrinsic motivation and equity on
-the part of students and focuses on the priorities of the instructor on
-the provision of direction, comments, and resources [@ungradin2020;
-@johanesen2023]. Recent investigations of ungrading implemented in
-classrooms found that students reported improved ability to focus on
-learning [@kalbarczyk2023] and enjoyed their classroom experiences more
-than under a traditional grading system [@johanesen2023]. Psychology
-instructors also may be able to focus more on the goals of their
-teaching rather than expending time on the construction of tasks,
-deadlines, and examinations [@ko2021]. Although these benefits yield
-positive student regard for their learning environment, @guberman2021
-notes ungrading requires instructors to provide evidence of student
-learning and achievement via other outcomes. Thus, the instructor may
-lose some influence over the student and their learning which may affect
-students' perceptions of the instructor and subsequent SET ratings.
-However, a reduction in teacher-student interaction may also warp other
-aspects of SET rating separate from grading (i.e., openness, perceived
-fairness, difficulty, etc.). @ungradin2020 noted the proliferation of
-ungrading in educational settings in 2020; as more psychology
-instructors incorporate elements of alternative grading practices like
-ungrading into their course structures, SET reliability may need to be
-reassessed.
+criteria by which students evaluate their instructors may also shift.
+For example, ungrading is one such alternative approach to learning that
+emphasizes intrinsic motivation and equity on the part of students and
+focuses on the priorities of the instructor on the provision of
+direction, comments, and resources [@ungradin2020; @johanesen2023].
+Recent investigations of ungrading implemented in classrooms found that
+students reported improved ability to focus on learning
+[@kalbarczyk2023] and enjoyed their classroom experiences more than
+under a traditional grading system [@johanesen2023]. Instructors also
+may be able to focus more on the goals of their teaching rather than
+expending time on the construction of tasks, deadlines, and
+examinations, potentially contributing to reduced non-constructive
+feedback in their SETs (e.g., insults, allegations, blame, etc.)
+[@lakeman2022]. [@ko2021]. Although these benefits yield positive
+student regard for their learning environment, @guberman2021 notes
+ungrading requires instructors to provide evidence of student learning
+and achievement via other outcomes. Thus, the instructor may lose some
+influence over the student and their learning which may affect students'
+perceptions of the instructor and subsequent SET ratings. However, a
+reduction in teacher-student interaction may also warp other aspects of
+SET rating separate from grading (i.e., openness, perceived fairness,
+difficulty, etc.). @ungradin2020 noted the proliferation of ungrading in
+educational settings in 2020; as more psychology instructors incorporate
+elements of alternative grading practices like ungrading into their
+course structures, SET reliability may need to be reassessed.
 
 ## Conclusion
 
@@ -1067,7 +1207,7 @@ While this study provides valuable evidence about SET reliability, it
 only includes the SET ratings of one department, and our descriptive
 statistics suggest these ratings were often collected at ceiling on a 1
 to 5 Likert-type scale. Moreover, SETs are always biased by the students
-who are in class or fill out the online survey --- information about
+who are in class or fill out the online survey; information about
 missing student perceptions are never recorded. Last, SET analyses can
 be limited by the instruments used - in this manuscript, all items come
 from the same rating scale used by students. The concerns about the
