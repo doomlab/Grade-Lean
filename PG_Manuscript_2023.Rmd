@@ -28,7 +28,7 @@ affiliation:
 authornote: |
    
 abstract: |
-  Student evaluations of teaching are regularly used within college classrooms to gauge effectiveness of instruction, provide evidence for administrative decision making, and inform instructors of course feedback. Teaching evaluations are thought to be a reliable measure, but few studies have explored their reliability over time. We investigated over 30 years of teaching evaluations to determine the reliability of teaching evaluations across course, instructor, and time. We used these estimates to determine the stability of reliability estimates over time and tried to predict reliability using student ratings of instructor fairness. Instructors teaching the same course multiple times within the same semester showed the highest reliability estimates. The reliability of instructor’s evaluations showed a small decrease over time. Evaluations should be carefully considered given the context of the semester received and potentially paired with other measures of teaching effectiveness.
+  Student evaluations of teaching (SETs) are commonly used in college classrooms to assess instructional effectiveness, guide administrative decisions, and provide feedback to instructors. Although often treated as reliable measures, little research has assessed the long-term reliability of SETs. We analyzed over 30 years of SET data from a large public university in the United States to examine the reliability of evaluations across instructors, courses, and time. Using correlation coefficients and linear mixed-effects modeling, we estimated the stability of reliability over time and tested whether ratings of instructor fairness predicted these estimates. Instructors teaching the same course multiple times within the same semester showed the highest reliability (*r* ~ .50), while overall reliability slightly declined over time (*b* = -0.004, 95% CI [-0.005, -0.003]). Fairness was not a predictor of reliability. Our findings suggest that SET reliability is context-dependent and may diminish over time, highlighting the importance of combining SETs with additional measures when evaluating teaching effectiveness.
    
 keywords: "reliability, teaching effectiveness, fairness, grading, evaluations"
 floatsintext: no
@@ -272,13 +272,15 @@ questions:
 1)  What is the reliability of student evaluations?
 2)  Are student evaluations reliable across time?
 3)  Is the average level of perceived fairness of the grading in the
-    course a moderator[\^Moderation indicates the interaction of
-    perceived fairness of grading and time would predict reliability
-    indicating different levels of fairness predict reliability in
-    varying strengths over time.] of reliability in student evaluations
+    course a moderator[^a] of reliability in student evaluations
     over time?
 4)  Does the average variability in instructor fairness rating moderate
     reliability of student evaluations over time?
+    
+[^a]: Moderation indicates the interaction of
+    perceived fairness of grading and time would predict reliability
+    indicating different levels of fairness predict reliability in
+    varying strengths over time.
 
 The following was pre-registered as a secondary data analysis at:
 <https://osf.io/czb4f>. The materials, manuscript, code, and data can be
@@ -405,7 +407,7 @@ the intercept represents the grand mean of all of the data, which would
 ignore differences in instructor. By including this intercept, we were
 able to allow the intercept to vary by instructor, and then measure the
 impact of the independent variables on the ratings or reliability.
-Figure \@ref(fig:figure-random-explain) this analysis might look
+Figure \@ref(fig:figure-random-explain) portrays how this analysis might look
 visually for research question 1. In each of the analyses described
 below, the number of students providing ratings for the course was
 included as a control variable to even out differences in course size as
@@ -418,9 +420,20 @@ research question, and these are described with each analysis below.
 
 In this research question, we examined the reliability of student
 evaluations on the overall rating and separately on the fairness rating.
-We calculated eight types of reliability using course (same or
+We calculated reliability using course (same or
 different) by instructor (same or different) by semester (same or
-different). Therefore, if instructor 1 taught two sections of PSY 101 in
+different). These variable combinations created eight reliability scores: 
+
+  1) Same course, same instructor, same semester
+  2) Same course, same instructor, different semester
+  3) Same course, different instructor, same semester
+  4) Same course, different instructor, different semester
+  5) Different course, same instructor, same semester
+  6) Different course, same instructor, different semester
+  7) Different course, different instructor, same semester
+  8) Different course, different instructor, different semester
+
+Therefore, if instructor 1 taught two sections of PSY 101 in
 Fall 2010, this combination would be considered same course, same
 instructor, and same semester. If we compare instructor 1's PSY 101 Fall
 2010 course to instructor 1's PSY 101 Spring 2011 course, this
@@ -433,7 +446,7 @@ random intercept for both ratings (i.e., two instructor random
 intercepts, first course 1 instructor and comparison course 2
 instructor). The value of interest was the standardized regression
 coefficient for the fixed effect of the overall rating question from
-this model.[^2].
+this model.[^2]
 
 [^2]: The formula was question 1 average for course 1 \~ question 1
     average for course 2 + sample size course 1 + sample size course 2
@@ -511,7 +524,7 @@ above normal fairness, @cohen2003].
 ### Research Question 4
 
 Finally, we examined the average standard deviation of fairness ratings
-as a moderator of time to predict reliability[^5] This variable
+as a moderator of time to predict reliability[^5]. This variable
 represented the variability in perceived fairness in grading from
 student evaluations, where small numbers indicated relative agreement on
 the rating of fairness and larger values indicated a wide range of
@@ -559,7 +572,7 @@ complete anonymized dataset and other information can be found online at
 inline with the statistical analysis with the *papaja* package
 [@aust2022] for interested researchers/reviewers who wish to recreate
 these analyses. The bootstrapped versions of analyses and robustness
-analysis can be found online on our OSF page with a summary of results.
+analysis can be found online on our Open Science Framework (OSF) page with a summary of results.
 We originally planned to bootstrap all analyses; however, the compute
 time for research question 1 was prolonged due to the size and
 complexity of the multilevel models. We therefore did not bootstrap that
@@ -837,7 +850,7 @@ question 1 for the same instructor, different instructor, same semester,
 different semester, etc.), and the number of ratings (i.e., rating
 sample size) per question were used as fixed-effects covariates. The
 instructor(s) were used as a random intercept to control for correlated
-error and overall average rating per instructor (see "Planned Analyses
+error and overall average rating per instructor (see Planned Analyses
 for a comprehensive explanation above). The effects were then
 standardized using the *parameters* package [@lüdecke2023]. The data was
 sorted by year and semester such that "predictor" was always an earlier
@@ -860,7 +873,7 @@ same instructor with different courses and semesters showed a non-zero
 negative relationship, indicating that ratings generally were lower for
 later semesters in different courses.
 
-For different instructors, we found positive non-zero readabilities when
+For different instructors, we found positive non-zero reliabilities when
 they were at least calculated on the same semester or course. These
 values were very close to zero, generally in the .01 to .05 range. The
 reliabilities that were calculated on different courses, semesters, and
@@ -1162,12 +1175,14 @@ is usually expected. It is tempting to think that the same instructor
 teaching the same course should reliably get the same SET ratings;
 however, we should consider that instructors will grow and change over
 time, which may contribute to lessened reliability across time along
-with impeding biases. Potentially, as suggested by a reviewer,
+with impeding biases. Potentially, 
 reliability could decrease over time as instructors try new course
-formats and take risks with course material. Further, facets of the
+formats and take risks with course material[^b]. Further, facets of the
 different courses taught likely contribute to the lessened reliability
 between courses taught by the same instructor (e.g., required statistics
 courses versus elective courses). As @benton2018 describe, the evaluation procedure should be useful, and it may not be fruitful to compare different years or even courses. SETs should therefore be contextualized to the course and semester in which they were received. Further, previous research has shown the impact of instructor demographic variables on SETs and these variables could be investigated for their impact on reliability across time.[^6]
+
+[^b]: This idea was suggested by a reviewer.
 
 [^6]: Variables such as race, age, and gender were not available in our
     dataset to ensure anonymity.
@@ -1188,7 +1203,7 @@ may be able to focus more on the goals of their teaching rather than
 expending time on the construction of tasks, deadlines, and
 examinations, potentially contributing to reduced non-constructive
 feedback in their SETs (e.g., insults, allegations, blame, etc.)
-[@lakeman2022]. [@ko2021]. Although these benefits yield positive
+[@lakeman2022; @ko2021]. Although these benefits yield positive
 student regard for their learning environment, @guberman2021 notes
 ungrading requires instructors to provide evidence of student learning
 and achievement via other outcomes. Thus, the instructor may lose some
